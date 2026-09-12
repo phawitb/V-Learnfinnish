@@ -152,6 +152,7 @@ main {
 }
 .search-line input {
   width: 100%;
+  min-width: 0;
   border: 0;
   outline: 0;
   font-size: 19px;
@@ -917,7 +918,7 @@ main {
 }
 .recent-item {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
   align-items: center;
   gap: 8px;
   padding: 9px 10px 9px 16px;
@@ -925,6 +926,13 @@ main {
   border-radius: 14px;
   background: #fff;
   box-shadow: 0 5px 16px rgba(24, 53, 76, 0.035);
+}
+.recent-item::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #86a5ae;
 }
 .recent-open {
   min-width: 0;
@@ -1005,8 +1013,7 @@ main {
   .dictionary.search-focused .hero,
   .dictionary.search-focused .suggestions,
   .dictionary.search-focused .result,
-  .dictionary.search-focused .error-card,
-  .dictionary.search-focused .dictionary-recent {
+  .dictionary.search-focused .error-card {
     display: none;
   }
   .dictionary.search-focused {
@@ -1090,11 +1097,19 @@ main {
   .dictionary-recent {
     margin-top: 20px;
   }
+  .recent-heading .kicker {
+    display: none;
+  }
   .recent-heading h2 {
     font-size: 22px;
   }
   .recent-item {
-    padding-left: 14px;
+    gap: 10px;
+    padding: 10px 2px;
+    border: 0;
+    border-bottom: 1px solid #edf1f0;
+    border-radius: 0;
+    box-shadow: none;
   }
   .hero {
     text-align: left;
@@ -1108,6 +1123,14 @@ main {
   }
   .search-line input {
     font-size: 16px;
+  }
+  .search-line .primary {
+    flex: 0 0 auto;
+    gap: 0;
+    box-shadow: none;
+  }
+  .search-line .primary span {
+    display: none;
   }
   .search-foot {
     justify-content: flex-end;

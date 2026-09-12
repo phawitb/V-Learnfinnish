@@ -23,6 +23,35 @@ describe('App', () => {
     const search = screen.getByPlaceholderText(/search finnish or english/i)
     expect(search).toBeInTheDocument()
     expect(search).not.toHaveFocus()
+    expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /translate/i }).closest('.search-line')).toBeInTheDocument()
+  })
+  it('filters recent searches while the search field is focused', async () => {
+    const makeResult = (id: string, finnish: string, english: string) => ({
+      id,
+      query: finnish,
+      direction: 'fi-en',
+      finnish,
+      english,
+      exampleFinnish: `${finnish}.`,
+      exampleEnglish: `${english}.`,
+    })
+    localStorage.setItem('sisu:history:v1', JSON.stringify([
+      { id: 'recent-1', result: makeResult('word-1', 'opiskelija', 'student'), createdAt: '2026-09-13T10:00:00.000Z' },
+      { id: 'recent-2', result: makeResult('word-2', 'kiitos', 'thank you'), createdAt: '2026-09-13T09:00:00.000Z' },
+    ]))
+    render(<App />)
+    const search = screen.getByPlaceholderText(/search finnish or english/i)
+
+    await userEvent.click(search)
+    await userEvent.type(search, 'kii')
+
+    expect(screen.getByRole('button', { name: 'Open kiitos, thank you' })).toBeVisible()
+    expect(screen.queryByRole('button', { name: 'Open opiskelija, student' })).not.toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Recent searches' })).toBeVisible()
+    await userEvent.clear(search)
+    await userEvent.type(search, 'zzz')
+    expect(screen.getByText('No matching recent searches')).toBeVisible()
   })
   it('shows persisted recent searches inside Dictionary and lets users reopen or remove them', async () => {
     const result = {

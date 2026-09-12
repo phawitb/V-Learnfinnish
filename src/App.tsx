@@ -134,11 +134,13 @@ function LessonsHub({ onOpen }: { onOpen: (lesson: 1) => void }) {
 
 function RecentSearches({
   items,
+  emptyMessage,
   onOpen,
   onRemove,
   onClear,
 }: {
   items: HistoryItem[];
+  emptyMessage?: string;
   onOpen: (result: TranslationResult) => void;
   onRemove: (id: string) => void;
   onClear: () => void;
@@ -157,7 +159,7 @@ function RecentSearches({
         )}
       </div>
       {items.length === 0 ? (
-        <p className="recent-empty">Words you search for will appear here.</p>
+        <p className="recent-empty">{emptyMessage ?? "Words you search for will appear here."}</p>
       ) : (
         <div className="recent-list">
           {items.map((item) => (
@@ -363,16 +365,6 @@ function App() {
                   placeholder="Search Finnish or English..."
                   aria-label="Search Finnish or English"
                 />
-                <button
-                  type="button"
-                  className="clear"
-                  onClick={() => setQuery("")}
-                  aria-label="Clear search"
-                >
-                  <X size={18} />
-                </button>
-              </div>
-              <div className="search-foot">
                 <button className="primary" disabled={loading}>
                   {loading ? "Thinking…" : "Translate"}
                   <span>↵</span>
@@ -465,7 +457,11 @@ function App() {
               </article>
             )}
             <RecentSearches
-              items={history}
+              items={history.filter((item) => {
+                const needle = query.trim().toLowerCase();
+                return !needle || `${item.result.finnish} ${item.result.english}`.toLowerCase().includes(needle);
+              })}
+              emptyMessage={query.trim() && history.length > 0 ? "No matching recent searches" : undefined}
               onOpen={reopen}
               onRemove={(id) => saveHist(history.filter((item) => item.id !== id))}
               onClear={() => saveHist([])}
