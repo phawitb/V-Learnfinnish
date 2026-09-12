@@ -1,11 +1,10 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import {
-  ArrowLeftRight,
   BookOpen,
   Brain,
   Check,
-  ChevronDown,
   Heart,
+  UserRound,
   Search,
   Sparkles,
   Trash2,
@@ -27,16 +26,17 @@ import type {
 } from "./types";
 import { bookVocabulary, LessonOnePage, phrases } from "./pages/LessonOnePage";
 
-type Page = "dictionary" | "lessons" | "favorites" | "practice";
+type Page = "dictionary" | "lessons" | "favorites" | "practice" | "profile";
 type Mode = "flashcard" | "choice" | "matching" | "blank";
 const nav = {
-  dictionary: { id: "dictionary", label: "Dictionary", icon: Search },
+  dictionary: { id: "dictionary", label: "Search", icon: Search },
   lessons: { id: "lessons", label: "Lessons", icon: BookOpen },
   favorites: { id: "favorites", label: "Favorites", icon: Heart },
   practice: { id: "practice", label: "Practice", icon: Brain },
+  profile: { id: "profile", label: "Profile", icon: UserRound },
 } as const;
-const desktopNav = [nav.dictionary, nav.lessons, nav.favorites, nav.practice];
-const mobileNav = [nav.lessons, nav.favorites, nav.dictionary, nav.practice];
+const desktopNav = [nav.dictionary, nav.lessons, nav.favorites, nav.practice, nav.profile];
+const mobileNav = [nav.lessons, nav.favorites, nav.dictionary, nav.practice, nav.profile];
 const toVocab = (r: TranslationResult): VocabularyItem => ({
   ...r,
   favorite: true,
@@ -189,10 +189,27 @@ function RecentSearches({
   );
 }
 
+function ProfilePage({ favorites, reviewCount }: { favorites: number; reviewCount: number }) {
+  return (
+    <section className="page profile-page">
+      <div className="profile-avatar" aria-hidden="true"><UserRound /></div>
+      <div className="page-heading">
+        <div>
+          <h1>Profile</h1>
+          <p>Your learning progress on this device.</p>
+        </div>
+      </div>
+      <div className="profile-summary">
+        <div><b>{favorites}</b><span>Favorite words</span></div>
+        <div><b>{reviewCount}</b><span>Words to review</span></div>
+      </div>
+    </section>
+  );
+}
+
 function App() {
   const [page, setPage] = useState<Page>("dictionary"),
     [query, setQuery] = useState(""),
-    [direction, setDirection] = useState<Direction>("auto"),
     [searchFocused, setSearchFocused] = useState(false);
   const [result, setResult] = useState<TranslationResult | null>(null),
     [loading, setLoading] = useState(false),
@@ -207,6 +224,8 @@ function App() {
   const [filter, setFilter] = useState(""),
     [activeLesson, setActiveLesson] = useState<1 | null>(null);
   const fullViewportHeight = useRef(0);
+  const searchInput = useRef<HTMLInputElement>(null);
+  const direction: Direction = "auto";
   useEffect(() => {
     const viewport = window.visualViewport;
     if (!viewport) return;
@@ -266,6 +285,16 @@ function App() {
   };
   const activeFav =
     result && favorites.some((x) => x.finnish === result.finnish);
+  const navigate = (nextPage: Page) => {
+    setPage(nextPage);
+    if (nextPage === "lessons") setActiveLesson(null);
+    if (nextPage === "dictionary") window.setTimeout(() => searchInput.current?.focus(), 0);
+  };
+  const pageTitle = page === "dictionary"
+    ? "Search"
+    : page === "lessons" && activeLesson === 1
+      ? "Lesson 1"
+      : nav[page].label;
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -280,8 +309,7 @@ function App() {
               key={n.id}
               className={page === n.id ? "active" : ""}
               onClick={() => {
-                setPage(n.id);
-                if (n.id === "lessons") setActiveLesson(null);
+                navigate(n.id);
               }}
               aria-label={n.label}
             >
@@ -300,11 +328,7 @@ function App() {
       </aside>
       <main>
         <header className="mobile-head">
-          <div className="brand">
-            <span className="brand-mark">S</span>
-            <span>Sisu</span>
-          </div>
-          <span className="streak">3 day streak</span>
+          <h1 data-testid="mobile-page-title">{pageTitle}</h1>
         </header>
         {page === "dictionary" && (
           <section className={`page dictionary ${searchFocused ? "search-focused" : ""}`}>
@@ -324,6 +348,7 @@ function App() {
               <div className="search-line">
                 <Search />
                 <input
+                  ref={searchInput}
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onFocus={() => {
@@ -344,19 +369,6 @@ function App() {
                 </button>
               </div>
               <div className="search-foot">
-                <label>
-                  <ArrowLeftRight size={16} />
-                  <select
-                    value={direction}
-                    onChange={(e) => setDirection(e.target.value as Direction)}
-                    aria-label="Translation direction"
-                  >
-                    <option value="auto">Auto detect</option>
-                    <option value="fi-en">Finnish → English</option>
-                    <option value="en-fi">English → Finnish</option>
-                  </select>
-                  <ChevronDown size={14} />
-                </label>
                 <button className="primary" disabled={loading}>
                   {loading ? "Thinking…" : "Translate"}
                   <span>↵</span>
@@ -503,6 +515,9 @@ function App() {
             }
           />
         )}
+        {page === "profile" && (
+          <ProfilePage favorites={favorites.length} reviewCount={practiceProgress.reviewWords.length} />
+        )}
       </main>
       <nav className="bottom-nav">
         {mobileNav.map((n) => (
@@ -510,8 +525,7 @@ function App() {
             key={n.id}
             className={`${page === n.id ? "active" : ""} ${n.id === "dictionary" ? "nav-dictionary" : ""}`}
             onClick={() => {
-              setPage(n.id);
-              if (n.id === "lessons") setActiveLesson(null);
+              navigate(n.id);
             }}
             aria-label={n.label}
           >
@@ -791,8 +805,7 @@ function Practice({
       ? { id: "review", title: "Words to review", items: reviewDeck }
       : regularGroup,
     deck = selectedGroup.items,
-    item = deck[(practiceQueue[index] ?? index) % deck.length],
-    due = items.filter((x) => new Date(x.nextReviewAt) <= new Date()).length;
+    item = deck[(practiceQueue[index] ?? index) % deck.length];
   const choices = useMemo(
     () => {
       const alternatives = shuffled(
@@ -943,18 +956,10 @@ function Practice({
             </span>
             <span className="review-stat-arrow" aria-hidden="true">→</span>
           </button>
-          <div>
-            <b>{due}</b>
-            <span>Due today</span>
-          </div>
-          <div>
-            <b>{items.filter((x) => x.mastered).length}</b>
-            <span>Mastered</span>
-          </div>
         </div>
         <div className="setup">
           <h2>Choose your practice</h2>
-          <div className="mode-grid">
+          <div className="mode-grid" role="group" aria-label="Choose your practice">
             {(
               [
                 ["flashcard", "Flashcards", BookOpen],

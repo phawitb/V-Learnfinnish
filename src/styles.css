@@ -957,6 +957,41 @@ main {
   border-radius: 14px;
   text-align: center;
 }
+.profile-page {
+  max-width: 760px;
+}
+.profile-avatar {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 18px;
+  border-radius: 20px;
+  background: #e9f4f1;
+  color: #26755f;
+}
+.profile-summary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 26px;
+}
+.profile-summary > div {
+  display: grid;
+  gap: 4px;
+  padding: 20px;
+  border: 1px solid #e0e8e7;
+  border-radius: 16px;
+  background: #fff;
+}
+.profile-summary b {
+  font-size: 28px;
+  color: #126e9e;
+}
+.profile-summary span {
+  color: #71858e;
+  font-size: 13px;
+}
 @media (max-width: 760px) {
   .app-shell:has(.dictionary.search-focused) .mobile-head,
   .app-shell:has(.dictionary.search-focused) .bottom-nav,
@@ -993,31 +1028,38 @@ main {
   }
   .mobile-head {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 16px 20px;
+    min-height: 48px;
+    padding: 10px 16px;
     background: #fff;
     border-bottom: 1px solid #e8eceb;
   }
-  .streak {
-    font-size: 11px;
-    color: #5e7b87;
-    background: #f0f6f6;
-    padding: 7px 9px;
-    border-radius: 99px;
+  .mobile-head h1 {
+    margin: 0;
+    color: #17324d;
+    font-size: 20px;
+    letter-spacing: -0.02em;
   }
   .page {
-    padding: 32px 16px calc(108px + env(safe-area-inset-bottom));
+    padding: 20px 14px calc(88px + env(safe-area-inset-bottom));
+  }
+  .page-heading .kicker,
+  .page-heading h1 {
+    display: none;
+  }
+  .page-heading p {
+    margin: 0;
+    font-size: 13px;
   }
   .dictionary {
-    padding-top: 24px;
+    padding-top: 14px;
   }
   .dictionary > .hero,
   .dictionary > .suggestions {
     display: none;
   }
   .dictionary-recent {
-    margin-top: 26px;
+    margin-top: 20px;
   }
   .recent-heading h2 {
     font-size: 22px;
@@ -1032,17 +1074,18 @@ main {
     font-size: 38px;
   }
   .search-line {
-    padding: 17px;
+    gap: 10px;
+    padding: 13px 14px;
+  }
+  .search-line input {
+    font-size: 16px;
   }
   .search-foot {
-    align-items: stretch;
-    gap: 9px;
-  }
-  .search-foot label {
-    flex: 1;
+    justify-content: flex-end;
+    padding: 8px;
   }
   .primary {
-    padding: 12px 14px;
+    padding: 10px 14px;
   }
   .bottom-nav {
     display: flex;
@@ -1053,7 +1096,7 @@ main {
     right: 0;
     background: #fff;
     border-top: 1px solid #e0e8e7;
-    padding: 8px 5px max(8px, env(safe-area-inset-bottom));
+    padding: 6px 2px max(6px, env(safe-area-inset-bottom));
     box-shadow: 0 -8px 24px rgba(23, 50, 77, 0.08);
     justify-content: space-around;
   }
@@ -1064,19 +1107,19 @@ main {
     display: grid;
     justify-items: center;
     gap: 2px;
-    font-size: 10px;
-    padding: 5px;
+    font-size: 9px;
+    padding: 4px 2px;
   }
   .bottom-nav .nav-dictionary {
     position: relative;
-    margin-top: -24px;
-    min-width: 72px;
+    margin-top: -18px;
+    min-width: 60px;
     color: #fff;
   }
   .bottom-nav .nav-dictionary svg {
-    width: 58px;
-    height: 58px;
-    padding: 17px;
+    width: 48px;
+    height: 48px;
+    padding: 14px;
     border-radius: 50%;
     background: #126e9e;
     color: #fff;
@@ -1087,7 +1130,7 @@ main {
     font-weight: 800;
   }
   .bottom-nav button svg {
-    width: 21px;
+    width: 19px;
   }
   .bottom-nav button.active {
     color: #096491;
@@ -1101,26 +1144,31 @@ main {
   .favorite {
     margin-top: 18px;
   }
-  .page-heading h1 {
-    font-size: 37px;
-  }
   .mode-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
   }
   .mode-grid button {
-    min-height: 82px;
-    padding: 13px 8px;
+    min-width: 0;
+    min-height: 62px;
+    padding: 9px 3px;
+    gap: 5px;
+    font-size: 10px;
+    line-height: 1.15;
+  }
+  .mode-grid button svg {
+    width: 18px;
   }
   .practice-group-grid {
     grid-template-columns: 1fr;
   }
   .lessons-grid {
     grid-template-columns: 1fr;
-    margin-top: 22px;
+    margin-top: 16px;
   }
   .lesson-card {
-    min-height: 132px;
-    padding: 18px;
+    min-height: 112px;
+    padding: 14px;
   }
   .practice-group-grid button {
     min-height: 62px;
@@ -1133,13 +1181,15 @@ main {
     background: transparent;
   }
   .setup h2:not(:first-child) {
-    margin-top: 32px;
+    margin-top: 22px;
   }
   .practice-session {
     min-height: calc(100dvh - 70px);
   }
   .stats {
+    grid-template-columns: 1fr;
     gap: 7px;
+    margin: 14px 0 18px;
   }
   .stats > div,
   .stats > button {
@@ -1148,12 +1198,8 @@ main {
   .stats b {
     font-size: 24px;
   }
-  .stats {
-    grid-template-columns: 1fr 1fr;
-  }
   .review-stat {
-    grid-column: 1 / -1;
-    min-height: 72px;
+    min-height: 62px;
   }
   .flashcard,
   .quiz {
@@ -1171,6 +1217,22 @@ main {
   }
   .suggestions {
     justify-content: flex-start;
+  }
+  .profile-page {
+    text-align: center;
+  }
+  .profile-avatar {
+    width: 54px;
+    height: 54px;
+    margin: 4px auto 12px;
+    border-radius: 17px;
+  }
+  .profile-summary {
+    gap: 8px;
+    margin-top: 18px;
+  }
+  .profile-summary > div {
+    padding: 15px 8px;
   }
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -1606,7 +1668,7 @@ summary:focus-visible {
     justify-content: space-around;
   }
   .bottom-nav button {
-    min-width: 25%;
+    min-width: 20%;
   }
 }
 .basics-grid {
