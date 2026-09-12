@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { type CSSProperties, FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import {
   BookOpen,
   Brain,
@@ -804,6 +804,8 @@ function Practice({
       side: "fi" | "en";
     } | null>(null),
     [blank, setBlank] = useState(""),
+    [blankKeyboardOpen, setBlankKeyboardOpen] = useState(false),
+    [visiblePracticeHeight, setVisiblePracticeHeight] = useState(0),
     [firstAttempts, setFirstAttempts] = useState<Record<string, boolean>>({}),
     [done, setDone] = useState(false);
   const vocabItems = useMemo(
@@ -892,6 +894,18 @@ function Practice({
       ttsService.speak(item.finnish);
     }
   }, [done, item, mode, started]);
+
+  useEffect(() => {
+    const viewport = window.visualViewport;
+    if (!viewport || !started || mode !== "blank") return;
+    const updateVisibleHeight = () => {
+      if (document.activeElement?.id !== "blank-answer") return;
+      setVisiblePracticeHeight(Math.round(viewport.height));
+      setBlankKeyboardOpen(true);
+    };
+    viewport.addEventListener("resize", updateVisibleHeight);
+    return () => viewport.removeEventListener("resize", updateVisibleHeight);
+  }, [mode, started]);
 
   const isReviewSession = reviewDeck !== null;
   const retryUntilCorrect = mode === "choice" || mode === "blank" || isReviewSession;
@@ -1062,7 +1076,12 @@ function Practice({
       </section>
     );
   return (
-    <section className="page practice-session">
+    <section
+      className={`page practice-session ${blankKeyboardOpen ? "blank-keyboard-open" : ""}`}
+      style={visiblePracticeHeight
+        ? { "--practice-visible-height": `${visiblePracticeHeight}px` } as CSSProperties
+        : undefined}
+    >
       <div className="session-head">
         <button
           className="icon-button"
@@ -1197,6 +1216,7 @@ function Practice({
               const correct = lettersOnly(blank) === lettersOnly(item.finnish);
               recordResult(item, correct);
               setSelected(correct ? "correct" : "wrong");
+              (document.getElementById("blank-answer") as HTMLInputElement | null)?.blur();
             }}
           >
             <input
@@ -1204,6 +1224,14 @@ function Practice({
               className="blank-input"
               value={blank}
               onChange={(e) => setBlank(e.target.value)}
+              onFocus={() => {
+                setBlankKeyboardOpen(true);
+                setVisiblePracticeHeight(Math.round(window.visualViewport?.height || window.innerHeight));
+              }}
+              onBlur={() => {
+                setBlankKeyboardOpen(false);
+                setVisiblePracticeHeight(0);
+              }}
               autoFocus
               placeholder="Type the missing word..."
             />

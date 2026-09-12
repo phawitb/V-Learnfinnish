@@ -1349,18 +1349,24 @@ main {
 }
 
 @media (max-width: 760px) {
+  .app-shell:has(.blank-input:focus) .mobile-head,
   .app-shell:has(.blank-input:focus) .bottom-nav {
     display: none;
   }
   main:has(.dictionary.search-focused) {
     padding-top: 0;
   }
-  .practice-session:has(.blank-input:focus) {
-    height: calc(100dvh - 49px);
-    padding: 7px 10px 8px;
+  .practice-session.blank-keyboard-open {
+    position: fixed;
+    z-index: 7;
+    inset: 0 0 auto;
+    height: var(--practice-visible-height, 100dvh);
+    min-height: 0;
+    padding: 6px 10px 8px;
+    background: #f7faf9;
   }
-  .practice-session:has(.blank-input:focus) .session-head {
-    margin-bottom: 5px;
+  .practice-session.blank-keyboard-open .session-head {
+    display: none;
   }
   .practice-session .choice-quiz .choices {
     width: 100%;
@@ -1373,6 +1379,31 @@ main {
   .practice-session .blank-quiz {
     gap: 4px;
   }
+  .practice-session.blank-keyboard-open .blank-quiz {
+    flex: 1 1 auto;
+    justify-content: flex-start;
+    gap: 7px;
+    padding: 10px 14px;
+    overflow: hidden;
+  }
+  .practice-session.blank-keyboard-open .blank-quiz > .label {
+    margin-top: 0;
+  }
+  .practice-session.blank-keyboard-open .blank-quiz > .icon-button {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    margin: 0 auto;
+  }
+  .practice-session.blank-keyboard-open .blank-quiz .hint {
+    margin: 1px 0;
+    font-size: 14px;
+  }
+  .practice-session.blank-keyboard-open .blank-quiz form {
+    display: grid;
+    justify-items: center;
+    margin: 0;
+  }
   .practice-session .blank-quiz .live-blank {
     font-size: clamp(20px, 6vw, 28px);
   }
@@ -1384,6 +1415,11 @@ main {
   .practice-session .blank-quiz .feedback .primary {
     min-height: 40px;
     padding: 9px 13px;
+  }
+  .practice-session.blank-keyboard-open .blank-quiz form .primary {
+    min-height: 36px;
+    padding: 7px 13px;
+    font-size: 14px;
   }
 }
 @media (prefers-reduced-motion: no-preference) {

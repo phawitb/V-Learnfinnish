@@ -545,6 +545,24 @@ describe('App', () => {
     await userEvent.click(screen.getByRole('button', { name: /check answer/i }))
     expect(screen.getByText('Correct!')).toBeInTheDocument()
   })
+  it('fits fill-in practice to the visible viewport while the mobile keyboard is open', async () => {
+    const viewport = new EventTarget() as VisualViewport
+    Object.defineProperty(viewport, 'height', { value: 360, writable: true })
+    Object.defineProperty(window, 'visualViewport', { value: viewport, configurable: true })
+    render(<App />)
+    await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
+    await userEvent.click(screen.getByRole('button', { name: /fill in the blank/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
+    const input = screen.getByPlaceholderText(/type the missing/i)
+
+    await userEvent.click(input)
+    viewport.dispatchEvent(new Event('resize'))
+
+    const session = input.closest('.practice-session') as HTMLElement
+    expect(session).toHaveClass('blank-keyboard-open')
+    expect(session.style.getPropertyValue('--practice-visible-height')).toBe('360px')
+    Reflect.deleteProperty(window, 'visualViewport')
+  })
   it('checks fill-in answers from letters only without requiring punctuation', async () => {
     const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
