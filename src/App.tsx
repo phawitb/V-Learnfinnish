@@ -1233,7 +1233,7 @@ function Practice({
               );
             })}
           </div>
-          <form
+          {!selected && <form
             onSubmit={(e) => {
               e.preventDefault();
               ttsService.speak(item.finnish);
@@ -1242,10 +1242,10 @@ function Practice({
               setSelected(correct ? "correct" : "wrong");
             }}
           >
-            <button className="primary" disabled={usedLetterIds.length !== letterTiles.length || Boolean(selected)}>
+            <button className="primary" disabled={usedLetterIds.length !== letterTiles.length}>
               Check answer
             </button>
-          </form>
+          </form>}
           {selected && (
             <div className={`feedback ${selected}`}>
               <b>{selected === "correct" ? "Correct!" : "Not quite"}</b>

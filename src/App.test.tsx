@@ -584,6 +584,7 @@ describe('App', () => {
     expect(screen.getByTestId('live-blank')).toHaveTextContent('H e i !')
     await userEvent.click(screen.getByRole('button', { name: /check answer/i }))
     expect(screen.getByText('Correct!')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /check answer/i })).not.toBeInTheDocument()
     expect(screen.getByTestId('blank-answer-reveal')).toHaveTextContent('Hei!')
     expect(screen.getByTestId('blank-answer-reveal')).toContainElement(
       screen.getByRole('button', { name: /listen to hei/i }),
