@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 import './styles.css'
 import { ttsService } from './services/ttsService'
+import { translationService } from './services/translationService'
 
 beforeEach(() => {
   localStorage.clear()
@@ -52,6 +53,54 @@ describe('App', () => {
     await userEvent.clear(search)
     await userEvent.type(search, 'zzz')
     expect(screen.getByText('No matching recent searches')).toBeVisible()
+  })
+  it('clears the query and open dictionary result with the search clear button', async () => {
+    const result = {
+      id: 'clear-word',
+      query: 'kiitos',
+      direction: 'fi-en',
+      finnish: 'kiitos',
+      english: 'thank you',
+      exampleFinnish: 'Kiitos paljon.',
+      exampleEnglish: 'Thank you very much.',
+    }
+    localStorage.setItem('sisu:history:v1', JSON.stringify([
+      { id: 'clear-history', result, createdAt: '2026-09-13T10:00:00.000Z' },
+    ]))
+    render(<App />)
+
+    await userEvent.click(screen.getByRole('button', { name: 'Open kiitos, thank you' }))
+    expect(screen.getByRole('heading', { name: 'kiitos' })).toBeVisible()
+    await userEvent.click(screen.getByRole('button', { name: 'Clear search' }))
+
+    expect(screen.getByPlaceholderText(/search finnish or english/i)).toHaveValue('')
+    expect(screen.queryByRole('heading', { name: 'kiitos' })).not.toBeInTheDocument()
+    expect(screen.getByText('Try searching')).toBeVisible()
+  })
+  it('reuses a case-insensitive cached search without asking the translation service again', async () => {
+    const translate = vi.spyOn(translationService, 'translate')
+    const result = {
+      id: 'cached-word',
+      query: 'kiitos',
+      direction: 'fi-en',
+      finnish: 'kiitos',
+      english: 'thank you',
+      exampleFinnish: 'Kiitos paljon.',
+      exampleEnglish: 'Thank you very much.',
+    }
+    localStorage.setItem('sisu:history:v1', JSON.stringify([
+      { id: 'cached-history', result, createdAt: '2026-09-13T10:00:00.000Z' },
+    ]))
+    render(<App />)
+    const search = screen.getByPlaceholderText(/search finnish or english/i)
+
+    await userEvent.type(search, '  KIITOS  ')
+    await userEvent.click(screen.getByRole('button', { name: /Translate/i }))
+
+    expect(translate).not.toHaveBeenCalled()
+    expect(search).toHaveValue('kiitos')
+    expect(screen.getByRole('heading', { name: 'kiitos' })).toBeVisible()
+    expect(JSON.parse(localStorage.getItem('sisu:history:v1') ?? '[]')).toHaveLength(1)
   })
   it('shows persisted recent searches inside Dictionary and lets users reopen or remove them', async () => {
     const result = {

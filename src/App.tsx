@@ -38,6 +38,7 @@ const nav = {
 } as const;
 const desktopNav = [nav.dictionary, nav.lessons, nav.favorites, nav.practice, nav.profile];
 const mobileNav = [nav.lessons, nav.favorites, nav.dictionary, nav.practice, nav.profile];
+const normalizeSearch = (value: string) => value.trim().replace(/\s+/g, " ").toLocaleLowerCase("fi-FI");
 const toVocab = (r: TranslationResult): VocabularyItem => ({
   ...r,
   favorite: true,
@@ -247,11 +248,20 @@ function App() {
   };
   const submit = async (e?: FormEvent) => {
     e?.preventDefault();
-    if (!query.trim()) return;
+    const normalizedQuery = normalizeSearch(query);
+    if (!normalizedQuery) return;
+    setQuery(normalizedQuery);
+    const cached = history.find((item) => normalizeSearch(item.result.query) === normalizedQuery);
+    if (cached) {
+      setResult(cached.result);
+      setError("");
+      saveHist([cached, ...history.filter((item) => item.id !== cached.id)]);
+      return;
+    }
     setLoading(true);
     setError("");
     try {
-      const r = await translationService.translate(query.trim(), direction);
+      const r = await translationService.translate(normalizedQuery, direction);
       setResult(r);
       saveHist([
         {
@@ -282,6 +292,12 @@ function App() {
     setResult(r);
     setQuery(r.query);
     setPage("dictionary");
+  };
+  const clearSearch = () => {
+    setQuery("");
+    setResult(null);
+    setError("");
+    searchInput.current?.focus();
   };
   const activeFav =
     result && favorites.some((x) => x.finnish === result.finnish);
@@ -356,7 +372,14 @@ function App() {
                 <input
                   ref={searchInput}
                   value={query}
-                  onChange={(e) => setQuery(e.target.value)}
+                  onChange={(e) => {
+                    const nextQuery = e.target.value;
+                    setQuery(nextQuery);
+                    if (!nextQuery.trim()) {
+                      setResult(null);
+                      setError("");
+                    }
+                  }}
                   onFocus={() => {
                     fullViewportHeight.current = window.visualViewport?.height || window.innerHeight;
                     setSearchFocused(true);
@@ -365,7 +388,12 @@ function App() {
                   placeholder="Search Finnish or English..."
                   aria-label="Search Finnish or English"
                 />
-                <button className="primary" disabled={loading}>
+                {(query || result || error) && (
+                  <button type="button" className="clear" onClick={clearSearch} aria-label="Clear search">
+                    <X size={16} />
+                  </button>
+                )}
+                <button className="primary search-submit" disabled={loading}>
                   {loading ? "Thinking…" : "Translate"}
                   <span>↵</span>
                 </button>
