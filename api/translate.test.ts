@@ -17,4 +17,19 @@ describe('Vercel translation endpoint', () => {
     vi.unstubAllGlobals()
     delete process.env.GEMINI_API_KEY
   })
+  it('returns a distinct response when Gemini cannot identify the word', async () => {
+    process.env.GEMINI_API_KEY = 'vercel-secret'
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify({
+      candidates: [{ content: { parts: [{ text: '{"found":false}' }] } }],
+    }), { status: 200 })))
+    const json = vi.fn()
+    const status = vi.fn(() => ({ json }))
+
+    await handler({ method: 'POST', body: { query: 'asdfgh', direction: 'auto' } }, { status, json })
+
+    expect(status).toHaveBeenCalledWith(404)
+    expect(json).toHaveBeenCalledWith(expect.objectContaining({ code: 'translation_not_found' }))
+    vi.unstubAllGlobals()
+    delete process.env.GEMINI_API_KEY
+  })
 })

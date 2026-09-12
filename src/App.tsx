@@ -256,8 +256,11 @@ function App() {
       setResult(cached.result);
       setError("");
       saveHist([cached, ...history.filter((item) => item.id !== cached.id)]);
+      searchInput.current?.blur();
+      setSearchFocused(false);
       return;
     }
+    setResult(null);
     setLoading(true);
     setError("");
     try {
@@ -271,12 +274,14 @@ function App() {
         },
         ...history,
       ]);
-    } catch {
-      setError(
-        "The translation service is unavailable right now. Please try again.",
-      );
+    } catch (caught) {
+      setError(caught instanceof Error && caught.message === "translation_not_found"
+        ? "translation_not_found"
+        : "translation_failed");
     } finally {
       setLoading(false);
+      searchInput.current?.blur();
+      setSearchFocused(false);
     }
   };
   const favorite = () => {
@@ -357,7 +362,7 @@ function App() {
           <h1 data-testid="mobile-page-title">{pageTitle}</h1>
         </header>
         {page === "dictionary" && (
-          <section className={`page dictionary ${searchFocused ? "search-focused" : ""}`}>
+          <section className={`page dictionary ${searchFocused ? "search-focused" : ""} ${result ? "has-result" : ""}`}>
             <div className="hero">
               <span className="kicker">YOUR FINNISH COMPANION</span>
               <h1>
@@ -412,9 +417,12 @@ function App() {
               </div>
             )}
             {error && (
-              <div className="error-card">
-                <p>{error}</p>
-                <button onClick={() => submit()}>Try again</button>
+              <div className={`error-card ${error === "translation_not_found" ? "not-found" : ""}`} role="status">
+                <h2>{error === "translation_not_found" ? "Word not found" : "Translation unavailable"}</h2>
+                <p>{error === "translation_not_found"
+                  ? "Check the spelling or try another word."
+                  : "Please check your connection and try again."}</p>
+                {error !== "translation_not_found" && <button onClick={() => submit()}>Try again</button>}
               </div>
             )}
             {result && (
@@ -484,7 +492,7 @@ function App() {
                 )}
               </article>
             )}
-            <RecentSearches
+            {!result && !error && <RecentSearches
               items={history.filter((item) => {
                 const needle = query.trim().toLowerCase();
                 return !needle || `${item.result.finnish} ${item.result.english}`.toLowerCase().includes(needle);
@@ -493,7 +501,7 @@ function App() {
               onOpen={reopen}
               onRemove={(id) => saveHist(history.filter((item) => item.id !== id))}
               onClear={() => saveHist([])}
-            />
+            />}
           </section>
         )}
         {page === "lessons" && (

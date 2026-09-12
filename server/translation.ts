@@ -18,6 +18,9 @@ export function normalizeProviderResponse(raw: string, query: string, direction:
   const cleaned = raw.replace(/^\s*```(?:json)?/i, '').replace(/```\s*$/, '').trim()
   let parsed: unknown
   try { parsed = JSON.parse(cleaned) } catch { throw new Error('invalid_provider_response') }
+  if (typeof parsed === 'object' && parsed !== null && 'found' in parsed && parsed.found === false) {
+    throw new Error('translation_not_found')
+  }
   const value = schema.safeParse(parsed)
   if (!value.success) throw new Error('invalid_provider_response')
   const example = value.data.examples?.[0]
@@ -55,5 +58,5 @@ export async function translateWithGemini(
 }
 
 export function buildPrompt(query: string, direction: Direction) {
-  return `You are a careful native Finnish language teacher. Translate the input based on direction ${direction}. Return JSON only with keys: finnish, english, pronunciation, partOfSpeech, baseForm, grammarNote, exampleFinnish, exampleEnglish, breakdown. Give exactly one SHORT, natural, factually correct everyday Finnish example. For a single word, use a simple sentence of 3–7 words. breakdown is only for sentence input and contains objects with finnish and english keys. Keep grammarNote accurate and beginner-friendly; omit it if uncertain. Input: ${JSON.stringify(query)}`
+  return `You are a careful native Finnish language teacher. Translate the input based on direction ${direction}. If the input is gibberish, an unidentifiable misspelling, or cannot be translated reliably, return exactly {"found":false}. Otherwise return JSON only with found:true and keys: finnish, english, pronunciation, partOfSpeech, baseForm, grammarNote, exampleFinnish, exampleEnglish, breakdown. Give exactly one SHORT, natural, factually correct everyday Finnish example. For a single word, use a simple sentence of 3–7 words. breakdown is only for sentence input and contains objects with finnish and english keys. Keep grammarNote accurate and beginner-friendly; omit it if uncertain. Input: ${JSON.stringify(query)}`
 }

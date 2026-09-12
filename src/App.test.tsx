@@ -102,6 +102,50 @@ describe('App', () => {
     expect(screen.getByRole('heading', { name: 'kiitos' })).toBeVisible()
     expect(JSON.parse(localStorage.getItem('sisu:history:v1') ?? '[]')).toHaveLength(1)
   })
+  it('shows a helpful not-found state instead of a service error', async () => {
+    vi.spyOn(translationService, 'translate').mockRejectedValue(new Error('translation_not_found'))
+    render(<App />)
+
+    await userEvent.type(screen.getByPlaceholderText(/search finnish or english/i), 'asdfgh')
+    await userEvent.click(screen.getByRole('button', { name: /Translate/i }))
+
+    expect(await screen.findByText('Word not found')).toBeVisible()
+    expect(screen.getByText('Check the spelling or try another word.')).toBeVisible()
+    expect(screen.queryByRole('button', { name: 'Try again' })).not.toBeInTheDocument()
+  })
+  it('opens a successful translation as a focused word view', async () => {
+    vi.spyOn(translationService, 'translate').mockResolvedValue({
+      id: 'found-word', query: 'talo', direction: 'auto', finnish: 'talo', english: 'house',
+      exampleFinnish: 'Tämä on talo.', exampleEnglish: 'This is a house.',
+    })
+    render(<App />)
+
+    await userEvent.type(screen.getByPlaceholderText(/search finnish or english/i), 'talo')
+    await userEvent.click(screen.getByRole('button', { name: /Translate/i }))
+
+    expect(await screen.findByRole('heading', { name: 'talo' })).toBeVisible()
+    expect(screen.queryByRole('heading', { name: 'Recent searches' })).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Clear search' })).toBeVisible()
+  })
+  it('replaces an open word with a service error when a new search fails', async () => {
+    const result = {
+      id: 'old-word', query: 'talo', direction: 'fi-en', finnish: 'talo', english: 'house',
+      exampleFinnish: 'Tämä on talo.', exampleEnglish: 'This is a house.',
+    }
+    localStorage.setItem('sisu:history:v1', JSON.stringify([
+      { id: 'old-history', result, createdAt: '2026-09-13T10:00:00.000Z' },
+    ]))
+    vi.spyOn(translationService, 'translate').mockRejectedValue(new Error('translation_failed'))
+    render(<App />)
+    await userEvent.click(screen.getByRole('button', { name: 'Open talo, house' }))
+    const search = screen.getByPlaceholderText(/search finnish or english/i)
+    await userEvent.type(search, 'x')
+    await userEvent.click(screen.getByRole('button', { name: /Translate/i }))
+
+    expect(await screen.findByText('Translation unavailable')).toBeVisible()
+    expect(screen.queryByRole('heading', { name: 'talo' })).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Try again' })).toBeVisible()
+  })
   it('shows persisted recent searches inside Dictionary and lets users reopen or remove them', async () => {
     const result = {
       id: 'history-word',
@@ -120,6 +164,7 @@ describe('App', () => {
     expect(screen.getByRole('heading', { name: 'Recent searches' })).toBeVisible()
     await userEvent.click(screen.getByRole('button', { name: 'Open minä, I' }))
     expect(screen.getByRole('heading', { name: 'minä' })).toBeVisible()
+    await userEvent.click(screen.getByRole('button', { name: 'Clear search' }))
     await userEvent.click(screen.getByRole('button', { name: 'Remove minä' }))
     expect(screen.queryByRole('button', { name: 'Open minä, I' })).not.toBeInTheDocument()
   })

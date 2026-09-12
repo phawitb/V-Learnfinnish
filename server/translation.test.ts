@@ -11,6 +11,9 @@ describe('normalizeProviderResponse', () => {
   it('rejects provider output without a Finnish and English result', () => {
     expect(() => normalizeProviderResponse('{"message":"hello"}', 'hello', 'auto')).toThrow('invalid')
   })
+  it('reports an explicit not-found result from the provider', () => {
+    expect(() => normalizeProviderResponse('{"found":false}', 'asdfgh', 'auto')).toThrow('translation_not_found')
+  })
   it('normalizes nullable optional fields returned by the provider', () => {
     const raw = '{"finnish":"opiskelija","english":"student","exampleFinnish":"Olen opiskelija.","exampleEnglish":"I am a student.","breakdown":null}'
     expect(normalizeProviderResponse(raw, 'opiskelija', 'fi-en').breakdown).toBeUndefined()

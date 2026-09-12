@@ -12,8 +12,12 @@ export default async function handler(req: Request, res: Response) {
     : 'auto'
   if (!query || query.length > 500) return res.status(400).json({ message: 'Please enter a shorter word or sentence.' })
   try {
-    return res.status(200).json(await translateWithGemini(query, direction))
+    const result = await translateWithGemini(query, direction)
+    return res.status(200).json(result)
   } catch (error) {
+    if (error instanceof Error && error.message === 'translation_not_found') {
+      return res.status(404).json({ code: 'translation_not_found', message: 'Word not found.' })
+    }
     console.error('Translation request failed:', error)
     return res.status(503).json({ message: 'The translation service is unavailable right now. Please try again.' })
   }

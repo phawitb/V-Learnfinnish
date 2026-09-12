@@ -19,7 +19,13 @@ app.post('/api/translate', async (req, res) => {
   if (!query || query.length > 500) return res.status(400).json({ message: 'Please enter a shorter word or sentence.' })
   try {
     res.json(await translateWithGemini(query, direction))
-  } catch (error) { console.error('Translation request failed:', error); res.status(503).json({ message:"The translation service is unavailable right now. Please try again." }) }
+  } catch (error) {
+    if (error instanceof Error && error.message === 'translation_not_found') {
+      return res.status(404).json({ code: 'translation_not_found', message: 'Word not found.' })
+    }
+    console.error('Translation request failed:', error)
+    res.status(503).json({ message:"The translation service is unavailable right now. Please try again." })
+  }
 })
 const here = path.dirname(fileURLToPath(import.meta.url)), dist = path.resolve(here, '../dist')
 app.use(express.static(dist)); app.get('/{*splat}', (_req,res) => res.sendFile(path.join(dist,'index.html')))
