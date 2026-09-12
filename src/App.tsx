@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeftRight,
   BookOpen,
@@ -120,6 +120,18 @@ function App() {
       storageService.practiceProgress,
     );
   const [filter, setFilter] = useState("");
+  const fullViewportHeight = useRef(0);
+  useEffect(() => {
+    const viewport = window.visualViewport;
+    if (!viewport) return;
+    const handleViewportResize = () => {
+      const activeSearch = document.activeElement?.getAttribute("aria-label") === "Search Finnish or English";
+      if (!activeSearch || !fullViewportHeight.current) return;
+      setSearchFocused(viewport.height < fullViewportHeight.current * 0.85);
+    };
+    viewport.addEventListener("resize", handleViewportResize);
+    return () => viewport.removeEventListener("resize", handleViewportResize);
+  }, []);
   const saveFav = (next: VocabularyItem[]) => {
     setFavorites(next);
     storageService.saveFavorites(next);
@@ -226,7 +238,10 @@ function App() {
                   autoFocus
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  onFocus={() => setSearchFocused(true)}
+                  onFocus={() => {
+                    fullViewportHeight.current = window.visualViewport?.height || window.innerHeight;
+                    setSearchFocused(true);
+                  }}
                   onBlur={() => setSearchFocused(false)}
                   placeholder="Search Finnish or English..."
                   aria-label="Search Finnish or English"

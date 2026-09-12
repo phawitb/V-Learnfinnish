@@ -27,6 +27,23 @@ describe('App', () => {
     await userEvent.tab()
     expect(input.closest('.dictionary')).not.toHaveClass('search-focused')
   })
+  it('restores the mobile page when the on-screen keyboard is dismissed', async () => {
+    const viewport = new EventTarget() as VisualViewport
+    Object.defineProperty(viewport, 'height', { value: 800, writable: true })
+    Object.defineProperty(window, 'visualViewport', { value: viewport, configurable: true })
+    render(<App />)
+    const input = screen.getByPlaceholderText(/search finnish or english/i)
+
+    await userEvent.click(input)
+    Object.defineProperty(viewport, 'height', { value: 400, writable: true })
+    viewport.dispatchEvent(new Event('resize'))
+    expect(input.closest('.dictionary')).toHaveClass('search-focused')
+
+    Object.defineProperty(viewport, 'height', { value: 800, writable: true })
+    viewport.dispatchEvent(new Event('resize'))
+    await waitFor(() => expect(input.closest('.dictionary')).not.toHaveClass('search-focused'))
+    Reflect.deleteProperty(window, 'visualViewport')
+  })
   it('navigates to the favorites empty state', async () => {
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /favorites/i })[0])
