@@ -133,6 +133,62 @@ function LessonsHub({ onOpen }: { onOpen: (lesson: 1) => void }) {
   );
 }
 
+function RecentSearches({
+  items,
+  onOpen,
+  onRemove,
+  onClear,
+}: {
+  items: HistoryItem[];
+  onOpen: (result: TranslationResult) => void;
+  onRemove: (id: string) => void;
+  onClear: () => void;
+}) {
+  return (
+    <section className="dictionary-recent" aria-labelledby="recent-searches-heading">
+      <div className="recent-heading">
+        <div>
+          <span className="kicker">YOUR WORD TRAIL</span>
+          <h2 id="recent-searches-heading">Recent searches</h2>
+        </div>
+        {items.length > 0 && (
+          <button type="button" className="text-button" onClick={onClear} aria-label="Clear all recent searches">
+            Clear all
+          </button>
+        )}
+      </div>
+      {items.length === 0 ? (
+        <p className="recent-empty">Words you search for will appear here.</p>
+      ) : (
+        <div className="recent-list">
+          {items.map((item) => (
+            <article key={item.id} className="recent-item">
+              <button
+                type="button"
+                className="recent-open"
+                onClick={() => onOpen(item.result)}
+                aria-label={`Open ${item.result.finnish}, ${item.result.english}`}
+              >
+                <b>{item.result.finnish}</b>
+                <span>{item.result.english}</span>
+              </button>
+              <SpeakButton text={item.result.finnish} />
+              <button
+                type="button"
+                className="recent-remove"
+                onClick={() => onRemove(item.id)}
+                aria-label={`Remove ${item.result.finnish}`}
+              >
+                <Trash2 size={17} />
+              </button>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
 function App() {
   const [page, setPage] = useState<Page>("dictionary"),
     [query, setQuery] = useState(""),
@@ -268,7 +324,6 @@ function App() {
               <div className="search-line">
                 <Search />
                 <input
-                  autoFocus
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onFocus={() => {
@@ -393,6 +448,12 @@ function App() {
                 )}
               </article>
             )}
+            <RecentSearches
+              items={history}
+              onOpen={reopen}
+              onRemove={(id) => saveHist(history.filter((item) => item.id !== id))}
+              onClear={() => saveHist([])}
+            />
           </section>
         )}
         {page === "lessons" && (

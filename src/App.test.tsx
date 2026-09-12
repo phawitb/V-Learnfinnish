@@ -20,7 +20,30 @@ describe('App', () => {
   it('opens with an immediately understandable dictionary search', () => {
     render(<App />)
     expect(screen.getByRole('heading', { name: /understand finnish/i })).toBeInTheDocument()
-    expect(screen.getByPlaceholderText(/search finnish or english/i)).toBeInTheDocument()
+    const search = screen.getByPlaceholderText(/search finnish or english/i)
+    expect(search).toBeInTheDocument()
+    expect(search).not.toHaveFocus()
+  })
+  it('shows persisted recent searches inside Dictionary and lets users reopen or remove them', async () => {
+    const result = {
+      id: 'history-word',
+      query: 'minä',
+      direction: 'fi-en',
+      finnish: 'minä',
+      english: 'I',
+      exampleFinnish: 'Minä olen opiskelija.',
+      exampleEnglish: 'I am a student.',
+    }
+    localStorage.setItem('sisu:history:v1', JSON.stringify([
+      { id: 'history-1', result, createdAt: '2026-09-12T12:00:00.000Z' },
+    ]))
+
+    render(<App />)
+    expect(screen.getByRole('heading', { name: 'Recent searches' })).toBeVisible()
+    await userEvent.click(screen.getByRole('button', { name: 'Open minä, I' }))
+    expect(screen.getByRole('heading', { name: 'minä' })).toBeVisible()
+    await userEvent.click(screen.getByRole('button', { name: 'Remove minä' }))
+    expect(screen.queryByRole('button', { name: 'Open minä, I' })).not.toBeInTheDocument()
   })
   it('marks the dictionary as search-focused while the search keyboard is active', async () => {
     render(<App />)
