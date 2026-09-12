@@ -794,6 +794,13 @@ main {
   background: #fcebec;
   border-color: #db8d96;
 }
+.quiz-action {
+  min-height: 46px;
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .blank-input {
   width: 100%;
   border: 1px solid #dbe6e7;
@@ -1025,10 +1032,17 @@ main {
   }
   main {
     margin: 0;
+    padding-top: 49px;
   }
   .mobile-head {
     display: flex;
+    position: fixed;
+    z-index: 7;
+    top: 0;
+    left: 0;
+    right: 0;
     align-items: center;
+    justify-content: center;
     min-height: 48px;
     padding: 10px 16px;
     background: #fff;
@@ -1039,6 +1053,18 @@ main {
     color: #17324d;
     font-size: 20px;
     letter-spacing: -0.02em;
+  }
+  .mobile-back {
+    position: absolute;
+    left: 8px;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #416a7b;
   }
   .page {
     padding: 20px 14px calc(88px + env(safe-area-inset-bottom));
@@ -1170,6 +1196,13 @@ main {
     min-height: 112px;
     padding: 14px;
   }
+  .lesson-card-copy {
+    gap: 3px;
+  }
+  .lesson-card-copy span {
+    font-size: 11px;
+    line-height: 1.35;
+  }
   .practice-group-grid button {
     min-height: 62px;
     padding: 13px 14px;
@@ -1233,6 +1266,45 @@ main {
   }
   .profile-summary > div {
     padding: 15px 8px;
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell:has(.blank-input:focus) .bottom-nav {
+    display: none;
+  }
+  main:has(.dictionary.search-focused) {
+    padding-top: 0;
+  }
+  .practice-session:has(.blank-input:focus) {
+    height: calc(100dvh - 49px);
+    padding: 7px 10px 8px;
+  }
+  .practice-session:has(.blank-input:focus) .session-head {
+    margin-bottom: 5px;
+  }
+  .practice-session .choice-quiz .choices {
+    width: 100%;
+  }
+  .practice-session .choice-quiz .quiz-action {
+    width: 100%;
+    min-height: 44px;
+    margin-top: 8px;
+  }
+  .practice-session .blank-quiz {
+    gap: 4px;
+  }
+  .practice-session .blank-quiz .live-blank {
+    font-size: clamp(20px, 6vw, 28px);
+  }
+  .practice-session .blank-quiz .feedback {
+    margin-top: 6px;
+    padding: 10px;
+  }
+  .practice-session .blank-quiz form .primary,
+  .practice-session .blank-quiz .feedback .primary {
+    min-height: 40px;
+    padding: 9px 13px;
   }
 }
 @media (prefers-reduced-motion: no-preference) {

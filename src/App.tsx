@@ -3,6 +3,7 @@ import {
   BookOpen,
   Brain,
   Check,
+  ChevronLeft,
   Heart,
   UserRound,
   Search,
@@ -110,7 +111,6 @@ function LessonsHub({ onOpen }: { onOpen: (lesson: 1) => void }) {
         <div>
           <span className="kicker">YOUR FINNISH JOURNEY</span>
           <h1>Lessons</h1>
-          <p>Build your Finnish step by step.</p>
         </div>
       </div>
       <div className="lessons-grid">
@@ -122,7 +122,6 @@ function LessonsHub({ onOpen }: { onOpen: (lesson: 1) => void }) {
         >
           <span className="lesson-card-number">01</span>
           <span className="lesson-card-copy">
-            <small>LESSON 1</small>
             <b>Introduction to Finnish</b>
             <span>Alphabet · Sounds · Greetings · Essential phrases</span>
           </span>
@@ -196,7 +195,6 @@ function ProfilePage({ favorites, reviewCount }: { favorites: number; reviewCoun
       <div className="page-heading">
         <div>
           <h1>Profile</h1>
-          <p>Your learning progress on this device.</p>
         </div>
       </div>
       <div className="profile-summary">
@@ -328,6 +326,16 @@ function App() {
       </aside>
       <main>
         <header className="mobile-head">
+          {page === "lessons" && activeLesson === 1 && (
+            <button
+              type="button"
+              className="mobile-back"
+              onClick={() => setActiveLesson(null)}
+              aria-label="Back to Lessons"
+            >
+              <ChevronLeft />
+            </button>
+          )}
           <h1 data-testid="mobile-page-title">{pageTitle}</h1>
         </header>
         {page === "dictionary" && (
@@ -339,10 +347,6 @@ function App() {
                 <br />
                 <em>One word at a time.</em>
               </h1>
-              <p>
-                Translate naturally, hear how it sounds, and remember what
-                matters.
-              </p>
             </div>
             <form className="search-card" onSubmit={submit}>
               <div className="search-line">
@@ -470,13 +474,12 @@ function App() {
         )}
         {page === "lessons" && (
           activeLesson === 1
-            ? <LessonOnePage onBack={() => setActiveLesson(null)} />
+            ? <LessonOnePage />
             : <LessonsHub onOpen={setActiveLesson} />
         )}
         {page === "favorites" && (
           <ListPage
             title="Favorites"
-            subtitle="The words you want to keep close."
             items={favorites}
             filter={filter}
             setFilter={setFilter}
@@ -540,7 +543,6 @@ function App() {
 
 function ListPage({
   title,
-  subtitle,
   items,
   filter,
   setFilter,
@@ -550,7 +552,6 @@ function ListPage({
   clearAll,
 }: {
   title: string;
-  subtitle: string;
   items: VocabularyItem[];
   filter: string;
   setFilter: (s: string) => void;
@@ -568,7 +569,6 @@ function ListPage({
         <div>
           <span className="kicker">YOUR LIBRARY</span>
           <h1>{title}</h1>
-          <p>{subtitle}</p>
         </div>
         {clearAll && items.length > 0 ? (
           <button className="text-button" onClick={clearAll}>
@@ -932,7 +932,6 @@ function Practice({
           <div>
             <span className="kicker">BUILD YOUR MEMORY</span>
             <h1>Practice</h1>
-            <p>A few focused minutes make Finnish stick.</p>
           </div>
         </div>
         <div className="stats">
@@ -1134,14 +1133,16 @@ function Practice({
               </button>
             ))}
           </div>
-          {selected && (
-            <button
-              className="primary"
-              onClick={() => next(selected === item.english ? "good" : "again")}
-            >
-              Continue
-            </button>
-          )}
+          <div className="quiz-action">
+            {selected && (
+              <button
+                className="primary"
+                onClick={() => next(selected === item.english ? "good" : "again")}
+              >
+                Continue
+              </button>
+            )}
+          </div>
         </div>
       )}
       {mode === "blank" && (
@@ -1192,8 +1193,7 @@ function Practice({
       )}
       {mode === "matching" && (
         <div className="quiz matching-quiz">
-          <span className="label">MATCH THE PAIRS</span>
-          <h2>Connect Finnish with English</h2>
+          <h2>Match the pairs</h2>
           <div className="match-grid">
             {[matchColumns.finnish, matchColumns.english].map(
               (column, columnIndex) => (

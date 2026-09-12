@@ -2,7 +2,6 @@ import { useMemo, useState, type ReactNode } from "react";
 import {
   BookOpen,
   Check,
-  ChevronLeft,
   ChevronRight,
   Download,
   ExternalLink,
@@ -455,7 +454,7 @@ const SmallTalkSection = () => (
   </section>
 );
 
-export function LessonOnePage({ onBack }: { onBack?: () => void } = {}) {
+export function LessonOnePage() {
   const [step, setStep] = useState<Step>("intro"),
     [flipped, setFlipped] = useState<number[]>([]),
     [answer, setAnswer] = useState(""),
@@ -490,16 +489,10 @@ export function LessonOnePage({ onBack }: { onBack?: () => void } = {}) {
     soundQuestion = soundRounds[soundRound];
   return (
     <section className="page lesson-page">
-      {onBack && (
-        <button type="button" className="lesson-back" onClick={onBack}>
-          <ChevronLeft size={18} /> Back to Lessons
-        </button>
-      )}
       <div className="lesson-hero">
         <div>
           <span className="kicker">LESSON 1 · KAPPALE 1</span>
           <h1>Tervetuloa Suomeen!</h1>
-          <p>Alphabet · Greetings · Pronunciation</p>
         </div>
         <div className="lesson-progress">
           <b>{progress}%</b>
