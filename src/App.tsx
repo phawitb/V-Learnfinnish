@@ -1,4 +1,4 @@
-import { type CSSProperties, FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import {
   BookOpen,
   Brain,
@@ -808,8 +808,7 @@ function Practice({
       side: "fi" | "en";
     } | null>(null),
     [blank, setBlank] = useState(""),
-    [blankKeyboardOpen, setBlankKeyboardOpen] = useState(false),
-    [visiblePracticeHeight, setVisiblePracticeHeight] = useState(0),
+    [usedLetterIds, setUsedLetterIds] = useState<string[]>([]),
     [firstAttempts, setFirstAttempts] = useState<Record<string, boolean>>({}),
     [done, setDone] = useState(false);
   const vocabItems = useMemo(
@@ -844,6 +843,13 @@ function Practice({
       : regularGroup,
     deck = selectedGroup.items,
     item = deck[(practiceQueue[index] ?? index) % deck.length];
+  const letterTiles = useMemo(
+    () => shuffled((item?.finnish.match(/\p{L}/gu) || []).map((letter, position) => ({
+      id: `${item.id}-letter-${position}`,
+      letter,
+    }))),
+    [item],
+  );
   const choices = useMemo(
     () => {
       const alternatives = shuffled(
@@ -899,18 +905,6 @@ function Practice({
     }
   }, [done, item, mode, started]);
 
-  useEffect(() => {
-    const viewport = window.visualViewport;
-    if (!viewport || !started || mode !== "blank") return;
-    const updateVisibleHeight = () => {
-      if (document.activeElement?.id !== "blank-answer") return;
-      setVisiblePracticeHeight(Math.round(viewport.height));
-      setBlankKeyboardOpen(true);
-    };
-    viewport.addEventListener("resize", updateVisibleHeight);
-    return () => viewport.removeEventListener("resize", updateVisibleHeight);
-  }, [mode, started]);
-
   const isReviewSession = reviewDeck !== null;
   const retryUntilCorrect = mode === "choice" || mode === "blank" || isReviewSession;
   const sourceGroupId = (currentItem: VocabularyItem) =>
@@ -945,6 +939,7 @@ function Practice({
     setMatched([]);
     setMatchSelection(null);
     setBlank("");
+    setUsedLetterIds([]);
     setFirstAttempts({});
     setDone(false);
   };
@@ -965,6 +960,7 @@ function Practice({
         setIndex(index + 1);
         setSelected("");
         setBlank("");
+        setUsedLetterIds([]);
       }
     } else if (index >= Math.min(deck.length, 10) - 1) {
       finishSession(attempts);
@@ -973,6 +969,7 @@ function Practice({
       setRevealed(false);
       setSelected("");
       setBlank("");
+      setUsedLetterIds([]);
     }
   };
   if (!started)
@@ -1080,12 +1077,7 @@ function Practice({
       </section>
     );
   return (
-    <section
-      className={`page practice-session ${blankKeyboardOpen ? "blank-keyboard-open" : ""}`}
-      style={visiblePracticeHeight
-        ? { "--practice-visible-height": `${visiblePracticeHeight}px` } as CSSProperties
-        : undefined}
-    >
+    <section className="page practice-session">
       <div className="session-head">
         <button
           className="icon-button"
@@ -1203,16 +1195,45 @@ function Practice({
       {mode === "blank" && (
         <div className="quiz blank-quiz">
           <span className="label">COMPLETE THE SENTENCE</span>
-          <label
-            htmlFor="blank-answer"
-            className="live-blank"
-            data-testid="live-blank"
-            style={{ whiteSpace: "pre-wrap" }}
-          >
-            <h2>{liveBlank(item.finnish, blank)}</h2>
-          </label>
+          <div className="blank-answer-row">
+            <div className="live-blank" data-testid="live-blank" style={{ whiteSpace: "pre-wrap" }}>
+              <h2>{liveBlank(item.finnish, blank)}</h2>
+            </div>
+            <button
+              type="button"
+              className="blank-delete"
+              aria-label="Delete last letter"
+              disabled={usedLetterIds.length === 0 || Boolean(selected)}
+              onClick={() => {
+                setUsedLetterIds((current) => current.slice(0, -1));
+                setBlank((current) => Array.from(current).slice(0, -1).join(""));
+              }}
+            >
+              <X size={19} />
+            </button>
+          </div>
           <SpeakButton text={item.finnish} />
           <p className="hint">Hint: {item.english}</p>
+          <div className="letter-bank" aria-label="Available letters">
+            {letterTiles.map((tile, position) => {
+              const used = usedLetterIds.includes(tile.id);
+              return (
+                <button
+                  key={tile.id}
+                  type="button"
+                  className={used ? "used" : ""}
+                  aria-label={`Choose letter ${tile.letter}, tile ${position + 1}`}
+                  disabled={used || Boolean(selected)}
+                  onClick={() => {
+                    setUsedLetterIds((current) => [...current, tile.id]);
+                    setBlank((current) => current + tile.letter);
+                  }}
+                >
+                  {tile.letter}
+                </button>
+              );
+            })}
+          </div>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -1220,26 +1241,11 @@ function Practice({
               const correct = lettersOnly(blank) === lettersOnly(item.finnish);
               recordResult(item, correct);
               setSelected(correct ? "correct" : "wrong");
-              (document.getElementById("blank-answer") as HTMLInputElement | null)?.blur();
             }}
           >
-            <input
-              id="blank-answer"
-              className="blank-input"
-              value={blank}
-              onChange={(e) => setBlank(e.target.value)}
-              onFocus={() => {
-                setBlankKeyboardOpen(true);
-                setVisiblePracticeHeight(Math.round(window.visualViewport?.height || window.innerHeight));
-              }}
-              onBlur={() => {
-                setBlankKeyboardOpen(false);
-                setVisiblePracticeHeight(0);
-              }}
-              autoFocus
-              placeholder="Type the missing word..."
-            />
-            <button className="primary">Check answer</button>
+            <button className="primary" disabled={usedLetterIds.length !== letterTiles.length || Boolean(selected)}>
+              Check answer
+            </button>
           </form>
           {selected && (
             <div className={`feedback ${selected}`}>

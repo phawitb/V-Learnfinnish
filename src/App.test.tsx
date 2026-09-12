@@ -17,6 +17,17 @@ async function openLessonOne() {
   await userEvent.click(screen.getByRole('button', { name: /Lesson 1.*Introduction to Finnish/i }))
 }
 
+async function chooseLetters(answer: string) {
+  for (const letter of answer.match(/\p{L}/gu) || []) {
+    const tile = screen.getAllByRole('button').find((button) =>
+      button.getAttribute('aria-label')?.toLocaleLowerCase('fi-FI').startsWith(`choose letter ${letter.toLocaleLowerCase('fi-FI')},`)
+      && !(button as HTMLButtonElement).disabled,
+    )
+    expect(tile).toBeDefined()
+    await userEvent.click(tile!)
+  }
+}
+
 describe('App', () => {
   it('opens with an immediately understandable dictionary search', () => {
     render(<App />)
@@ -559,36 +570,32 @@ describe('App', () => {
     await userEvent.click(screen.getByRole('button', { name: 'turquoise' }))
     expect(JSON.parse(localStorage.getItem('sisu:practice-progress:v1') || '{}').reviewWords).toHaveLength(2)
   })
-  it('shows typed letters inside the fill-in-the-blank prompt and ignores case', async () => {
+  it('shows selected letters inside the fill-in-the-blank prompt', async () => {
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
     await userEvent.click(screen.getByRole('button', { name: /fill in the blank/i }))
     await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
-    expect(screen.getByTestId('live-blank')).toHaveAttribute('for', 'blank-answer')
-    expect(screen.getByPlaceholderText(/type the missing/i)).toHaveAttribute('id', 'blank-answer')
+    expect(screen.queryByPlaceholderText(/type the missing/i)).not.toBeInTheDocument()
     expect(screen.getByTestId('live-blank')).toHaveTextContent('_ _ _ !')
-    await userEvent.type(screen.getByPlaceholderText(/type the missing/i), 'hEi!')
-    expect(screen.getByTestId('live-blank')).toHaveTextContent('h E i !')
+    await chooseLetters('Hei')
+    expect(screen.getByTestId('live-blank')).toHaveTextContent('H e i !')
     await userEvent.click(screen.getByRole('button', { name: /check answer/i }))
     expect(screen.getByText('Correct!')).toBeInTheDocument()
   })
-  it('fits fill-in practice to the visible viewport while the mobile keyboard is open', async () => {
-    const viewport = new EventTarget() as VisualViewport
-    Object.defineProperty(viewport, 'height', { value: 360, writable: true })
-    Object.defineProperty(window, 'visualViewport', { value: viewport, configurable: true })
+  it('builds a fill-in answer from fading letter tiles and restores the last tile on delete', async () => {
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
     await userEvent.click(screen.getByRole('button', { name: /fill in the blank/i }))
     await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
-    const input = screen.getByPlaceholderText(/type the missing/i)
 
-    await userEvent.click(input)
-    viewport.dispatchEvent(new Event('resize'))
-
-    const session = input.closest('.practice-session') as HTMLElement
-    expect(session).toHaveClass('blank-keyboard-open')
-    expect(session.style.getPropertyValue('--practice-visible-height')).toBe('360px')
-    Reflect.deleteProperty(window, 'visualViewport')
+    expect(screen.queryByPlaceholderText(/type the missing/i)).not.toBeInTheDocument()
+    const h = screen.getByRole('button', { name: /choose letter h/i })
+    await userEvent.click(h)
+    expect(screen.getByTestId('live-blank')).toHaveTextContent('H _ _ !')
+    expect(h).toHaveClass('used')
+    await userEvent.click(screen.getByRole('button', { name: 'Delete last letter' }))
+    expect(screen.getByTestId('live-blank')).toHaveTextContent('_ _ _ !')
+    expect(h).not.toHaveClass('used')
   })
   it('checks fill-in answers from letters only without requiring punctuation', async () => {
     const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true)
@@ -596,8 +603,8 @@ describe('App', () => {
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
     await userEvent.click(screen.getByRole('button', { name: /fill in the blank/i }))
     await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
-    await userEvent.type(screen.getByPlaceholderText(/type the missing/i), 'HEI')
-    expect(screen.getByTestId('live-blank')).toHaveTextContent('H E I !')
+    await chooseLetters('Hei')
+    expect(screen.getByTestId('live-blank')).toHaveTextContent('H e i !')
     await userEvent.click(screen.getByRole('button', { name: /check answer/i }))
     expect(screen.getByText('Correct!')).toBeInTheDocument()
     expect(speak).toHaveBeenCalledWith('Hei!')
@@ -611,7 +618,7 @@ describe('App', () => {
     await userEvent.click(screen.getByRole('button', { name: /fill in the blank/i }))
     await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
     for (const answer of ['Hei', 'ja', 'Tervetuloa', 'Anteeksi', 'onko', 'täällä']) {
-      await userEvent.type(screen.getByPlaceholderText(/type the missing/i), answer)
+      await chooseLetters(answer)
       await userEvent.click(screen.getByRole('button', { name: /check answer/i }))
       await userEvent.click(screen.getByRole('button', { name: /continue/i }))
     }
@@ -625,18 +632,18 @@ describe('App', () => {
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
     await userEvent.click(screen.getByRole('button', { name: /fill in the blank/i }))
     await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
-    await userEvent.type(screen.getByPlaceholderText(/type the missing/i), 'wrong')
+    await chooseLetters('eHi')
     await userEvent.click(screen.getByRole('button', { name: /check answer/i }))
     expect(JSON.parse(localStorage.getItem('sisu:practice-progress:v1') || '{}').reviewWords).toHaveLength(1)
     await userEvent.click(screen.getByRole('button', { name: /continue/i }))
     for (const answer of ['ja', 'Tervetuloa', 'Anteeksi', 'onko', 'täällä', 'suomen kurssi', 'joo', 'olla', 'tämä']) {
-      await userEvent.type(screen.getByPlaceholderText(/type the missing/i), answer)
+      await chooseLetters(answer)
       await userEvent.click(screen.getByRole('button', { name: /check answer/i }))
       await userEvent.click(screen.getByRole('button', { name: /continue/i }))
     }
     expect(screen.getByTestId('live-blank')).toHaveTextContent('_ _ _ !')
     expect(screen.getByText('9 of 10')).toBeInTheDocument()
-    await userEvent.type(screen.getByPlaceholderText(/type the missing/i), 'Hei')
+    await chooseLetters('Hei')
     await userEvent.click(screen.getByRole('button', { name: /check answer/i }))
     await userEvent.click(screen.getByRole('button', { name: /continue/i }))
     expect(screen.getByRole('heading', { name: /hienoa/i })).toBeInTheDocument()

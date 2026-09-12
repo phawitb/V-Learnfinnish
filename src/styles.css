@@ -825,13 +825,6 @@ main {
   align-items: center;
   justify-content: center;
 }
-.blank-input {
-  width: 100%;
-  border: 1px solid #dbe6e7;
-  border-radius: 12px;
-  padding: 14px;
-  margin: 18px 0;
-}
 .live-blank {
   display: block;
   overflow-wrap: anywhere;
@@ -842,6 +835,54 @@ main {
 .live-blank h2 {
   margin: 0;
   font: inherit;
+}
+.blank-answer-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.blank-delete {
+  flex: 0 0 38px;
+  width: 38px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #dce6e7;
+  border-radius: 10px;
+  background: #fff;
+  color: #607984;
+}
+.blank-delete:disabled {
+  opacity: 0.35;
+}
+.letter-bank {
+  width: min(100%, 680px);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 14px auto 8px;
+}
+.letter-bank button {
+  width: 44px;
+  height: 44px;
+  border: 1px solid #d7e4e5;
+  border-radius: 50%;
+  background: #f8fbfa;
+  color: #183852;
+  font-size: 19px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(24, 56, 82, 0.06);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.letter-bank button.used {
+  opacity: 0;
+  transform: scale(0.55);
+  pointer-events: none;
+}
+.blank-quiz form {
+  margin-top: 8px;
 }
 .hint {
   color: #6e8490;
@@ -1063,17 +1104,6 @@ main {
   }
   .dictionary.search-focused .search-card {
     margin: 0;
-  }
-  .blank-input {
-    position: fixed;
-    width: 1px;
-    height: 1px;
-    left: -2px;
-    bottom: 0;
-    padding: 0;
-    margin: 0;
-    border: 0;
-    opacity: 0;
   }
   .sidebar {
     display: none;
@@ -1349,24 +1379,8 @@ main {
 }
 
 @media (max-width: 760px) {
-  .app-shell:has(.blank-input:focus) .mobile-head,
-  .app-shell:has(.blank-input:focus) .bottom-nav {
-    display: none;
-  }
   main:has(.dictionary.search-focused) {
     padding-top: 0;
-  }
-  .practice-session.blank-keyboard-open {
-    position: fixed;
-    z-index: 7;
-    inset: 0 0 auto;
-    height: var(--practice-visible-height, 100dvh);
-    min-height: 0;
-    padding: 6px 10px 8px;
-    background: #f7faf9;
-  }
-  .practice-session.blank-keyboard-open .session-head {
-    display: none;
   }
   .practice-session .choice-quiz .choices {
     width: 100%;
@@ -1378,31 +1392,6 @@ main {
   }
   .practice-session .blank-quiz {
     gap: 4px;
-  }
-  .practice-session.blank-keyboard-open .blank-quiz {
-    flex: 1 1 auto;
-    justify-content: flex-start;
-    gap: 7px;
-    padding: 10px 14px;
-    overflow: hidden;
-  }
-  .practice-session.blank-keyboard-open .blank-quiz > .label {
-    margin-top: 0;
-  }
-  .practice-session.blank-keyboard-open .blank-quiz > .icon-button {
-    width: 34px;
-    min-width: 34px;
-    height: 34px;
-    margin: 0 auto;
-  }
-  .practice-session.blank-keyboard-open .blank-quiz .hint {
-    margin: 1px 0;
-    font-size: 14px;
-  }
-  .practice-session.blank-keyboard-open .blank-quiz form {
-    display: grid;
-    justify-items: center;
-    margin: 0;
   }
   .practice-session .blank-quiz .live-blank {
     font-size: clamp(20px, 6vw, 28px);
@@ -1416,10 +1405,14 @@ main {
     min-height: 40px;
     padding: 9px 13px;
   }
-  .practice-session.blank-keyboard-open .blank-quiz form .primary {
-    min-height: 36px;
-    padding: 7px 13px;
-    font-size: 14px;
+  .letter-bank {
+    gap: 7px;
+    margin: 9px auto 5px;
+  }
+  .letter-bank button {
+    width: 39px;
+    height: 39px;
+    font-size: 17px;
   }
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -2403,9 +2396,6 @@ summary:focus-visible {
   }
   .practice-session .hint {
     margin: 10px 0 4px;
-  }
-  .practice-session .blank-input {
-    margin: 0;
   }
   .practice-session .feedback {
     margin-top: 12px;
