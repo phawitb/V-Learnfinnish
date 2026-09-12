@@ -107,7 +107,8 @@ function Empty({
 function App() {
   const [page, setPage] = useState<Page>("dictionary"),
     [query, setQuery] = useState(""),
-    [direction, setDirection] = useState<Direction>("auto");
+    [direction, setDirection] = useState<Direction>("auto"),
+    [searchFocused, setSearchFocused] = useState(false);
   const [result, setResult] = useState<TranslationResult | null>(null),
     [loading, setLoading] = useState(false),
     [error, setError] = useState("");
@@ -205,7 +206,7 @@ function App() {
           <span className="streak">3 day streak</span>
         </header>
         {page === "dictionary" && (
-          <section className="page dictionary">
+          <section className={`page dictionary ${searchFocused ? "search-focused" : ""}`}>
             <div className="hero">
               <span className="kicker">YOUR FINNISH COMPANION</span>
               <h1>
@@ -225,6 +226,8 @@ function App() {
                   autoFocus
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
+                  onFocus={() => setSearchFocused(true)}
+                  onBlur={() => setSearchFocused(false)}
                   placeholder="Search Finnish or English..."
                   aria-label="Search Finnish or English"
                 />
@@ -1046,13 +1049,14 @@ function Practice({
       {mode === "blank" && (
         <div className="quiz">
           <span className="label">COMPLETE THE SENTENCE</span>
-          <h2
+          <label
+            htmlFor="blank-answer"
             className="live-blank"
             data-testid="live-blank"
             style={{ whiteSpace: "pre-wrap" }}
           >
-            {liveBlank(item.finnish, blank)}
-          </h2>
+            <h2>{liveBlank(item.finnish, blank)}</h2>
+          </label>
           <SpeakButton text={item.finnish} />
           <p className="hint">Hint: {item.english}</p>
           <form
@@ -1065,6 +1069,7 @@ function Practice({
             }}
           >
             <input
+              id="blank-answer"
               className="blank-input"
               value={blank}
               onChange={(e) => setBlank(e.target.value)}

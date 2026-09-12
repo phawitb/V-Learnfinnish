@@ -17,6 +17,16 @@ describe('App', () => {
     expect(screen.getByRole('heading', { name: /understand finnish/i })).toBeInTheDocument()
     expect(screen.getByPlaceholderText(/search finnish or english/i)).toBeInTheDocument()
   })
+  it('marks the dictionary as search-focused while the search keyboard is active', async () => {
+    render(<App />)
+    const input = screen.getByPlaceholderText(/search finnish or english/i)
+
+    await userEvent.click(input)
+
+    expect(input.closest('.dictionary')).toHaveClass('search-focused')
+    await userEvent.tab()
+    expect(input.closest('.dictionary')).not.toHaveClass('search-focused')
+  })
   it('navigates to the favorites empty state', async () => {
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /favorites/i })[0])
@@ -290,6 +300,8 @@ describe('App', () => {
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
     await userEvent.click(screen.getByRole('button', { name: /fill in the blank/i }))
     await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
+    expect(screen.getByTestId('live-blank')).toHaveAttribute('for', 'blank-answer')
+    expect(screen.getByPlaceholderText(/type the missing/i)).toHaveAttribute('id', 'blank-answer')
     expect(screen.getByTestId('live-blank')).toHaveTextContent('_ _ _ !')
     await userEvent.type(screen.getByPlaceholderText(/type the missing/i), 'hEi!')
     expect(screen.getByTestId('live-blank')).toHaveTextContent('h E i !')
