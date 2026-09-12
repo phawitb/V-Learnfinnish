@@ -1194,7 +1194,8 @@ function Practice({
       )}
       {mode === "blank" && (
         <div className="quiz blank-quiz">
-          <span className="label">COMPLETE THE SENTENCE</span>
+          <span className="label">TRANSLATE INTO FINNISH</span>
+          <h2 className="blank-question">{item.english}</h2>
           <div className="blank-answer-row">
             <div className="live-blank" data-testid="live-blank" style={{ whiteSpace: "pre-wrap" }}>
               <h2>{liveBlank(item.finnish, blank)}</h2>
@@ -1212,8 +1213,6 @@ function Practice({
               <X size={19} />
             </button>
           </div>
-          <SpeakButton text={item.finnish} />
-          <p className="hint">Hint: {item.english}</p>
           <div className="letter-bank" aria-label="Available letters">
             {letterTiles.map((tile, position) => {
               const used = usedLetterIds.includes(tile.id);
@@ -1250,6 +1249,10 @@ function Practice({
           {selected && (
             <div className={`feedback ${selected}`}>
               <b>{selected === "correct" ? "Correct!" : "Not quite"}</b>
+              <div className="blank-answer-reveal" data-testid="blank-answer-reveal">
+                <strong>{item.finnish}</strong>
+                <SpeakButton text={item.finnish} />
+              </div>
               <p>{item.exampleFinnish}</p>
               <button
                 className="primary"

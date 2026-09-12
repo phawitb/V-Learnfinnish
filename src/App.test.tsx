@@ -575,12 +575,19 @@ describe('App', () => {
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
     await userEvent.click(screen.getByRole('button', { name: /fill in the blank/i }))
     await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
+    expect(screen.getByRole('heading', { name: 'Hi!' })).toHaveClass('blank-question')
+    expect(screen.queryByText(/Hint:/i)).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /listen to hei/i })).not.toBeInTheDocument()
     expect(screen.queryByPlaceholderText(/type the missing/i)).not.toBeInTheDocument()
     expect(screen.getByTestId('live-blank')).toHaveTextContent('_ _ _ !')
     await chooseLetters('Hei')
     expect(screen.getByTestId('live-blank')).toHaveTextContent('H e i !')
     await userEvent.click(screen.getByRole('button', { name: /check answer/i }))
     expect(screen.getByText('Correct!')).toBeInTheDocument()
+    expect(screen.getByTestId('blank-answer-reveal')).toHaveTextContent('Hei!')
+    expect(screen.getByTestId('blank-answer-reveal')).toContainElement(
+      screen.getByRole('button', { name: /listen to hei/i }),
+    )
   })
   it('builds a fill-in answer from fading letter tiles and restores the last tile on delete', async () => {
     render(<App />)
