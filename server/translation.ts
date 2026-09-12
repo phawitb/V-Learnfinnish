@@ -14,7 +14,7 @@ const schema = z.object({
   breakdown: z.array(breakdownItem).nullish().transform(value => value ?? undefined),
 })
 
-export function normalizeOllamaResponse(raw: string, query: string, direction: Direction): TranslationResult {
+export function normalizeProviderResponse(raw: string, query: string, direction: Direction): TranslationResult {
   const cleaned = raw.replace(/^\s*```(?:json)?/i, '').replace(/```\s*$/, '').trim()
   let parsed: unknown
   try { parsed = JSON.parse(cleaned) } catch { throw new Error('invalid_provider_response') }
@@ -25,6 +25,33 @@ export function normalizeOllamaResponse(raw: string, query: string, direction: D
   const exampleEnglish = value.data.exampleEnglish || example?.english
   if (!exampleFinnish || !exampleEnglish) throw new Error('invalid_provider_response')
   return { id: crypto.randomUUID(), query, direction, ...value.data, exampleFinnish, exampleEnglish }
+}
+
+export const GEMINI_MODEL = 'gemini-3.1-flash-lite'
+
+export async function translateWithGemini(
+  query: string,
+  direction: Direction,
+  apiKey = process.env.GEMINI_API_KEY,
+): Promise<TranslationResult> {
+  if (!apiKey) throw new Error('gemini_not_configured')
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+      body: JSON.stringify({
+        contents: [{ role: 'user', parts: [{ text: buildPrompt(query, direction) }] }],
+        generationConfig: { temperature: 0.2, responseMimeType: 'application/json' },
+      }),
+    },
+  )
+  if (!response.ok) throw new Error('gemini_unavailable')
+  const body = await response.json() as {
+    candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>
+  }
+  const raw = body.candidates?.[0]?.content?.parts?.map((part) => part.text || '').join('') || ''
+  return normalizeProviderResponse(raw, query, direction)
 }
 
 export function buildPrompt(query: string, direction: Direction) {

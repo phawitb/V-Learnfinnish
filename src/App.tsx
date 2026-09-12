@@ -261,7 +261,7 @@ function App() {
       ]);
     } catch {
       setError(
-        "Sorry, I couldn't translate that. Please make sure Ollama is running and try again.",
+        "The translation service is unavailable right now. Please try again.",
       );
     } finally {
       setLoading(false);

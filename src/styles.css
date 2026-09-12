@@ -1042,7 +1042,7 @@ main {
     left: 0;
     right: 0;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     min-height: 48px;
     padding: 10px 16px;
     background: #fff;
@@ -1065,6 +1065,9 @@ main {
     border-radius: 50%;
     background: transparent;
     color: #416a7b;
+  }
+  .mobile-head:has(.mobile-back) h1 {
+    margin-left: 42px;
   }
   .page {
     padding: 20px 14px calc(88px + env(safe-area-inset-bottom));
