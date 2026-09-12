@@ -11,6 +11,11 @@ beforeEach(() => {
   vi.spyOn(Math, 'random').mockReturnValue(0.999)
 })
 
+async function openLessonOne() {
+  await userEvent.click(screen.getAllByRole('button', { name: 'Lessons' })[0])
+  await userEvent.click(screen.getByRole('button', { name: /Lesson 1.*Introduction to Finnish/i }))
+}
+
 describe('App', () => {
   it('opens with an immediately understandable dictionary search', () => {
     render(<App />)
@@ -48,6 +53,17 @@ describe('App', () => {
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /favorites/i })[0])
     expect(screen.getByText(/no favorites yet/i)).toBeInTheDocument()
+  })
+  it('uses four destinations and opens Lesson 1 through the Lessons hub', async () => {
+    render(<App />)
+    expect(screen.queryByRole('button', { name: 'History' })).not.toBeInTheDocument()
+    await userEvent.click(screen.getAllByRole('button', { name: 'Lessons' })[0])
+    expect(screen.getByRole('heading', { name: 'Lessons' })).toBeVisible()
+    await userEvent.click(screen.getByRole('button', { name: /Lesson 1.*Introduction to Finnish/i }))
+    expect(screen.getByRole('button', { name: 'Back to Lessons' })).toBeVisible()
+    expect(screen.getByRole('heading', { name: /Tervetuloa Suomeen/i })).toBeVisible()
+    await userEvent.click(screen.getByRole('button', { name: 'Back to Lessons' }))
+    expect(screen.getByRole('heading', { name: 'Lessons' })).toBeVisible()
   })
   it('flips a flashcard and advances with know or do not know', async () => {
     const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true)
@@ -94,7 +110,7 @@ describe('App', () => {
   })
   it('opens Lesson 1 with the course alphabet audio and phrase practice', async () => {
     render(<App />)
-    await userEvent.click(screen.getAllByRole('button', { name: /lesson 1/i })[0])
+    await openLessonOne()
     expect(screen.getByRole('heading', { name: /tervetuloa suomeen/i })).toBeInTheDocument()
     expect(screen.getByText(/alphabet · greetings · pronunciation/i)).toBeInTheDocument()
     await userEvent.click(screen.getByRole('button', { name: /begin with the alphabet/i }))
@@ -102,14 +118,14 @@ describe('App', () => {
   })
   it('provides a comprehensive Lesson 1 knowledge check', async () => {
     render(<App />)
-    await userEvent.click(screen.getAllByRole('button', { name: /lesson 1/i })[0])
+    await openLessonOne()
     await userEvent.click(screen.getByRole('tab', { name: /check/i }))
     expect(screen.getByText(/question 1 of 20/i)).toBeInTheDocument()
     expect(screen.getByText(/alphabet & sounds/i)).toBeInTheDocument()
   })
   it('includes vocabulary from printed book pages 12 and 13', async () => {
     render(<App />)
-    await userEvent.click(screen.getAllByRole('button', { name: /lesson 1/i })[0])
+    await openLessonOne()
     await userEvent.click(screen.getByRole('tab', { name: /phrases/i }))
     expect(screen.getByRole('heading', { name: /book vocabulary/i })).toBeInTheDocument()
     expect(screen.getByText('suomen kurssi')).toBeInTheDocument()
@@ -119,7 +135,7 @@ describe('App', () => {
   it('speaks Finnish content when it is clicked on the Basics page', async () => {
     const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
-    await userEvent.click(screen.getAllByRole('button', { name: /lesson 1/i })[0])
+    await openLessonOne()
     await userEvent.click(screen.getByRole('tab', { name: /basics/i }))
     await userEvent.click(screen.getByRole('button', { name: 'Listen to minä' }))
     expect(speak).toHaveBeenCalledWith('minä')
@@ -127,7 +143,7 @@ describe('App', () => {
   it('practises matching a Finnish letter name to its sound', async () => {
     const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
-    await userEvent.click(screen.getAllByRole('button', { name: /lesson 1/i })[0])
+    await openLessonOne()
     await userEvent.click(screen.getByRole('tab', { name: /sounds/i }))
     expect(screen.getByRole('heading', { name: /sound matching practice/i })).toBeInTheDocument()
     await userEvent.click(screen.getByRole('button', { name: /play mystery sound/i }))
@@ -138,7 +154,7 @@ describe('App', () => {
   })
   it('builds a full sound-practice round covering all 29 letters', async () => {
     render(<App />)
-    await userEvent.click(screen.getAllByRole('button', { name: /lesson 1/i })[0])
+    await openLessonOne()
     await userEvent.click(screen.getByRole('tab', { name: /sounds/i }))
     expect(screen.getByText('1 / 29')).toBeInTheDocument()
     expect(screen.getByText(/complete all 29 letters/i)).toBeInTheDocument()
@@ -146,7 +162,7 @@ describe('App', () => {
   it('includes the complete introductions and small-talk lesson with audio and translations', async () => {
     const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
-    await userEvent.click(screen.getAllByRole('button', { name: /lesson 1/i })[0])
+    await openLessonOne()
     await userEvent.click(screen.getByRole('tab', { name: /basics/i }))
     expect(screen.getByRole('heading', { name: /introductions & small talk/i })).toBeInTheDocument()
     expect(screen.getByText('What’s your name?')).toBeInTheDocument()

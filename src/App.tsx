@@ -5,9 +5,7 @@ import {
   Brain,
   Check,
   ChevronDown,
-  Clock3,
   Heart,
-  History,
   Search,
   Sparkles,
   Trash2,
@@ -29,15 +27,16 @@ import type {
 } from "./types";
 import { bookVocabulary, LessonOnePage, phrases } from "./pages/LessonOnePage";
 
-type Page = "dictionary" | "lesson" | "favorites" | "history" | "practice";
+type Page = "dictionary" | "lessons" | "favorites" | "practice";
 type Mode = "flashcard" | "choice" | "matching" | "blank";
-const nav = [
-  { id: "dictionary", label: "Dictionary", icon: Search },
-  { id: "lesson", label: "Lesson 1", icon: BookOpen },
-  { id: "favorites", label: "Favorites", icon: Heart },
-  { id: "history", label: "History", icon: Clock3 },
-  { id: "practice", label: "Practice", icon: Brain },
-] as const;
+const nav = {
+  dictionary: { id: "dictionary", label: "Dictionary", icon: Search },
+  lessons: { id: "lessons", label: "Lessons", icon: BookOpen },
+  favorites: { id: "favorites", label: "Favorites", icon: Heart },
+  practice: { id: "practice", label: "Practice", icon: Brain },
+} as const;
+const desktopNav = [nav.dictionary, nav.lessons, nav.favorites, nav.practice];
+const mobileNav = [nav.lessons, nav.favorites, nav.dictionary, nav.practice];
 const toVocab = (r: TranslationResult): VocabularyItem => ({
   ...r,
   favorite: true,
@@ -104,6 +103,36 @@ function Empty({
   );
 }
 
+function LessonsHub({ onOpen }: { onOpen: (lesson: 1) => void }) {
+  return (
+    <section className="page lessons-page">
+      <div className="page-heading">
+        <div>
+          <span className="kicker">YOUR FINNISH JOURNEY</span>
+          <h1>Lessons</h1>
+          <p>Build your Finnish step by step.</p>
+        </div>
+      </div>
+      <div className="lessons-grid">
+        <button
+          type="button"
+          className="lesson-card"
+          onClick={() => onOpen(1)}
+          aria-label="Lesson 1, Introduction to Finnish, Alphabet, sounds, greetings, and essential phrases"
+        >
+          <span className="lesson-card-number">01</span>
+          <span className="lesson-card-copy">
+            <small>LESSON 1</small>
+            <b>Introduction to Finnish</b>
+            <span>Alphabet · Sounds · Greetings · Essential phrases</span>
+          </span>
+          <span className="lesson-card-arrow" aria-hidden="true">→</span>
+        </button>
+      </div>
+    </section>
+  );
+}
+
 function App() {
   const [page, setPage] = useState<Page>("dictionary"),
     [query, setQuery] = useState(""),
@@ -119,7 +148,8 @@ function App() {
     [practiceProgress, setPracticeProgress] = useState<PracticeProgress>(
       storageService.practiceProgress,
     );
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState(""),
+    [activeLesson, setActiveLesson] = useState<1 | null>(null);
   const fullViewportHeight = useRef(0);
   useEffect(() => {
     const viewport = window.visualViewport;
@@ -189,11 +219,14 @@ function App() {
         </div>
         <p className="eyebrow">FINNISH, EVERY DAY</p>
         <nav>
-          {nav.map((n) => (
+          {desktopNav.map((n) => (
             <button
               key={n.id}
               className={page === n.id ? "active" : ""}
-              onClick={() => setPage(n.id)}
+              onClick={() => {
+                setPage(n.id);
+                if (n.id === "lessons") setActiveLesson(null);
+              }}
               aria-label={n.label}
             >
               <n.icon size={20} />
@@ -362,7 +395,11 @@ function App() {
             )}
           </section>
         )}
-        {page === "lesson" && <LessonOnePage />}
+        {page === "lessons" && (
+          activeLesson === 1
+            ? <LessonOnePage onBack={() => setActiveLesson(null)} />
+            : <LessonsHub onOpen={setActiveLesson} />
+        )}
         {page === "favorites" && (
           <ListPage
             title="Favorites"
@@ -379,29 +416,6 @@ function App() {
             }
             onOpen={reopen}
             onRemove={(id) => saveFav(favorites.filter((x) => x.id !== id))}
-          />
-        )}
-        {page === "history" && (
-          <ListPage
-            title="History"
-            subtitle="Pick up where you left off."
-            items={history.map((h) => ({
-              ...toVocab(h.result),
-              id: h.id,
-              createdAt: h.createdAt,
-            }))}
-            filter={filter}
-            setFilter={setFilter}
-            empty={
-              <Empty
-                icon={History}
-                title="Your history is quiet"
-                body="Your recent searches will appear here."
-              />
-            }
-            onOpen={(r) => reopen(r)}
-            onRemove={(id) => saveHist(history.filter((x) => x.id !== id))}
-            clearAll={() => saveHist([])}
           />
         )}
         {page === "practice" && (
@@ -430,11 +444,14 @@ function App() {
         )}
       </main>
       <nav className="bottom-nav">
-        {nav.map((n) => (
+        {mobileNav.map((n) => (
           <button
             key={n.id}
-            className={page === n.id ? "active" : ""}
-            onClick={() => setPage(n.id)}
+            className={`${page === n.id ? "active" : ""} ${n.id === "dictionary" ? "nav-dictionary" : ""}`}
+            onClick={() => {
+              setPage(n.id);
+              if (n.id === "lessons") setActiveLesson(null);
+            }}
             aria-label={n.label}
           >
             <n.icon />
