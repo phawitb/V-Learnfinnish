@@ -102,6 +102,33 @@ describe('App', () => {
     expect(screen.getByRole('heading', { name: 'kiitos' })).toBeVisible()
     expect(JSON.parse(localStorage.getItem('sisu:history:v1') ?? '[]')).toHaveLength(1)
   })
+  it('reuses Finnish or English text from a previous result and moves it to the top', async () => {
+    const translate = vi.spyOn(translationService, 'translate')
+    const cachedResult = {
+      id: 'cached-card', query: 'kiitos', direction: 'fi-en', finnish: 'kiitos', english: 'thank you',
+      exampleFinnish: 'Kiitos paljon.', exampleEnglish: 'Thank you very much.',
+    }
+    const newerResult = {
+      id: 'newer-card', query: 'talo', direction: 'fi-en', finnish: 'talo', english: 'house',
+      exampleFinnish: 'Tämä on talo.', exampleEnglish: 'This is a house.',
+    }
+    localStorage.setItem('sisu:history:v1', JSON.stringify([
+      { id: 'newer-history', result: newerResult, createdAt: '2026-09-13T11:00:00.000Z' },
+      { id: 'cached-history', result: cachedResult, createdAt: '2026-09-13T10:00:00.000Z' },
+    ]))
+    render(<App />)
+    const search = screen.getByPlaceholderText(/search finnish or english/i)
+
+    await userEvent.type(search, '  THANK   YOU ')
+    await userEvent.click(screen.getByRole('button', { name: /Translate/i }))
+
+    expect(translate).not.toHaveBeenCalled()
+    expect(search).toHaveValue('thank you')
+    expect(screen.getByRole('heading', { name: 'kiitos' })).toBeVisible()
+    const saved = JSON.parse(localStorage.getItem('sisu:history:v1') ?? '[]')
+    expect(saved).toHaveLength(2)
+    expect(saved.map((item: { id: string }) => item.id)).toEqual(['cached-history', 'newer-history'])
+  })
   it('shows a helpful not-found state instead of a service error', async () => {
     vi.spyOn(translationService, 'translate').mockRejectedValue(new Error('translation_not_found'))
     render(<App />)

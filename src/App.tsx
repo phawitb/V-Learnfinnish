@@ -251,7 +251,11 @@ function App() {
     const normalizedQuery = normalizeSearch(query);
     if (!normalizedQuery) return;
     setQuery(normalizedQuery);
-    const cached = history.find((item) => normalizeSearch(item.result.query) === normalizedQuery);
+    const cached = history.find((item) => [
+      item.result.query,
+      item.result.finnish,
+      item.result.english,
+    ].some((value) => normalizeSearch(value) === normalizedQuery));
     if (cached) {
       setResult(cached.result);
       setError("");
