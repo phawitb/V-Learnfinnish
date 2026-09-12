@@ -1021,7 +1021,7 @@ function Practice({
         </div>
       )}
       {mode === "choice" && (
-        <div className="quiz">
+        <div className="quiz choice-quiz">
           <span className="label">WHAT DOES IT MEAN?</span>
           <h1>{item.finnish}</h1>
           <SpeakButton text={item.finnish} />
@@ -1062,7 +1062,7 @@ function Practice({
         </div>
       )}
       {mode === "blank" && (
-        <div className="quiz">
+        <div className="quiz blank-quiz">
           <span className="label">COMPLETE THE SENTENCE</span>
           <label
             htmlFor="blank-answer"
@@ -1108,7 +1108,7 @@ function Practice({
         </div>
       )}
       {mode === "matching" && (
-        <div className="quiz">
+        <div className="quiz matching-quiz">
           <span className="label">MATCH THE PAIRS</span>
           <h2>Connect Finnish with English</h2>
           <div className="match-grid">
