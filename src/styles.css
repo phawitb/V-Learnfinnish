@@ -704,6 +704,17 @@ main {
 .practice-word-row:last-child {
   border-bottom: 0;
 }
+.practice-word-row.playing {
+  background: #eaf6fa;
+  box-shadow: inset 3px 0 #2181ac;
+}
+.practice-word-row.playing .icon-button {
+  color: #0d6592;
+  animation: practice-speaker-pulse 1s ease-in-out infinite;
+}
+@keyframes practice-speaker-pulse {
+  50% { transform: scale(1.12); }
+}
 .practice-word-row > div {
   min-width: 0;
   display: grid;
@@ -746,7 +757,9 @@ main {
   background: #fff;
 }
 .preview-practice-options h2 {
-  margin: 0 0 14px;
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 650;
 }
 .practice-preview-actions {
   display: flex;
@@ -1467,6 +1480,9 @@ main {
   .preview-practice-options {
     margin-top: 0;
     padding: 18px 12px;
+  }
+  .preview-practice-options h2 {
+    font-size: 14px;
   }
   .mode-grid button {
     min-width: 0;

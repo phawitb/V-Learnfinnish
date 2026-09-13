@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
@@ -492,6 +492,24 @@ describe('App', () => {
     await userEvent.click(screen.getByRole('button', { name: /play all words/i }))
 
     expect(speak.mock.calls.map(([text]) => text)).toEqual(['ruskea', 'turkoosi'])
+  })
+  it('highlights each word while Play all is speaking it', async () => {
+    let finishCurrent: (() => void) | undefined
+    vi.spyOn(ttsService, 'speak').mockImplementation((_text, onEnd) => {
+      finishCurrent = onEnd
+      return true
+    })
+    render(<App />)
+    await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
+    await userEvent.click(screen.getByRole('button', { name: /Colors \(2\).*2 items/i }))
+
+    await userEvent.click(screen.getByRole('button', { name: /play all words/i }))
+    expect(screen.getByText('ruskea').closest('.practice-word-row')).toHaveAttribute('aria-current', 'true')
+    expect(screen.getByText('turkoosi').closest('.practice-word-row')).not.toHaveAttribute('aria-current')
+
+    act(() => finishCurrent?.())
+    expect(screen.getByText('ruskea').closest('.practice-word-row')).not.toHaveAttribute('aria-current')
+    expect(screen.getByText('turkoosi').closest('.practice-word-row')).toHaveAttribute('aria-current', 'true')
   })
   it('marks long flashcard words for a smaller responsive type size', async () => {
     localStorage.setItem('sisu:favorites:v1', JSON.stringify([{

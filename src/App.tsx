@@ -832,6 +832,7 @@ function Practice({
     [selectedGroupId, setSelectedGroupId] = useState(""),
     [reviewDeck, setReviewDeck] = useState<VocabularyItem[] | null>(null),
     [listPlaying, setListPlaying] = useState(false),
+    [playingWordId, setPlayingWordId] = useState<string | null>(null),
     [index, setIndex] = useState(0),
     [practiceQueue, setPracticeQueue] = useState<number[]>([]),
     [completedCount, setCompletedCount] = useState(0),
@@ -948,10 +949,17 @@ function Practice({
     ttsService.stop();
   }, []);
 
+  useEffect(() => {
+    if (!playingWordId) return;
+    document.querySelector(`[data-practice-word="${playingWordId}"]`)
+      ?.scrollIntoView?.({ behavior: "smooth", block: "nearest" });
+  }, [playingWordId]);
+
   const stopListPlayback = () => {
     playbackId.current += 1;
     ttsService.stop();
     setListPlaying(false);
+    setPlayingWordId(null);
   };
   const playAllWords = () => {
     if (listPlaying) {
@@ -965,14 +973,22 @@ function Practice({
       if (requestId !== playbackId.current) return;
       if (position >= deck.length) {
         setListPlaying(false);
+        setPlayingWordId(null);
         return;
       }
+      setPlayingWordId(deck[position].id);
       const ok = ttsService.speak(
         deck[position].finnish,
         () => speakAt(position + 1),
-        () => setListPlaying(false),
+        () => {
+          setListPlaying(false);
+          setPlayingWordId(null);
+        },
       );
-      if (!ok) setListPlaying(false);
+      if (!ok) {
+        setListPlaying(false);
+        setPlayingWordId(null);
+      }
     };
     speakAt(0);
   };
@@ -1164,7 +1180,12 @@ function Practice({
         </div>
         <div className="practice-word-list">
           {deck.map((word) => (
-            <div className="practice-word-row" key={word.id}>
+            <div
+              className={`practice-word-row ${playingWordId === word.id ? "playing" : ""}`}
+              key={word.id}
+              data-practice-word={word.id}
+              aria-current={playingWordId === word.id ? "true" : undefined}
+            >
               <div>
                 <b>{word.finnish}</b>
                 <span>{word.english}</span>
