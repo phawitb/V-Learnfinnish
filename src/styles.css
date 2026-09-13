@@ -1031,18 +1031,7 @@ main {
 .blank-quiz form {
   margin-top: 8px;
 }
-.blank-answer-reveal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin: 10px 0 4px;
-}
-.blank-answer-reveal strong {
-  color: #173752;
-  font-size: 22px;
-}
-.blank-answer-reveal .icon-button {
+.blank-answer-row .icon-button {
   min-width: 34px;
   width: 34px;
   height: 34px;

@@ -1359,22 +1359,26 @@ function Practice({
         <div className="quiz blank-quiz">
           <span className="label">TRANSLATE INTO FINNISH</span>
           <h2 className="blank-question">{item.english}</h2>
-          <div className="blank-answer-row">
+          <div className="blank-answer-row" data-testid="blank-answer-row">
             <div className="live-blank" data-testid="live-blank" style={{ whiteSpace: "pre-wrap" }}>
-              <h2>{liveBlank(item.finnish, blank)}</h2>
+              <h2>{liveBlank(item.finnish, selected ? item.finnish : blank)}</h2>
             </div>
-            <button
-              type="button"
-              className="blank-delete"
-              aria-label="Delete last letter"
-              disabled={usedLetterIds.length === 0 || Boolean(selected)}
-              onClick={() => {
-                setUsedLetterIds((current) => current.slice(0, -1));
-                setBlank((current) => Array.from(current).slice(0, -1).join(""));
-              }}
-            >
-              <X size={19} />
-            </button>
+            {selected ? (
+              <SpeakButton text={item.finnish} />
+            ) : (
+              <button
+                type="button"
+                className="blank-delete"
+                aria-label="Delete last letter"
+                disabled={usedLetterIds.length === 0}
+                onClick={() => {
+                  setUsedLetterIds((current) => current.slice(0, -1));
+                  setBlank((current) => Array.from(current).slice(0, -1).join(""));
+                }}
+              >
+                <X size={19} />
+              </button>
+            )}
           </div>
           <div className="letter-bank" aria-label="Available letters">
             {letterTiles.map((tile, position) => {
@@ -1412,10 +1416,6 @@ function Practice({
           {selected && (
             <div className={`feedback ${selected}`}>
               <b>{selected === "correct" ? "Correct!" : "Not quite"}</b>
-              <div className="blank-answer-reveal" data-testid="blank-answer-reveal">
-                <strong>{item.finnish}</strong>
-                <SpeakButton text={item.finnish} />
-              </div>
               <p>{item.exampleFinnish}</p>
               <button
                 className="primary"
