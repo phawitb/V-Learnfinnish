@@ -2724,4 +2724,7 @@ summary:focus-visible {
   .lesson-tabs {
     margin-bottom: 16px;
   }
+  .practice-session:has(.matching-quiz) {
+    padding-bottom: calc(60px + env(safe-area-inset-bottom));
+  }
 }
