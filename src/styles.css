@@ -2641,6 +2641,9 @@ summary:focus-visible {
     margin: 12px 0;
     gap: 8px;
   }
+  .practice-session .matching-quiz .match-grid {
+    margin-top: 2px;
+  }
   .practice-session .choices button,
   .practice-session .match-grid button {
     padding: 10px;

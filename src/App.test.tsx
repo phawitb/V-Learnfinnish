@@ -550,13 +550,14 @@ describe('App', () => {
     expect(screen.getAllByTestId('multiple-choice-option').map((option) => option.textContent)).toEqual(choices)
     expect(screen.getByRole('button', { name: 'Continue' }).closest('.quiz-action')).toBeInTheDocument()
   })
-  it('uses Match the pairs as the only matching title', async () => {
+  it('hides the matching title while preserving an accessible label', async () => {
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
     await userEvent.click(screen.getByRole('button', { name: /Colors \(2\).*2 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /^matching$/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
-    expect(screen.getByRole('heading', { name: 'Match the pairs' })).toBeVisible()
+    expect(screen.queryByRole('heading', { name: 'Match the pairs' })).not.toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'Match the pairs' })).toBeVisible()
     expect(screen.queryByText('Connect Finnish with English')).not.toBeInTheDocument()
   })
   it('saves a group level from first attempts only after completion', async () => {

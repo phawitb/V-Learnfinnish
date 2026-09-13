@@ -1417,8 +1417,7 @@ function Practice({
         </div>
       )}
       {mode === "matching" && (
-        <div className="quiz matching-quiz">
-          <h2>Match the pairs</h2>
+        <div className="quiz matching-quiz" role="region" aria-label="Match the pairs">
           <div className="match-grid">
             {[matchColumns.finnish, matchColumns.english].map(
               (column, columnIndex) => (
