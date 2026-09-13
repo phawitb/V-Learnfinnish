@@ -2673,3 +2673,55 @@ summary:focus-visible {
     min-height: 118px;
   }
 }
+
+/* Shared card geometry: slightly tighter corners across the app. */
+.lesson-panel { border-radius: 16px; }
+.lesson-card,
+.setup { border-radius: 15px; }
+.practice-word-list,
+.preview-practice-options,
+.flashcard,
+.quiz,
+.sound-match { border-radius: 14px; }
+.search-card,
+.result,
+.recent-item,
+.vocab-list article,
+.stats > div,
+.stats > button,
+.profile-summary > div,
+.profile-sound,
+.audio-card,
+.lesson-result { border-radius: 12px; }
+.practice-group-section button:first-child { border-radius: 10px 10px 0 0; }
+.practice-group-section button:last-child { border-radius: 0 0 10px 10px; }
+.practice-group-section button:only-child { border-radius: 10px; }
+.filter,
+.mode-grid button,
+.choices button,
+.match-grid button,
+.feedback { border-radius: 10px; }
+
+@media (max-width: 760px) {
+  .page,
+  .lesson-page {
+    padding-top: 10px;
+  }
+  .filter {
+    margin-top: 8px;
+  }
+  .lessons-grid {
+    margin-top: 8px;
+  }
+  .stats {
+    margin-top: 10px;
+    margin-bottom: 16px;
+  }
+  .profile-avatar {
+    margin-top: 0;
+  }
+  .lesson-hero,
+  .lesson-tabs {
+    margin-bottom: 16px;
+  }
+}
