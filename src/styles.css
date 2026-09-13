@@ -672,6 +672,93 @@ main {
   background: #edf7fa;
   color: #0d6592;
 }
+.practice-preview {
+  max-width: 780px;
+}
+.preview-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.preview-heading h1 {
+  margin: 4px 0 0;
+  font-size: 32px;
+}
+.practice-word-list {
+  overflow: hidden;
+  margin-top: 14px;
+  border: 1px solid #e0e8e7;
+  border-radius: 18px;
+  background: #fff;
+}
+.practice-word-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  min-height: 68px;
+  padding: 11px 16px;
+  border-bottom: 1px solid #edf1f0;
+}
+.practice-word-row:last-child {
+  border-bottom: 0;
+}
+.practice-word-row > div {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+.practice-word-row b {
+  overflow-wrap: anywhere;
+  color: #17324d;
+  font-size: 17px;
+}
+.practice-word-row span {
+  overflow-wrap: anywhere;
+  color: #71858e;
+  font-size: 14px;
+}
+.play-all-button {
+  flex: 0 0 48px;
+  width: 48px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #b9d7e1;
+  border-radius: 13px;
+  background: #edf7fa;
+  color: #0d6592;
+  font: inherit;
+  font-weight: 700;
+}
+.play-all-button.playing {
+  border-color: #edc5c5;
+  background: #fff4f4;
+  color: #ae3f49;
+}
+.preview-practice-options {
+  padding: 24px;
+  border: 1px solid #e0e8e7;
+  border-radius: 18px;
+  background: #fff;
+}
+.preview-practice-options h2 {
+  margin: 0 0 14px;
+}
+.practice-preview-actions {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  margin-top: 12px;
+}
+.practice-preview-actions .start {
+  flex: 1;
+  width: auto;
+  margin-top: 0;
+}
 .start {
   margin-top: 24px;
   width: 100%;
@@ -744,7 +831,18 @@ main {
   background: linear-gradient(145deg, #f9fcfb, #eef7f4);
   color: #17324d;
   cursor: pointer;
+  overflow: hidden;
+  padding: 20px;
 }
+.flashcard-face h1 {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  line-height: 1.08;
+}
+.flashcard-face h1.word-medium { font-size: 40px; }
+.flashcard-face h1.word-long { font-size: 32px; }
+.flashcard-face h1.word-extra-long { font-size: 25px; }
 .flashcard-face:hover {
   border-color: #78ad9b;
   transform: translateY(-1px);
@@ -1356,6 +1454,20 @@ main {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 6px;
   }
+  .preview-heading h1 {
+    font-size: 25px;
+  }
+  .practice-word-row {
+    min-height: 62px;
+    padding: 9px 11px 9px 14px;
+  }
+  .practice-word-row b {
+    font-size: 16px;
+  }
+  .preview-practice-options {
+    margin-top: 0;
+    padding: 18px 12px;
+  }
   .mode-grid button {
     min-width: 0;
     min-height: 62px;
@@ -1424,6 +1536,9 @@ main {
   .quiz h1 {
     font-size: 38px;
   }
+  .flashcard-face h1.word-medium { font-size: 32px; }
+  .flashcard-face h1.word-long { font-size: 26px; }
+  .flashcard-face h1.word-extra-long { font-size: 20px; }
   .ratings {
     grid-template-columns: 1fr 1fr;
   }

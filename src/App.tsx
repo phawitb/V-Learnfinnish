@@ -7,6 +7,7 @@ import {
   Heart,
   UserRound,
   Search,
+  Play,
   Sparkles,
   Trash2,
   Volume2,
@@ -29,6 +30,12 @@ import { bookVocabulary, LessonOnePage, phrases } from "./pages/LessonOnePage";
 
 type Page = "dictionary" | "lessons" | "favorites" | "practice" | "profile";
 type Mode = "flashcard" | "choice" | "matching" | "blank";
+const flashcardWordClass = (word: string) => {
+  if (word.length > 32) return "word-extra-long";
+  if (word.length > 22) return "word-long";
+  if (word.length > 14) return "word-medium";
+  return "word-short";
+};
 const nav = {
   dictionary: { id: "dictionary", label: "Search", icon: Search },
   lessons: { id: "lessons", label: "Lessons", icon: BookOpen },
@@ -822,8 +829,9 @@ function Practice({
 }) {
   const [started, setStarted] = useState(false),
     [mode, setMode] = useState<Mode>("flashcard"),
-    [selectedGroupId, setSelectedGroupId] = useState("vocab-1"),
+    [selectedGroupId, setSelectedGroupId] = useState(""),
     [reviewDeck, setReviewDeck] = useState<VocabularyItem[] | null>(null),
+    [listPlaying, setListPlaying] = useState(false),
     [index, setIndex] = useState(0),
     [practiceQueue, setPracticeQueue] = useState<number[]>([]),
     [completedCount, setCompletedCount] = useState(0),
@@ -839,6 +847,7 @@ function Practice({
     [usedLetterIds, setUsedLetterIds] = useState<string[]>([]),
     [firstAttempts, setFirstAttempts] = useState<Record<string, boolean>>({}),
     [done, setDone] = useState(false);
+  const playbackId = useRef(0);
   const vocabItems = useMemo(
       () => bookVocabulary.map((row, index) => practiceItem(row, "vocab", index)),
       [],
@@ -871,6 +880,7 @@ function Practice({
       : regularGroup,
     deck = selectedGroup.items,
     item = deck[(practiceQueue[index] ?? index) % deck.length];
+  const hasSelectedGroup = reviewDeck !== null || Boolean(selectedGroupId);
   const letterTiles = useMemo(
     () => shuffled((item?.finnish.match(/\p{L}/gu) || []).map((letter, position) => ({
       id: `${item.id}-letter-${position}`,
@@ -894,7 +904,7 @@ function Practice({
     [deck, item],
   );
   const matchColumns = useMemo(() => {
-    const orderedEntries = practiceQueue.length
+    const orderedEntries = started && practiceQueue.length
       ? practiceQueue.map((position) => deck[position])
       : deck;
     const finnishEntries = shuffled(orderedEntries);
@@ -920,7 +930,7 @@ function Practice({
         side: "en" as const,
       })),
     };
-  }, [deck, practiceQueue]);
+  }, [deck, practiceQueue, started]);
 
   useEffect(() => {
     if (
@@ -932,6 +942,40 @@ function Practice({
       ttsService.speak(item.finnish);
     }
   }, [done, item, mode, started]);
+
+  useEffect(() => () => {
+    playbackId.current += 1;
+    ttsService.stop();
+  }, []);
+
+  const stopListPlayback = () => {
+    playbackId.current += 1;
+    ttsService.stop();
+    setListPlaying(false);
+  };
+  const playAllWords = () => {
+    if (listPlaying) {
+      stopListPlayback();
+      return;
+    }
+    const requestId = playbackId.current + 1;
+    playbackId.current = requestId;
+    setListPlaying(true);
+    const speakAt = (position: number) => {
+      if (requestId !== playbackId.current) return;
+      if (position >= deck.length) {
+        setListPlaying(false);
+        return;
+      }
+      const ok = ttsService.speak(
+        deck[position].finnish,
+        () => speakAt(position + 1),
+        () => setListPlaying(false),
+      );
+      if (!ok) setListPlaying(false);
+    };
+    speakAt(0);
+  };
 
   const isReviewSession = reviewDeck !== null;
   const retryUntilCorrect = mode === "choice" || mode === "blank" || isReviewSession;
@@ -1000,7 +1044,7 @@ function Practice({
       setUsedLetterIds([]);
     }
   };
-  if (!started)
+  if (!started && !hasSelectedGroup)
     return (
       <section className="page practice">
         <div className="page-heading">
@@ -1018,8 +1062,7 @@ function Practice({
             onClick={() => {
               const missed = progress.reviewWords.map((word) => word.item);
               setReviewDeck(missed);
-              resetSession(missed.length, true);
-              setStarted(true);
+              setSelectedGroupId("");
             }}
           >
             <Brain size={22} aria-hidden="true" />
@@ -1032,40 +1075,15 @@ function Practice({
           </button>
         </div>
         <div className="setup">
-          <h2>Choose your practice</h2>
-          <div className="mode-grid" role="group" aria-label="Choose your practice">
-            {(
-              [
-                ["flashcard", "Flashcards", BookOpen],
-                ["choice", "Multiple choice", Check],
-                ["matching", "Matching", Sparkles],
-                ["blank", "Fill in the blank", Brain],
-              ] as const
-            ).map(([id, label, Icon]) => (
-              <button
-                key={id}
-                className={mode === id ? "selected" : ""}
-                onClick={() => {
-                  setMode(id);
-                  resetSession();
-                }}
-              >
-                <Icon />
-                <span>{label}</span>
-              </button>
-            ))}
-          </div>
           <h2>Choose a word group</h2>
           <div className="practice-group-grid">
             {groups.map((group) => (
               <button
                 key={group.id}
-                className={selectedGroup.id === group.id ? "selected" : ""}
+                className={selectedGroupId === group.id && reviewDeck === null ? "selected" : ""}
                 onClick={() => {
                   setSelectedGroupId(group.id);
                   setReviewDeck(null);
-                  resetSession(group.items.length, true);
-                  setStarted(true);
                 }}
               >
                 <BookOpen size={19} />
@@ -1080,6 +1098,80 @@ function Practice({
               </button>
             ))}
           </div>
+        </div>
+      </section>
+    );
+  if (!started)
+    return (
+      <section className="page practice practice-preview">
+        <div className="preview-heading">
+          <button
+            type="button"
+            className="icon-button"
+            aria-label="Back to word groups"
+            onClick={() => {
+              stopListPlayback();
+              setSelectedGroupId("");
+              setReviewDeck(null);
+            }}
+          >
+            <ChevronLeft />
+          </button>
+          <div>
+            <span className="kicker">WORD GROUP</span>
+            <h1>{selectedGroup.title}</h1>
+          </div>
+        </div>
+        <div className="preview-practice-options">
+          <h2>Choose your practice</h2>
+          <div className="mode-grid" role="group" aria-label="Choose your practice">
+            {(
+              [
+                ["flashcard", "Flashcards", BookOpen],
+                ["choice", "Multiple choice", Check],
+                ["matching", "Matching", Sparkles],
+                ["blank", "Fill in the blank", Brain],
+              ] as const
+            ).map(([id, label, Icon]) => (
+              <button key={id} className={mode === id ? "selected" : ""} onClick={() => setMode(id)}>
+                <Icon />
+                <span>{label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="practice-word-list">
+          {deck.map((word) => (
+            <div className="practice-word-row" key={word.id}>
+              <div>
+                <b>{word.finnish}</b>
+                <span>{word.english}</span>
+              </div>
+              <SpeakButton text={word.finnish} />
+            </div>
+          ))}
+        </div>
+        <div className="practice-preview-actions">
+          <button
+            type="button"
+            className={`play-all-button ${listPlaying ? "playing" : ""}`}
+            aria-label={listPlaying ? "Stop playing all words" : "Play all words"}
+            onClick={playAllWords}
+          >
+            {listPlaying ? <X size={20} /> : <Play size={20} fill="currentColor" />}
+          </button>
+          <button
+            type="button"
+            className="primary start"
+            aria-label="Start practice"
+            onClick={() => {
+              stopListPlayback();
+              resetSession(deck.length, true);
+              setStarted(true);
+            }}
+          >
+            Practice
+          </button>
         </div>
       </section>
     );
@@ -1145,7 +1237,7 @@ function Practice({
             onClick={() => setRevealed(!revealed)}
             aria-label={revealed ? "Show Finnish" : "Show translation"}
           >
-            <h1>{item.finnish}</h1>
+            <h1 className={flashcardWordClass(item.finnish)}>{item.finnish}</h1>
             {revealed && (
               <span className="flashcard-translation">{item.english}</span>
             )}
