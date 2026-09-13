@@ -1140,17 +1140,6 @@ function Practice({
             ))}
           </div>
         </div>
-        <div className="practice-word-list">
-          {deck.map((word) => (
-            <div className="practice-word-row" key={word.id}>
-              <div>
-                <b>{word.finnish}</b>
-                <span>{word.english}</span>
-              </div>
-              <SpeakButton text={word.finnish} />
-            </div>
-          ))}
-        </div>
         <div className="practice-preview-actions">
           <button
             type="button"
@@ -1172,6 +1161,17 @@ function Practice({
           >
             Practice
           </button>
+        </div>
+        <div className="practice-word-list">
+          {deck.map((word) => (
+            <div className="practice-word-row" key={word.id}>
+              <div>
+                <b>{word.finnish}</b>
+                <span>{word.english}</span>
+              </div>
+              <SpeakButton text={word.finnish} />
+            </div>
+          ))}
         </div>
       </section>
     );

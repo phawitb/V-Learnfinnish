@@ -477,6 +477,8 @@ describe('App', () => {
     expect(choices.compareDocumentPosition(wordList) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     expect(play).toHaveTextContent('')
     expect(play.parentElement).toBe(start.parentElement)
+    expect(choices.compareDocumentPosition(play.parentElement!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(play.parentElement!.compareDocumentPosition(wordList) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
   it('plays every word in the selected group in list order', async () => {
     const speak = vi.spyOn(ttsService, 'speak').mockImplementation((_text, onEnd) => {
