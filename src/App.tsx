@@ -192,6 +192,17 @@ function RecentSearches({
 }
 
 function ProfilePage({ favorites, reviewCount }: { favorites: number; reviewCount: number }) {
+  const [soundStatus, setSoundStatus] = useState<"idle" | "playing" | "success" | "error">("idle");
+  const testSound = () => {
+    setSoundStatus("playing");
+    const ok = ttsService.speak(
+      "Hei! Tervetuloa.",
+      () => setSoundStatus("success"),
+      () => setSoundStatus("error"),
+    );
+    if (!ok) setSoundStatus("error");
+  };
+
   return (
     <section className="page profile-page">
       <div className="profile-avatar" aria-hidden="true"><UserRound /></div>
@@ -204,6 +215,23 @@ function ProfilePage({ favorites, reviewCount }: { favorites: number; reviewCoun
         <div><b>{favorites}</b><span>Favorite words</span></div>
         <div><b>{reviewCount}</b><span>Words to review</span></div>
       </div>
+      <section className="profile-sound" aria-labelledby="profile-sound-heading">
+        <div>
+          <h2 id="profile-sound-heading">Finnish voice</h2>
+          <p>Check that Finnish pronunciation works on this device.</p>
+        </div>
+        <button type="button" className="sound-test-button" onClick={testSound} disabled={soundStatus === "playing"}>
+          <Volume2 size={18} />
+          {soundStatus === "playing" ? "Playing…" : "Test sound"}
+        </button>
+        {soundStatus !== "idle" && (
+          <p className={`sound-test-status ${soundStatus}`} role="status">
+            {soundStatus === "playing" && "Playing…"}
+            {soundStatus === "success" && "Sound is working"}
+            {soundStatus === "error" && "Finnish voice unavailable"}
+          </p>
+        )}
+      </section>
     </section>
   );
 }

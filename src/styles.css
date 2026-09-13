@@ -1112,6 +1112,56 @@ main {
   color: #71858e;
   font-size: 13px;
 }
+.profile-sound {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px 20px;
+  margin-top: 12px;
+  padding: 20px;
+  border: 1px solid #e0e8e7;
+  border-radius: 16px;
+  background: #fff;
+}
+.profile-sound h2 {
+  margin: 0 0 4px;
+  color: #173653;
+  font-size: 17px;
+}
+.profile-sound p {
+  margin: 0;
+  color: #71858e;
+  font-size: 13px;
+}
+.sound-test-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 12px;
+  background: #126e9e;
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+}
+.sound-test-button:disabled {
+  cursor: wait;
+  opacity: .7;
+}
+.profile-sound .sound-test-status {
+  grid-column: 1 / -1;
+  font-weight: 700;
+}
+.profile-sound .sound-test-status.success {
+  color: #23805e;
+}
+.profile-sound .sound-test-status.error {
+  color: #b3424d;
+}
 @media (max-width: 760px) {
   .app-shell:has(.dictionary.search-focused) .mobile-head,
   .app-shell:has(.dictionary.search-focused) .bottom-nav,
@@ -1398,6 +1448,15 @@ main {
   }
   .profile-summary > div {
     padding: 15px 8px;
+  }
+  .profile-sound {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 16px;
+    text-align: left;
+  }
+  .sound-test-button {
+    width: 100%;
   }
 }
 

@@ -29,6 +29,30 @@ async function chooseLetters(answer: string) {
 }
 
 describe('App', () => {
+  it('tests the Finnish voice from Profile and reports success', async () => {
+    const speak = vi.spyOn(ttsService, 'speak').mockImplementation((_text, onEnd) => {
+      onEnd?.()
+      return true
+    })
+    render(<App />)
+
+    await userEvent.click(screen.getAllByRole('button', { name: 'Profile' })[0])
+    await userEvent.click(screen.getByRole('button', { name: 'Test sound' }))
+
+    expect(speak).toHaveBeenCalledWith('Hei! Tervetuloa.', expect.any(Function), expect.any(Function))
+    expect(screen.getByRole('status')).toHaveTextContent('Sound is working')
+  })
+
+  it('reports an unavailable Finnish voice from the Profile sound test', async () => {
+    vi.spyOn(ttsService, 'speak').mockReturnValue(false)
+    render(<App />)
+
+    await userEvent.click(screen.getAllByRole('button', { name: 'Profile' })[0])
+    await userEvent.click(screen.getByRole('button', { name: 'Test sound' }))
+
+    expect(screen.getByRole('status')).toHaveTextContent('Finnish voice unavailable')
+  })
+
   it('opens with an immediately understandable dictionary search', () => {
     render(<App />)
     expect(screen.getByRole('heading', { name: /understand finnish/i })).toBeInTheDocument()
