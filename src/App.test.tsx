@@ -432,6 +432,17 @@ describe('App', () => {
     expect(screen.getByText('Vocab — Page 12 (1)')).toBeInTheDocument()
     expect(screen.getAllByRole('button', { name: /listen to/i })).toHaveLength(10)
   })
+  it('keeps word-group cards connected within their category and separates other categories', async () => {
+    render(<App />)
+    await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
+
+    const vocabOne = screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i })
+    const vocabTwo = screen.getByRole('button', { name: /Vocab — Page 12 \(2\).*10 items/i })
+    const phrasesOne = screen.getByRole('button', { name: /Useful Phrases — Pages 12–13 \(1\).*10 items/i })
+
+    expect(vocabOne.closest('.practice-group-section')).toBe(vocabTwo.closest('.practice-group-section'))
+    expect(vocabOne.closest('.practice-group-section')).not.toBe(phrasesOne.closest('.practice-group-section'))
+  })
   it('offers number and color word groups in chunks of at most ten', async () => {
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])

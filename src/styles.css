@@ -589,17 +589,25 @@ main {
 .setup h2 {
   margin-top: 0;
 }
+.setup > h2 {
+  margin-bottom: 16px;
+  font-size: 26px;
+}
 .setup h2:not(:first-child) {
   margin-top: 28px;
 }
 .practice-group-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  align-items: start;
+  gap: 16px;
+}
+.practice-group-section {
+  display: grid;
 }
 .practice-group-grid button {
   border: 1px solid #dfe7e6;
-  border-radius: 13px;
+  border-radius: 0;
   background: #fff;
   color: #486879;
   padding: 14px;
@@ -609,10 +617,21 @@ main {
   gap: 9px;
   text-align: left;
 }
+.practice-group-section button + button {
+  margin-top: -1px;
+}
+.practice-group-section button:first-child {
+  border-radius: 13px 13px 0 0;
+}
+.practice-group-section button:last-child {
+  border-radius: 0 0 13px 13px;
+}
+.practice-group-section button:only-child {
+  border-radius: 13px;
+}
 .practice-group-grid button:hover {
   border-color: #8ab8c8;
   background: #f7fbfc;
-  transform: translateY(-1px);
 }
 .group-arrow {
   color: #2181ac;
@@ -1497,6 +1516,7 @@ main {
   }
   .practice-group-grid {
     grid-template-columns: 1fr;
+    gap: 14px;
   }
   .lessons-grid {
     grid-template-columns: 1fr;
@@ -1525,6 +1545,10 @@ main {
   }
   .setup h2:not(:first-child) {
     margin-top: 22px;
+  }
+  .setup > h2 {
+    margin-bottom: 14px;
+    font-size: 22px;
   }
   .practice-session {
     min-height: calc(100dvh - 70px);

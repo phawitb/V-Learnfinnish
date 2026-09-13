@@ -875,6 +875,14 @@ function Practice({
       ],
       [colorItems, items, numberItems, phraseItems, vocabItems],
     ),
+    groupSections = useMemo(
+      () => Array.from(new Set(groups.map((group) => group.id.replace(/-\d+$/, ""))))
+        .map((sectionId) => ({
+          id: sectionId,
+          groups: groups.filter((group) => group.id.replace(/-\d+$/, "") === sectionId),
+        })),
+      [groups],
+    ),
     regularGroup = groups.find((group) => group.id === selectedGroupId) || groups[0],
     selectedGroup = reviewDeck
       ? { id: "review", title: "Words to review", items: reviewDeck }
@@ -1093,25 +1101,29 @@ function Practice({
         <div className="setup">
           <h2>Choose a word group</h2>
           <div className="practice-group-grid">
-            {groups.map((group) => (
-              <button
-                key={group.id}
-                className={selectedGroupId === group.id && reviewDeck === null ? "selected" : ""}
-                onClick={() => {
-                  setSelectedGroupId(group.id);
-                  setReviewDeck(null);
-                }}
-              >
-                <BookOpen size={19} />
-                <span className="group-copy">
-                  <span>{group.title}</span>
-                  <GroupLevel progress={progress.groups[group.id]} />
-                </span>
-                <small>{group.items.length} items</small>
-                <span className="group-arrow" aria-hidden="true">
-                  →
-                </span>
-              </button>
+            {groupSections.map((section) => (
+              <div className="practice-group-section" key={section.id}>
+                {section.groups.map((group) => (
+                  <button
+                    key={group.id}
+                    className={selectedGroupId === group.id && reviewDeck === null ? "selected" : ""}
+                    onClick={() => {
+                      setSelectedGroupId(group.id);
+                      setReviewDeck(null);
+                    }}
+                  >
+                    <BookOpen size={19} />
+                    <span className="group-copy">
+                      <span>{group.title}</span>
+                      <GroupLevel progress={progress.groups[group.id]} />
+                    </span>
+                    <small>{group.items.length} items</small>
+                    <span className="group-arrow" aria-hidden="true">
+                      →
+                    </span>
+                  </button>
+                ))}
+              </div>
             ))}
           </div>
         </div>
