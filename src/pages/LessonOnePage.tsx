@@ -482,7 +482,7 @@ export function LessonOnePage() {
   const go = (id: Step) => {
     finish(step);
     setStep(id);
-    window.scrollTo?.({ top: 0, behavior: "smooth" });
+    window.scrollTo?.({ top: 0, left: 0, behavior: "auto" });
   };
   const progress = Math.round((completed.length / steps.length) * 100),
     question = useMemo(() => questions[quizIndex], [quizIndex]),

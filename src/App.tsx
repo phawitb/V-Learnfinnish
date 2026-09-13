@@ -263,6 +263,9 @@ function App() {
   const searchInput = useRef<HTMLInputElement>(null);
   const direction: Direction = "auto";
   useEffect(() => {
+    window.scrollTo?.({ top: 0, left: 0, behavior: "auto" });
+  }, [page, activeLesson, result?.id]);
+  useEffect(() => {
     const viewport = window.visualViewport;
     if (!viewport) return;
     const handleViewportResize = () => {
@@ -849,6 +852,14 @@ function Practice({
     [firstAttempts, setFirstAttempts] = useState<Record<string, boolean>>({}),
     [done, setDone] = useState(false);
   const playbackId = useRef(0);
+  useEffect(() => {
+    window.scrollTo?.({ top: 0, left: 0, behavior: "auto" });
+    document
+      .querySelectorAll<HTMLElement>(".practice-session .flashcard, .practice-session .quiz")
+      .forEach((element) => {
+        element.scrollTop = 0;
+      });
+  }, [selectedGroupId, reviewDeck, started, done, index]);
   const vocabItems = useMemo(
       () => bookVocabulary.map((row, index) => practiceItem(row, "vocab", index)),
       [],

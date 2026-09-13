@@ -312,6 +312,25 @@ describe('App', () => {
     expect(screen.getByRole('heading', { name: 'Choose a word group' })).toBeVisible()
     expect(screen.queryByRole('group', { name: 'Choose your practice' })).not.toBeInTheDocument()
   })
+  it('scrolls to the top when opening pages, practice subpages, and the next question', async () => {
+    const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => undefined)
+    vi.spyOn(ttsService, 'speak').mockReturnValue(true)
+    render(<App />)
+    scrollTo.mockClear()
+
+    await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
+    expect(scrollTo).toHaveBeenLastCalledWith({ top: 0, left: 0, behavior: 'auto' })
+
+    scrollTo.mockClear()
+    await userEvent.click(screen.getByRole('button', { name: /Colors \(2\).*2 items/i }))
+    expect(scrollTo).toHaveBeenLastCalledWith({ top: 0, left: 0, behavior: 'auto' })
+
+    await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
+    const card = screen.getByTestId('flashcard-face').closest('.flashcard') as HTMLElement
+    card.scrollTop = 120
+    await userEvent.click(screen.getByRole('button', { name: 'Know' }))
+    expect(card.scrollTop).toBe(0)
+  })
   it('flips a flashcard and advances with know or do not know', async () => {
     const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
