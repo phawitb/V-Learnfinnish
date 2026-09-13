@@ -679,11 +679,11 @@ main {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 .preview-heading h1 {
-  margin: 4px 0 0;
-  font-size: 32px;
+  margin: 0;
+  font-size: 26px;
 }
 .practice-word-list {
   overflow: hidden;
@@ -1468,7 +1468,7 @@ main {
     gap: 6px;
   }
   .preview-heading h1 {
-    font-size: 25px;
+    font-size: 20px;
   }
   .practice-word-row {
     min-height: 62px;

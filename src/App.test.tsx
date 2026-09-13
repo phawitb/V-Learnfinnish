@@ -453,6 +453,7 @@ describe('App', () => {
     await userEvent.click(screen.getByRole('button', { name: /Colors \(2\).*2 items/i }))
 
     expect(screen.getByRole('heading', { name: 'Colors (2)' })).toBeVisible()
+    expect(screen.queryByText('WORD GROUP')).not.toBeInTheDocument()
     expect(screen.getByText('ruskea')).toBeVisible()
     expect(screen.getByText('brown')).toBeVisible()
     expect(screen.getByText('turkoosi')).toBeVisible()

@@ -1134,7 +1134,6 @@ function Practice({
             <ChevronLeft />
           </button>
           <div>
-            <span className="kicker">WORD GROUP</span>
             <h1>{selectedGroup.title}</h1>
           </div>
         </div>
