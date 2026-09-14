@@ -509,6 +509,20 @@ describe('App', () => {
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
     expect(screen.getByTestId('flashcard-face')).toHaveTextContent('nolla')
   })
+  it('adds missing Lesson 2 vocabulary to Practice with English translations', async () => {
+    render(<App />)
+    await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
+
+    expect(screen.getByRole('button', { name: /Lesson 2 — Olla \(1\).*10 items/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Lesson 2 — Days & Time \(1\).*10 items/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Lesson 2 — Numbers \(1\).*6 items/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Lesson 2 — Everyday Sentences \(1\).*10 items/i })).toBeInTheDocument()
+
+    await userEvent.click(screen.getByRole('button', { name: /Lesson 2 — Days & Time \(1\).*10 items/i }))
+    expect(screen.getByText('maanantaina')).toBeVisible()
+    expect(screen.getByText('on Monday')).toBeVisible()
+    expect(screen.queryByText('วันจันทร์')).not.toBeInTheDocument()
+  })
   it('shows a group word list before choosing a practice mode and starting', async () => {
     vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)

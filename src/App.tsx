@@ -28,6 +28,12 @@ import type {
 } from "./types";
 import { bookVocabulary, LessonOnePage, phrases } from "./pages/LessonOnePage";
 import { LessonTwoPage } from "./pages/LessonTwoPage";
+import {
+  lessonTwoDaysAndTime,
+  lessonTwoEverydaySentences,
+  lessonTwoNumbers,
+  lessonTwoOlla,
+} from "./data/lessonTwoPractice";
 
 type Page = "dictionary" | "lessons" | "favorites" | "practice" | "profile";
 type Mode = "flashcard" | "choice" | "matching" | "blank";
@@ -894,6 +900,22 @@ function Practice({
       () => colorVocabulary.map((row, index) => practiceItem(row, "color", index)),
       [],
     ),
+    lessonTwoOllaItems = useMemo(
+      () => lessonTwoOlla.map((row, index) => practiceItem(row, "lesson2-olla", index)),
+      [],
+    ),
+    lessonTwoTimeItems = useMemo(
+      () => lessonTwoDaysAndTime.map((row, index) => practiceItem(row, "lesson2-time", index)),
+      [],
+    ),
+    lessonTwoNumberItems = useMemo(
+      () => lessonTwoNumbers.map((row, index) => practiceItem(row, "lesson2-number", index)),
+      [],
+    ),
+    lessonTwoSentenceItems = useMemo(
+      () => lessonTwoEverydaySentences.map((row, index) => practiceItem(row, "lesson2-sentence", index)),
+      [],
+    ),
     groups = useMemo(
       () => [
         ...chunkGroups("Favorites", "favorites", items),
@@ -901,8 +923,12 @@ function Practice({
         ...chunkGroups("Useful Phrases — Pages 12–13", "phrases", phraseItems),
         ...chunkGroups("Numbers", "numbers", numberItems),
         ...chunkGroups("Colors", "colors", colorItems),
+        ...chunkGroups("Lesson 2 — Olla", "lesson2-olla", lessonTwoOllaItems),
+        ...chunkGroups("Lesson 2 — Days & Time", "lesson2-time", lessonTwoTimeItems),
+        ...chunkGroups("Lesson 2 — Numbers", "lesson2-number", lessonTwoNumberItems),
+        ...chunkGroups("Lesson 2 — Everyday Sentences", "lesson2-sentence", lessonTwoSentenceItems),
       ],
-      [colorItems, items, numberItems, phraseItems, vocabItems],
+      [colorItems, items, lessonTwoNumberItems, lessonTwoOllaItems, lessonTwoSentenceItems, lessonTwoTimeItems, numberItems, phraseItems, vocabItems],
     ),
     groupSections = useMemo(
       () => Array.from(new Set(groups.map((group) => group.id.replace(/-\d+$/, ""))))
