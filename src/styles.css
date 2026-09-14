@@ -2668,6 +2668,79 @@ summary:focus-visible {
 
 /* Shared card geometry: slightly tighter corners across the app. */
 .lesson-panel { border-radius: 16px; }
+
+/* Lesson 2 */
+.lesson2-table > div {
+  grid-template-columns: .85fr .8fr 1fr 1.45fr;
+}
+.lesson2-table .table-head {
+  background: #17324d;
+  color: white;
+  font-size: 12px;
+  letter-spacing: .04em;
+}
+.lesson2-table .finnish-speak {
+  justify-self: start;
+}
+.day-grid,
+.useful-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0 28px;
+}
+.day-grid article,
+.useful-grid article {
+  border: 1px solid #dfe7e6;
+  border-radius: 14px;
+  padding: 16px;
+  background: #fff;
+}
+.day-grid article > span,
+.day-grid article > p,
+.useful-grid article > span {
+  display: block;
+  color: #6c8190;
+  margin-top: 6px;
+}
+.day-grid article > p { margin-bottom: 0; }
+.timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 18px 0 28px;
+}
+.timeline-grid > div {
+  min-width: 0;
+  padding: 16px 10px;
+  text-align: center;
+  border-block: 1px solid #dfe7e6;
+  border-right: 1px solid #dfe7e6;
+}
+.timeline-grid > div:first-child { border-left: 1px solid #dfe7e6; border-radius: 14px 0 0 14px; }
+.timeline-grid > div:last-child { border-radius: 0 14px 14px 0; }
+.timeline-grid span { display: block; color: #6c8190; margin-top: 8px; }
+.useful-grid.compact { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.number-sections { display: grid; gap: 18px; margin-top: 22px; }
+.number-sections section { border: 1px solid #dfe7e6; border-radius: 14px; overflow: hidden; }
+.number-sections h3 { padding: 14px 16px; margin: 0; background: #f1f6f5; }
+.number-sections section > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.number-sections article { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-top: 1px solid #dfe7e6; }
+.number-sections article > span { min-width: 52px; color: #6c8190; font-variant-numeric: tabular-nums; }
+.sentence-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.sentence-list article { display: flex; gap: 12px; padding: 14px; border: 1px solid #dfe7e6; border-radius: 14px; }
+.sentence-list article > b { display: grid; place-items: center; flex: 0 0 28px; height: 28px; border-radius: 50%; background: #eef6f8; color: #0c5c91; }
+.sentence-list article div > span { display: block; color: #6c8190; margin-top: 5px; }
+
+@media (max-width: 720px) {
+  .lesson2-table { overflow-x: auto; }
+  .lesson2-table > div { min-width: 660px; }
+  .day-grid, .useful-grid, .sentence-list { grid-template-columns: 1fr; }
+  .timeline-grid { grid-template-columns: 1fr; }
+  .timeline-grid > div { border: 1px solid #dfe7e6; border-bottom: 0; }
+  .timeline-grid > div:first-child { border-radius: 14px 14px 0 0; }
+  .timeline-grid > div:last-child { border-bottom: 1px solid #dfe7e6; border-radius: 0 0 14px 14px; }
+  .useful-grid.compact, .number-sections section > div { grid-template-columns: 1fr; }
+}
 .lesson-card,
 .setup { border-radius: 15px; }
 .practice-word-list,

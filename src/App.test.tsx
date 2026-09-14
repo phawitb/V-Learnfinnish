@@ -17,6 +17,11 @@ async function openLessonOne() {
   await userEvent.click(screen.getByRole('button', { name: /Lesson 1.*Introduction to Finnish/i }))
 }
 
+async function openLessonTwo() {
+  await userEvent.click(screen.getAllByRole('button', { name: 'Lessons' })[0])
+  await userEvent.click(screen.getByRole('button', { name: /Lesson 2.*Everyday Finnish/i }))
+}
+
 async function chooseLetters(answer: string) {
   for (const letter of answer.match(/\p{L}/gu) || []) {
     const tile = screen.getAllByRole('button').find((button) =>
@@ -273,6 +278,36 @@ describe('App', () => {
     expect(screen.getByRole('heading', { name: /Tervetuloa Suomeen/i })).toBeVisible()
     await userEvent.click(screen.getByRole('button', { name: 'Back to Lessons' }))
     expect(screen.getAllByRole('heading', { name: 'Lessons' })).toHaveLength(2)
+  })
+  it('opens Lesson 2 from the Lessons hub and returns with the mobile back button', async () => {
+    render(<App />)
+    await openLessonTwo()
+
+    expect(screen.getByTestId('mobile-page-title')).toHaveTextContent('Lesson 2')
+    expect(screen.getByRole('heading', { name: /suomea joka päivä/i })).toBeVisible()
+    await userEvent.click(screen.getByRole('button', { name: 'Back to Lessons' }))
+    expect(screen.getAllByRole('heading', { name: 'Lessons' })).toHaveLength(2)
+  })
+  it('teaches Lesson 2 grammar, days, numbers, and useful sentences with Finnish audio', async () => {
+    const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true)
+    render(<App />)
+    await openLessonTwo()
+
+    await userEvent.click(screen.getByRole('tab', { name: /olla/i }))
+    expect(screen.getByText('mä oon')).toBeVisible()
+    expect(screen.getByText('พวกเรา เป็น/อยู่/คือ')).toBeVisible()
+    await userEvent.click(screen.getByRole('button', { name: 'Listen to me ollaan' }))
+    expect(speak).toHaveBeenCalledWith('me ollaan')
+
+    await userEvent.click(screen.getByRole('tab', { name: /time/i }))
+    expect(screen.getByText('maanantaina')).toBeVisible()
+    expect(screen.getByText('ylihuomenna')).toBeVisible()
+    await userEvent.click(screen.getByRole('tab', { name: /numbers/i }))
+    expect(screen.getByText('kaksikymmentä')).toBeVisible()
+    expect(screen.getByText('biljoona')).toBeVisible()
+    await userEvent.click(screen.getByRole('tab', { name: /sentences/i }))
+    expect(screen.getByText('Meneekö tämä bussi Ouluun?')).toBeVisible()
+    expect(screen.getByText('รถบัสคันนี้ไปเมือง Oulu หรือเปล่า?')).toBeVisible()
   })
   it('removes page subtitles and avoids repeating Lesson 1 on its card', async () => {
     render(<App />)
