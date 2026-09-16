@@ -2741,6 +2741,47 @@ summary:focus-visible {
   .timeline-grid > div:last-child { border-bottom: 1px solid #dfe7e6; border-radius: 0 0 14px 14px; }
   .useful-grid.compact, .number-sections section > div { grid-template-columns: 1fr; }
 }
+
+/* Lesson 3 */
+.vowel-groups { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px 0; }
+.vowel-groups article { padding: 20px; border-radius: 15px; border: 1px solid; display: grid; gap: 6px; }
+.vowel-groups b { font-size: 24px; }
+.vowel-groups span { font-weight: 700; }
+.vowel-groups p { margin: 5px 0 0; color: #647b86; line-height: 1.5; }
+.vowel-groups .back { background: #fff2ef; border-color: #efc3ba; }
+.vowel-groups .neutral { background: #fff8e8; border-color: #ecd89d; }
+.vowel-groups .front { background: #edf7fb; border-color: #b8dce8; }
+.suffix-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin: 16px 0 28px; }
+.suffix-grid article { background: #f4f8f8; border-radius: 12px; padding: 14px; display: grid; gap: 4px; }
+.suffix-grid span { color: #6c8190; font-size: 13px; }
+.example-flow, .transform-list { display: grid; gap: 10px; }
+.example-flow article { display: grid; grid-template-columns: 1fr 1.2fr 1fr; align-items: center; gap: 10px; border: 1px solid #e0e8e7; border-radius: 12px; padding: 12px; }
+.example-flow span { color: #6c8190; text-align: center; }
+.lesson3-chip-grid { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 26px; }
+.lesson3-chip-grid .finnish-speak { border: 1px solid #dce7e7; border-radius: 99px; background: #f8fbfb; padding: 9px 12px; }
+.lesson3-table { overflow-x: auto; margin: 20px 0 28px; }
+.lesson3-table > div { display: grid; grid-template-columns: repeat(var(--columns, 5), minmax(135px, 1fr)); min-width: 720px; border-bottom: 1px solid #e0e8e7; }
+.lesson3-table > div > * { padding: 11px 9px; align-self: center; }
+.lesson3-table .table-head { background: #17324d; color: white; border-radius: 10px 10px 0 0; }
+.lesson3-table span { color: #5f7885; }
+.formula { display: flex; align-items: center; justify-content: center; gap: 13px; flex-wrap: wrap; padding: 20px; margin: 20px 0; background: #edf6f8; border-radius: 14px; }
+.formula b { color: #0b659a; font-size: 18px; }
+.transform-list article { display: grid; grid-template-columns: 1fr auto 1.2fr; gap: 15px; align-items: center; padding: 15px; border: 1px solid #dfe8e7; border-radius: 13px; }
+.answer-pairs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 15px 0; }
+.answer-pairs article { padding: 16px; border-radius: 13px; background: #f5f8f7; }
+.answer-pairs p { color: #607985; line-height: 1.55; }
+.profile-example { display: grid; grid-template-columns: 80px 1fr; gap: 18px; align-items: start; padding: 20px; background: #edf6f8; border-radius: 15px; margin: 20px 0; }
+.profile-example > span { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: #0b659a; color: white; font-weight: 700; }
+.profile-example > div { display: grid; justify-items: start; gap: 7px; }
+.intro-people { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.intro-people article { border: 1px solid #dfe8e7; border-radius: 13px; padding: 16px; }
+.intro-people p { color: #607985; line-height: 1.6; }
+@media (max-width: 720px) {
+  .vowel-groups, .suffix-grid, .answer-pairs, .intro-people { grid-template-columns: 1fr; }
+  .example-flow article, .transform-list article { grid-template-columns: 1fr; }
+  .example-flow span { text-align: left; }
+  .profile-example { grid-template-columns: 1fr; }
+}
 .lesson-card,
 .setup { border-radius: 15px; }
 .practice-word-list,

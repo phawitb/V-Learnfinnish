@@ -28,12 +28,14 @@ import type {
 } from "./types";
 import { bookVocabulary, LessonOnePage, phrases } from "./pages/LessonOnePage";
 import { LessonTwoPage } from "./pages/LessonTwoPage";
+import { LessonThreePage } from "./pages/LessonThreePage";
 import {
   lessonTwoDaysAndTime,
   lessonTwoEverydaySentences,
   lessonTwoNumbers,
   lessonTwoOlla,
 } from "./data/lessonTwoPractice";
+import { lessonThreeIntroductions, lessonThreeQuestions, lessonThreeVowelHarmony } from "./data/lessonThreePractice";
 
 type Page = "dictionary" | "lessons" | "favorites" | "practice" | "profile";
 type Mode = "flashcard" | "choice" | "matching" | "blank";
@@ -119,7 +121,7 @@ function Empty({
   );
 }
 
-function LessonsHub({ onOpen }: { onOpen: (lesson: 1 | 2) => void }) {
+function LessonsHub({ onOpen }: { onOpen: (lesson: 1 | 2 | 3) => void }) {
   return (
     <section className="page lessons-page">
       <div className="page-heading">
@@ -139,6 +141,19 @@ function LessonsHub({ onOpen }: { onOpen: (lesson: 1 | 2) => void }) {
           <span className="lesson-card-copy">
             <b>Introduction to Finnish</b>
             <span>Alphabet · Sounds · Greetings · Essential phrases</span>
+          </span>
+          <span className="lesson-card-arrow" aria-hidden="true">→</span>
+        </button>
+        <button
+          type="button"
+          className="lesson-card"
+          onClick={() => onOpen(3)}
+          aria-label="Lesson 3, Finnish sentence toolkit, vowel harmony, verbs, questions, and introductions"
+        >
+          <span className="lesson-card-number">03</span>
+          <span className="lesson-card-copy">
+            <b>Finnish sentence toolkit</b>
+            <span>Vowel harmony · Verbs · Questions · Introductions</span>
           </span>
           <span className="lesson-card-arrow" aria-hidden="true">→</span>
         </button>
@@ -278,7 +293,7 @@ function App() {
       storageService.practiceProgress,
     );
   const [filter, setFilter] = useState(""),
-    [activeLesson, setActiveLesson] = useState<1 | 2 | null>(null);
+    [activeLesson, setActiveLesson] = useState<1 | 2 | 3 | null>(null);
   const fullViewportHeight = useRef(0);
   const searchInput = useRef<HTMLInputElement>(null);
   const direction: Direction = "auto";
@@ -379,6 +394,8 @@ function App() {
       ? "Lesson 1"
       : page === "lessons" && activeLesson === 2
         ? "Lesson 2"
+      : page === "lessons" && activeLesson === 3
+        ? "Lesson 3"
       : nav[page].label;
   return (
     <div className="app-shell">
@@ -573,6 +590,8 @@ function App() {
             ? <LessonOnePage />
             : activeLesson === 2
               ? <LessonTwoPage />
+            : activeLesson === 3
+              ? <LessonThreePage />
             : <LessonsHub onOpen={setActiveLesson} />
         )}
         {page === "favorites" && (
@@ -916,6 +935,18 @@ function Practice({
       () => lessonTwoEverydaySentences.map((row, index) => practiceItem(row, "lesson2-sentence", index)),
       [],
     ),
+    lessonThreeVowelItems = useMemo(
+      () => lessonThreeVowelHarmony.map((row, index) => practiceItem(row, "lesson3-vowels", index)),
+      [],
+    ),
+    lessonThreeQuestionItems = useMemo(
+      () => lessonThreeQuestions.map((row, index) => practiceItem(row, "lesson3-questions", index)),
+      [],
+    ),
+    lessonThreeIntroductionItems = useMemo(
+      () => lessonThreeIntroductions.map((row, index) => practiceItem(row, "lesson3-introductions", index)),
+      [],
+    ),
     groups = useMemo(
       () => [
         ...chunkGroups("Favorites", "favorites", items),
@@ -927,8 +958,11 @@ function Practice({
         ...chunkGroups("Lesson 2 — Days & Time", "lesson2-time", lessonTwoTimeItems),
         ...chunkGroups("Lesson 2 — Numbers", "lesson2-number", lessonTwoNumberItems),
         ...chunkGroups("Lesson 2 — Everyday Sentences", "lesson2-sentence", lessonTwoSentenceItems),
+        ...chunkGroups("Lesson 3 — Vowel harmony", "lesson3-vowels", lessonThreeVowelItems),
+        ...chunkGroups("Lesson 3 — Questions", "lesson3-questions", lessonThreeQuestionItems),
+        ...chunkGroups("Lesson 3 — Introductions", "lesson3-introductions", lessonThreeIntroductionItems),
       ],
-      [colorItems, items, lessonTwoNumberItems, lessonTwoOllaItems, lessonTwoSentenceItems, lessonTwoTimeItems, numberItems, phraseItems, vocabItems],
+      [colorItems, items, lessonThreeIntroductionItems, lessonThreeQuestionItems, lessonThreeVowelItems, lessonTwoNumberItems, lessonTwoOllaItems, lessonTwoSentenceItems, lessonTwoTimeItems, numberItems, phraseItems, vocabItems],
     ),
     groupSections = useMemo(
       () => Array.from(new Set(groups.map((group) => group.id.replace(/-\d+$/, ""))))

@@ -22,6 +22,11 @@ async function openLessonTwo() {
   await userEvent.click(screen.getByRole('button', { name: /Lesson 2.*Everyday Finnish/i }))
 }
 
+async function openLessonThree() {
+  await userEvent.click(screen.getAllByRole('button', { name: 'Lessons' })[0])
+  await userEvent.click(screen.getByRole('button', { name: /Lesson 3.*Finnish sentence toolkit/i }))
+}
+
 async function chooseLetters(answer: string) {
   for (const letter of answer.match(/\p{L}/gu) || []) {
     const tile = screen.getAllByRole('button').find((button) =>
@@ -288,6 +293,58 @@ describe('App', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Back to Lessons' }))
     expect(screen.getAllByRole('heading', { name: 'Lessons' })).toHaveLength(2)
   })
+  it('opens a comprehensive Lesson 3 from the Lessons hub', async () => {
+    render(<App />)
+    await openLessonThree()
+
+    expect(screen.getByTestId('mobile-page-title')).toHaveTextContent('Lesson 3')
+    expect(screen.getByRole('heading', { name: /rakenna suomea/i })).toBeVisible()
+    expect(screen.getAllByRole('tab')).toHaveLength(10)
+    expect(screen.getByText(/กฎสระ.*การผันกริยา.*ประโยคคำถาม/i)).toBeVisible()
+  })
+  it('teaches every Lesson 3 topic with Finnish audio and personalized examples', async () => {
+    const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true)
+    render(<App />)
+    await openLessonThree()
+
+    await userEvent.click(screen.getByRole('tab', { name: /vowels/i }))
+    expect(screen.getByText('a · o · u')).toBeVisible()
+    expect(screen.getByText('suklaajäätelössä')).toBeVisible()
+    await userEvent.click(screen.getByRole('button', { name: 'Listen to kurssiko' }))
+    expect(speak).toHaveBeenCalledWith('kurssiko')
+
+    await userEvent.click(screen.getByRole('tab', { name: /verbs/i }))
+    expect(screen.getByText('puhuvat')).toBeVisible()
+    expect(screen.getByText('kysyvät')).toBeVisible()
+    await userEvent.click(screen.getByRole('tab', { name: /negative/i }))
+    expect(screen.getByText('eivät puhu')).toBeVisible()
+    await userEvent.click(screen.getByRole('tab', { name: /yes.*no/i }))
+    expect(screen.getByText('Ooks sä suomalainen?')).toBeVisible()
+    await userEvent.click(screen.getByRole('tab', { name: /question words/i }))
+    expect(screen.getByRole('button', { name: 'Listen to minkämaalainen' })).toBeVisible()
+    expect(screen.getByRole('button', { name: 'Listen to Mihin sinä menet?' })).toBeVisible()
+    expect(screen.getByRole('button', { name: 'Listen to Menen kotiin.' })).toBeVisible()
+    await userEvent.click(screen.getByRole('tab', { name: /introduce/i }))
+    expect(screen.getByText('Olen kotoisin Bangkokista, Thaimaasta.')).toBeVisible()
+    expect(screen.getByRole('button', { name: 'Listen to Thaimaa' })).toBeVisible()
+    expect(screen.getByText(/Minun äidinkieleni on englanti/)).toBeVisible()
+    await userEvent.click(screen.getByRole('tab', { name: /exercises/i }))
+    expect(screen.getByText('HARJOITUKSET 6 · 16 · 20–21 · 23–27')).toBeVisible()
+    expect(screen.getByText('Jyväskylässä')).toBeVisible()
+    expect(screen.getByText('Etsivätkö he bussipysäkkiä?')).toBeVisible()
+    await userEvent.click(screen.getByRole('tab', { name: /time/i }))
+    expect(screen.getByText('Hyvää viikonloppua')).toBeVisible()
+    await userEvent.click(screen.getByRole('tab', { name: /check/i }))
+    expect(screen.getByText(/คำถาม 1 จาก 15/i)).toBeVisible()
+  })
+  it('adds Lesson 3 study material to Practice', async () => {
+    render(<App />)
+    await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
+
+    expect(screen.getByRole('button', { name: /Lesson 3 — Vowel harmony.*items/i })).toBeVisible()
+    expect(screen.getAllByRole('button', { name: /Lesson 3 — Questions.*items/i })[0]).toBeVisible()
+    expect(screen.getByRole('button', { name: /Lesson 3 — Introductions.*items/i })).toBeVisible()
+  })
   it('teaches Lesson 2 grammar, days, numbers, and useful sentences with Finnish audio', async () => {
     const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
@@ -308,6 +365,17 @@ describe('App', () => {
     await userEvent.click(screen.getByRole('tab', { name: /sentences/i }))
     expect(screen.getByText('Meneekö tämä bussi Ouluun?')).toBeVisible()
     expect(screen.getByText('รถบัสคันนี้ไปเมือง Oulu หรือเปล่า?')).toBeVisible()
+  })
+  it('speaks the base weekday names in Lesson 2', async () => {
+    const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true)
+    render(<App />)
+    await openLessonTwo()
+    await userEvent.click(screen.getByRole('tab', { name: /time/i }))
+
+    await userEvent.click(screen.getByRole('button', { name: 'Listen to maanantai' }))
+    expect(speak).toHaveBeenCalledWith('maanantai')
+    await userEvent.click(screen.getByRole('button', { name: 'Listen to viikonloppu' }))
+    expect(speak).toHaveBeenCalledWith('viikonloppu')
   })
   it('removes page subtitles and avoids repeating Lesson 1 on its card', async () => {
     render(<App />)
