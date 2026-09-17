@@ -29,6 +29,7 @@ import type {
 import { bookVocabulary, LessonOnePage, phrases } from "./pages/LessonOnePage";
 import { LessonTwoPage } from "./pages/LessonTwoPage";
 import { LessonThreePage } from "./pages/LessonThreePage";
+import { TestOnePage } from "./pages/TestOnePage";
 import {
   lessonTwoDaysAndTime,
   lessonTwoEverydaySentences,
@@ -121,7 +122,7 @@ function Empty({
   );
 }
 
-function LessonsHub({ onOpen }: { onOpen: (lesson: 1 | 2 | 3) => void }) {
+function LessonsHub({ onOpen }: { onOpen: (lesson: 1 | 2 | 3 | "test1") => void }) {
   return (
     <section className="page lessons-page">
       <div className="page-heading">
@@ -131,6 +132,19 @@ function LessonsHub({ onOpen }: { onOpen: (lesson: 1 | 2 | 3) => void }) {
         </div>
       </div>
       <div className="lessons-grid">
+        <button
+          type="button"
+          className="lesson-card test-card"
+          onClick={() => onOpen("test1")}
+          aria-label="Test 1, complete exam review, texts, vocabulary, grammar, and questions"
+        >
+          <span className="lesson-card-number">T1</span>
+          <span className="lesson-card-copy">
+            <b>Test 1 · Complete exam review</b>
+            <span>Texts · Phrases · Numbers · Grammar · Questions</span>
+          </span>
+          <span className="lesson-card-arrow" aria-hidden="true">→</span>
+        </button>
         <button
           type="button"
           className="lesson-card"
@@ -293,7 +307,7 @@ function App() {
       storageService.practiceProgress,
     );
   const [filter, setFilter] = useState(""),
-    [activeLesson, setActiveLesson] = useState<1 | 2 | 3 | null>(null);
+    [activeLesson, setActiveLesson] = useState<1 | 2 | 3 | "test1" | null>(null);
   const fullViewportHeight = useRef(0);
   const searchInput = useRef<HTMLInputElement>(null);
   const direction: Direction = "auto";
@@ -396,6 +410,8 @@ function App() {
         ? "Lesson 2"
       : page === "lessons" && activeLesson === 3
         ? "Lesson 3"
+      : page === "lessons" && activeLesson === "test1"
+        ? "Test 1"
       : nav[page].label;
   return (
     <div className="app-shell">
@@ -592,6 +608,8 @@ function App() {
               ? <LessonTwoPage />
             : activeLesson === 3
               ? <LessonThreePage />
+            : activeLesson === "test1"
+              ? <TestOnePage />
             : <LessonsHub onOpen={setActiveLesson} />
         )}
         {page === "favorites" && (

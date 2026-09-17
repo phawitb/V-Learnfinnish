@@ -2782,6 +2782,29 @@ summary:focus-visible {
   .example-flow span { text-align: left; }
   .profile-example { grid-template-columns: 1fr; }
 }
+
+/* Test 1 */
+.lesson-card.test-card {
+  border-color: #b7d9cf;
+  background: linear-gradient(135deg, #f1faf6, #ffffff);
+}
+.test-card .lesson-card-number { color: #217a62; }
+.test-one .lesson-progress b { color: #217a62; }
+.test1-dialog { margin: 30px 0; border: 1px solid #dfe8e7; border-radius: 15px; overflow: hidden; }
+.test1-dialog > div:first-child { padding: 17px 18px; background: #f2f7f6; }
+.test1-dialog h3 { margin: 7px 0 0; font-size: 23px; }
+.page-badge { color: #287a66; font-size: 12px; font-weight: 700; letter-spacing: .04em; }
+.test1-dialog article { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 14px; padding: 13px 18px; border-top: 1px solid #e6eceb; }
+.test1-dialog article > b { color: #486775; }
+.test1-dialog article p { margin: 6px 0 0; color: #6b808b; line-height: 1.5; }
+.test1-number-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; margin: 22px 0; }
+.test1-number-grid article { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 11px 13px; border: 1px solid #dfe8e7; border-radius: 11px; }
+.test1-number-grid article > b { flex: 0 0 72px; color: #657d88; font-variant-numeric: tabular-nums; }
+.test1-number-grid .finnish-speak { min-width: 0; overflow-wrap: anywhere; text-align: left; }
+@media (max-width: 720px) {
+  .test1-dialog article { grid-template-columns: 1fr; gap: 6px; }
+  .test1-number-grid { grid-template-columns: 1fr; }
+}
 .lesson-card,
 .setup { border-radius: 15px; }
 .practice-word-list,
