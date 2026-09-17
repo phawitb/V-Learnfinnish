@@ -316,6 +316,13 @@ describe('App', () => {
     expect(screen.getAllByRole('tab')).toHaveLength(10)
     expect(screen.getByText(/หน้าหนังสือ 11–17.*29.*31.*33.*37–39/i)).toBeVisible()
   })
+  it('orders lessons as 01, 02, 03, then Test 1', async () => {
+    render(<App />)
+    await userEvent.click(screen.getAllByRole('button', { name: 'Lessons' })[0])
+
+    const cards = screen.getAllByRole('button').filter((button) => button.classList.contains('lesson-card'))
+    expect(cards.map((button) => button.querySelector('.lesson-card-number')?.textContent)).toEqual(['01', '02', '03', 'T1'])
+  })
   it('covers every assigned Test 1 page with detailed Finnish examples', async () => {
     render(<App />)
     await openTestOne()

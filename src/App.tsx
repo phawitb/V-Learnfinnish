@@ -134,19 +134,6 @@ function LessonsHub({ onOpen }: { onOpen: (lesson: 1 | 2 | 3 | "test1") => void 
       <div className="lessons-grid">
         <button
           type="button"
-          className="lesson-card test-card"
-          onClick={() => onOpen("test1")}
-          aria-label="Test 1, complete exam review, texts, vocabulary, grammar, and questions"
-        >
-          <span className="lesson-card-number">T1</span>
-          <span className="lesson-card-copy">
-            <b>Test 1 · Complete exam review</b>
-            <span>Texts · Phrases · Numbers · Grammar · Questions</span>
-          </span>
-          <span className="lesson-card-arrow" aria-hidden="true">→</span>
-        </button>
-        <button
-          type="button"
           className="lesson-card"
           onClick={() => onOpen(1)}
           aria-label="Lesson 1, Introduction to Finnish, Alphabet, sounds, greetings, and essential phrases"
@@ -155,6 +142,19 @@ function LessonsHub({ onOpen }: { onOpen: (lesson: 1 | 2 | 3 | "test1") => void 
           <span className="lesson-card-copy">
             <b>Introduction to Finnish</b>
             <span>Alphabet · Sounds · Greetings · Essential phrases</span>
+          </span>
+          <span className="lesson-card-arrow" aria-hidden="true">→</span>
+        </button>
+        <button
+          type="button"
+          className="lesson-card"
+          onClick={() => onOpen(2)}
+          aria-label="Lesson 2, Everyday Finnish, Olla, days, time, numbers, and useful sentences"
+        >
+          <span className="lesson-card-number">02</span>
+          <span className="lesson-card-copy">
+            <b>Everyday Finnish</b>
+            <span>Olla · Days &amp; time · Numbers · Useful sentences</span>
           </span>
           <span className="lesson-card-arrow" aria-hidden="true">→</span>
         </button>
@@ -173,14 +173,14 @@ function LessonsHub({ onOpen }: { onOpen: (lesson: 1 | 2 | 3 | "test1") => void 
         </button>
         <button
           type="button"
-          className="lesson-card"
-          onClick={() => onOpen(2)}
-          aria-label="Lesson 2, Everyday Finnish, Olla, days, time, numbers, and useful sentences"
+          className="lesson-card test-card"
+          onClick={() => onOpen("test1")}
+          aria-label="Test 1, complete exam review, texts, vocabulary, grammar, and questions"
         >
-          <span className="lesson-card-number">02</span>
+          <span className="lesson-card-number">T1</span>
           <span className="lesson-card-copy">
-            <b>Everyday Finnish</b>
-            <span>Olla · Days &amp; time · Numbers · Useful sentences</span>
+            <b>Test 1 · Complete exam review</b>
+            <span>Texts · Phrases · Numbers · Grammar · Questions</span>
           </span>
           <span className="lesson-card-arrow" aria-hidden="true">→</span>
         </button>
