@@ -2195,6 +2195,35 @@ summary:focus-visible {
   border-radius: 8px;
   background: #338caa;
 }
+.section-quiz-wrap {
+  margin-top: 40px;
+  padding: 28px 24px;
+  background: #f0f6fa;
+  border-radius: 14px;
+  border: 2px solid #d0e4ef;
+}
+.section-quiz-heading {
+  font-size: 18px;
+  color: #17324d;
+  margin: 0 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #d0e4ef;
+}
+.section-quiz-wrap h4 {
+  font-size: 17px;
+  line-height: 1.5;
+  margin: 8px 0 14px;
+  color: #17324d;
+}
+.section-quiz-progress {
+  font-size: 14px;
+  color: #6b8ea0;
+  margin: 0;
+  font-weight: 600;
+}
+.section-quiz-wrap .lesson-result {
+  margin-top: 8px;
+}
 .quiz-panel {
   max-width: 680px;
   margin: auto;
