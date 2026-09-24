@@ -106,16 +106,112 @@ const conjugation = [["minä", "puhun", "kysyn", "-n"], ["sinä", "puhut", "kysy
 const negatives = [["minä", "en", "en puhu", "mä en puhu"], ["sinä", "et", "et puhu", "sä et puhu"], ["hän", "ei", "ei puhu", "se ei puhu"], ["me", "emme", "emme puhu", "me ei puhuta"], ["te", "ette", "ette puhu", "te ette puhu"], ["he", "eivät", "eivät puhu", "ne ei puhu"]];
 const questionWords = [["kuka", "ใคร", "Kuka sinä olet?", "Minä olen Olga."], ["mikä", "อะไร (ใช้กับ olla)", "Mikä päivä tänään on?", "Tänään on maanantai."], ["mitä", "อะไร (กริยาอื่น)", "Mitä kieltä sinä puhut?", "Minä puhun italiaa."], ["milloin", "เมื่อไร", "Milloin kurssi on?", "Kurssi on maanantaina."], ["minkämaalainen", "คนชาติอะไร", "Minkämaalainen Pedro on?", "Hän on brasilialainen."], ["missä", "ที่ไหน", "Missä te asutte?", "Me asumme Suomessa."], ["mistä", "จากไหน", "Mistä sinä olet kotoisin?", "Olen kotoisin Brasiliasta."], ["mihin", "ไปที่ไหน", "Mihin sinä menet?", "Minä menen kotiin."], ["miksi", "ทำไม", "Miksi et osta jäätelöä?", "Koska minä säästän rahaa."], ["kuinka", "อย่างไร/เท่าไร", "Kuinka vanha sinä olet?", "Minä olen 23 vuotta vanha."]];
 const quiz = [
-  ["‘ที่นี่มีคอร์สภาษาฟินแลนด์ใช่ไหม’ คือข้อใด", ["Onko täällä suomen kurssi?", "Missä suomen kurssi on?", "Mikä suomen kurssi?"], "Onko täällä suomen kurssi?", "คำถาม yes/no เติม -ko ที่กริยา on → onko"],
-  ["‘ในวันพุธ’ ใช้รูปใด", ["keskiviikko", "keskiviikkona", "keskiviikossa"], "keskiviikkona", "วันในความหมายว่า ‘ในวัน…’ ใช้ -na/-nä"],
-  ["23 เขียนอย่างไร", ["kaksitoistakolme", "kaksikymmentäkolme", "kolmekymmentäkaksi"], "kaksikymmentäkolme", "20 + 3 ต่อกันเป็น yksiคำ"],
-  ["รูปภาษาพูดของ me olemme", ["me ootte", "me ollaan", "ne on"], "me ollaan", "ภาษาพูดใช้ me ollaan"],
-  ["คำมีเฉพาะ i/e เช่น kieli เลือกคำลงท้ายฝั่งใด", ["ä/ö/y", "a/o/u", "ใช้ไม่ได้"], "ä/ö/y", "สระกลาง i/e ไม่กำหนดฝั่ง จึงใช้ suffix ฝั่งสระหน้า"],
-  ["he + kysyä", ["kysyvät", "kysymme", "kysytte"], "kysyvät", "he ใช้ -vat/-vät และ kysyä มีสระหน้า จึงเป็น -vät"],
-  ["ปฏิเสธ me + puhua", ["emme puhu", "ei puhu", "ette puhu"], "emme puhu", "กริยาปฏิเสธของ me คือ emme และกริยาหลักเป็น puhu"],
-  ["เปลี่ยน Sinä olet suomalainen. เป็นคำถาม", ["Oletko sinä suomalainen?", "Oletkö sinä suomalainen?", "Onko sinä suomalainen?"], "Oletko sinä suomalainen?", "ย้ายกริยาไว้หน้าและเติม -ko ตาม vowel harmony"],
-  ["ถาม ‘จากที่ไหน’", ["missä", "mistä", "mihin"], "mistä", "missä=ที่ไหน, mistä=จากไหน, mihin=ไปไหน"],
-  ["ตอบปฏิเสธ Puhutteko englantia?", ["Ette.", "Emme.", "Eivät."], "Emme.", "ผู้ตอบคือ me จึงตอบ Emme."],
+  // ── Alphabet & Sounds (Lesson 1) ──
+  ["ตัวอักษรภาษาฟินแลนด์มีกี่ตัว?", ["26", "29", "32"], "29", "Finnish ใช้ 29 ตัว รวม Å, Ä และ Ö"],
+  ["ตัว W เรียกว่าอะไรในภาษาฟินแลนด์?", ["wee", "kaksois-vee", "tupla-uu"], "kaksois-vee", "kaksois-vee แปลว่า double V"],
+  ["tuuli แปลว่าอะไร?", ["ไฟ", "ลม", "สไตล์"], "ลม", "สระคู่ยาวขึ้น: tuli = ไฟ, tuuli = ลม"],
+  ["matto แปลว่าอะไร?", ["หนอน", "พรม", "ด้าม"], "พรม", "พยัญชนะคู่เปลี่ยนความหมาย: mato = หนอน, matto = พรม"],
+  ["กลุ่มสระหน้า (front vowels) คือชุดใด?", ["a, o, u", "ä, ö, y", "e, i, o"], "ä, ö, y", "สระหน้า: ä, ö, y · สระหลัง: a, o, u · สระกลาง: i, e"],
+  ["การเน้นเสียง (stress) ในภาษาฟินแลนด์อยู่พยางค์ไหน?", ["พยางค์แรก", "พยางค์สุดท้าย", "พยางค์ที่สอง"], "พยางค์แรก", "Finnish stress ตกที่พยางค์แรกเสมอ"],
+  // ── Phrases & Greetings (Lesson 1) ──
+  ["Huomenta! แปลว่าอะไร?", ["อรุณสวัสดิ์", "ราตรีสวัสดิ์", "ยินดีต้อนรับ"], "อรุณสวัสดิ์", "Huomenta เป็นรูปสั้นของ Hyvää huomenta"],
+  ["Hauska tutustua! แปลว่าอะไร?", ["ยินดีที่ได้รู้จัก", "เจอกันพรุ่งนี้", "ไม่เป็นไร"], "ยินดีที่ได้รู้จัก", "ตอบด้วย Kiitos samoin!"],
+  ["ตอบ Hauska tutustua! ว่าอย่างไร?", ["Kiitos samoin!", "Hyvää yötä!", "Anteeksi!"], "Kiitos samoin!", "Kiitos samoin = ขอบคุณ เช่นกัน"],
+  ["Mitä kuuluu? ถามเรื่องอะไร?", ["ชื่ออะไร", "สบายดีไหม", "อาศัยอยู่ที่ไหน"], "สบายดีไหม", "ตอบง่าย ๆ ว่า Hyvää, kiitos."],
+  ["Ei kestä! แปลว่าอะไร?", ["ไม่เป็นไร (ด้วยความยินดี)", "ขอโทษ", "ขอบคุณ"], "ไม่เป็นไร (ด้วยความยินดี)", "ใช้ตอบ Kiitos! เหมือน You’re welcome"],
+  ["Ei se mitään! ใช้ตอบประโยคใด?", ["Kiitos!", "Anteeksi!", "Hauska tutustua!"], "Anteeksi!", "Anteeksi = ขอโทษ → Ei se mitään = ไม่เป็นไร"],
+  ["Hyvää ruokahalua! แปลว่าอะไร?", ["ทานให้อร่อย", "ชนแก้ว", "ขอบคุณสำหรับอาหาร"], "ทานให้อร่อย", "ruokahalua = ความอยากอาหาร; Kiitos ruoasta = ขอบคุณสำหรับอาหาร"],
+  ["Nähdään huomenna! แปลว่าอะไร?", ["แล้วเจอกัน", "เจอกันพรุ่งนี้", "บ๊ายบาย"], "เจอกันพรุ่งนี้", "Nähdään = แล้วเจอกัน, huomenna = พรุ่งนี้"],
+  ["Tervetuloa! แปลว่าอะไร?", ["ยินดีต้อนรับ", "ลาก่อน", "ขอบคุณ"], "ยินดีต้อนรับ", "Tervetuloa ใช้ต้อนรับผู้มาเยือน"],
+  // ── Pronouns & Olla (Lesson 1, 2, 3) ──
+  ["เติม: Minä ___ opiskelija.", ["olen", "olet", "on"], "olen", "Minä olen = ฉันเป็น"],
+  ["เติม: Te ___ nyt kurssilla.", ["olemme", "olette", "ovat"], "olette", "Te olette = พวกคุณเป็น/อยู่"],
+  ["he / ne ใช้ olla รูปใด?", ["on", "olemme", "ovat"], "ovat", "He ovat = พวกเขาเป็น"],
+  ["รูปภาษาพูดของ me olemme คือ?", ["me ootte", "me ollaan", "ne on"], "me ollaan", "ภาษาพูดใช้ me ollaan"],
+  ["รูปภาษาพูดของ minä olen คือ?", ["mä oon", "sä oot", "ne on"], "mä oon", "minä → mä, olen → oon"],
+  ["ภาษาพูดใช้ se แทนสรรพนามใด?", ["minä", "sinä", "hän"], "hän", "ในภาษาพูด hän → se, he → ne"],
+  // ── Vowel Harmony (Lesson 3) ──
+  ["คำที่มีแค่ i/e เช่น kieli เลือก suffix ฝั่งใด?", ["ä/ö/y (สระหน้า)", "a/o/u (สระหลัง)", "ใช้ได้ทั้งสองฝั่ง"], "ä/ö/y (สระหน้า)", "สระกลาง i/e ล้วน ให้ใช้ suffix ฝั่งสระหน้า"],
+  ["kurssi + ko/kö ได้คำใด?", ["kurssiko", "kurssikö", "kurssi-ko"], "kurssiko", "kurssi มี u ซึ่งเป็นสระหลัง จึงใช้ -ko"],
+  ["คำประสม suklaajäätelö + ssa/ssä ได้คำใด?", ["suklaajäätelössä", "suklaajäätelössa", "suklaajäätelossa"], "suklaajäätelössä", "ดูส่วนท้าย jäätelö มี ä/ö จึงใช้ -ssä"],
+  ["คำประสม jäätelökioski + lla/llä ได้คำใด?", ["jäätelökioskilla", "jäätelökioskillä", "jäätelökioskillla"], "jäätelökioskilla", "ดูส่วนท้าย kioski มี o จึงใช้ -lla"],
+  ["’ใน Jyväskylä’ คือ?", ["Jyväskylässä", "Jyväskylassa", "Jyväskylästa"], "Jyväskylässä", "มี y/ä จึงใช้ -ssä"],
+  ["คู่ suffix -sta/-stä ใช้บอกอะไร?", ["จาก", "ใน", "ที่/ด้วย"], "จาก", "-ssa/-ssä = ใน, -sta/-stä = จาก, -lla/-llä = ที่/ด้วย"],
+  // ── Verb Conjugation (Lesson 3) ──
+  ["he + puhua รูปภาษาเขียนคือ?", ["puhuvat", "puhumme", "puhutte"], "puhuvat", "he ใช้ -vat/-vät"],
+  ["he + kysyä รูปภาษาเขียนคือ?", ["kysyvät", "kysymme", "kysytte"], "kysyvät", "kysyä มีสระหน้า จึงเป็น -vät"],
+  ["hän + puhua ผันอย่างไร?", ["puhuu", "puhun", "puhut"], "puhuu", "hän ยืดสระท้ายของรากคำ: puhu → puhuu"],
+  ["Te (สุภาพ) + puhua ผันอย่างไร?", ["puhutte", "puhuvat", "puhumme"], "puhutte", "Te สุภาพใช้ -tte เหมือน te"],
+  ["ภาษาพูดของ me puhumme คือ?", ["me puhutaan", "me puhuu", "ne puhuu"], "me puhutaan", "ภาษาพูดของ me ใช้รูป passiivin: me puhutaan"],
+  ["ภาษาพูดของ he puhuvat คือ?", ["ne puhuu", "ne puhutaan", "se puhuu"], "ne puhuu", "ภาษาพูด he → ne และใช้รูปบุรุษที่ 3 เอกพจน์"],
+  // ── Negative Sentences (Lesson 3) ──
+  ["ปฏิเสธ me + puhua คือ?", ["emme puhu", "ei puhu", "ette puhu"], "emme puhu", "กริยาปฏิเสธของ me คือ emme"],
+  ["ปฏิเสธ hän + puhua คือ?", ["ei puhu", "en puhu", "et puhu"], "ei puhu", "กริยาปฏิเสธของ hän คือ ei"],
+  ["ปฏิเสธ he + puhua คือ?", ["eivät puhu", "emme puhu", "ette puhu"], "eivät puhu", "กริยาปฏิเสธของ he คือ eivät"],
+  ["ปฏิเสธ sinä + puhua ภาษาเขียนคือ?", ["et puhu", "ei puhu", "en puhu"], "et puhu", "กริยาปฏิเสธของ sinä คือ et"],
+  ["กริยาหลักในปฏิเสธใช้รูปใด?", ["รูป stem (ไม่มี personal ending)", "รูปเดียวกับ minä", "infinitive"], "รูป stem (ไม่มี personal ending)", "เช่น et puhu ไม่ใช่ et puhun, ei asu ไม่ใช่ ei asuu"],
+  // ── Yes/No Questions (Lesson 3) ──
+  ["เปลี่ยน ‘Sinä olet suomalainen.’ เป็นคำถาม", ["Oletko sinä suomalainen?", "Oletkö sinä suomalainen?", "Onko sinä suomalainen?"], "Oletko sinä suomalainen?", "ย้ายกริยาไว้หน้าและเติม -ko; olet มี o (สระหลัง) จึงใช้ -ko"],
+  ["เปลี่ยน ‘Hän asuu Suomessa.’ เป็นคำถาม", ["Asuuko hän Suomessa?", "Asuukö hän Suomessa?", "Asunko hän Suomessa?"], "Asuuko hän Suomessa?", "ย้ายกริยา asuu ไว้หน้าและเติม -ko; asuu มี u จึงใช้ -ko"],
+  ["ภาษาพูด -ko/-kö มักย่อเป็นอะไร?", ["-ks", "-k", "-kos"], "-ks", "เช่น Ooks sä suomalainen? Asuuks se Suomessa?"],
+  ["ตอบรับ Asutko sinä Helsingissä? ว่าอย่างไร?", ["Asun.", "Olen.", "Kyllä."], "Asun.", "ตอบด้วยการทวนกริยาที่ผันตามผู้ตอบ"],
+  ["ตอบปฏิเสธ Puhutteko englantia?", ["Emme.", "Ette.", "Eivät."], "Emme.", "ผู้ตอบคือ me จึงตอบ Emme."],
+  ["vai กับ tai ต่างกันอย่างไร?", ["vai ใช้ในคำถาม, tai ใช้ในบอกเล่า", "vai ใช้ในบอกเล่า, tai ใช้ในคำถาม", "ใช้แทนกันได้"], "vai ใช้ในคำถาม, tai ใช้ในบอกเล่า", "vai = หรือ (เลือก A หรือ B ในคำถาม), tai = หรือ (ในบอกเล่า)"],
+  // ── Question Words (Lesson 3) ──
+  ["คำถาม ‘ใคร’ ใช้คำใด?", ["kuka", "mikä", "missä"], "kuka", "Kuka sinä olet? = คุณคือใคร"],
+  ["mikä กับ mitä ต่างกันอย่างไร?", ["mikä คู่กับ olla, mitä คู่กับกริยาอื่น", "ใช้แทนกันได้", "mikä ถามคน, mitä ถามของ"], "mikä คู่กับ olla, mitä คู่กับกริยาอื่น", "Mikä tämä on? vs Mitä sinä opiskelet?"],
+  ["ถาม ‘เมื่อไร’ ใช้คำใด?", ["milloin", "missä", "miksi"], "milloin", "Milloin kurssi on? = คอร์สเมื่อไร"],
+  ["ถาม ‘จากที่ไหน’ ใช้คำใด?", ["mistä", "missä", "mihin"], "mistä", "missä=ที่ไหน, mistä=จากไหน, mihin=ไปไหน"],
+  ["ถาม ‘ไปที่ไหน’ ใช้คำใด?", ["mihin", "missä", "mistä"], "mihin", "Mihin sinä menet? = คุณไปไหน"],
+  ["ถาม ‘ทำไม’ ใช้คำใด?", ["miksi", "mitä", "milloin"], "miksi", "Miksi et osta jäätelöä? = ทำไมไม่ซื้อไอศกรีม; ตอบด้วย Koska…"],
+  ["ถาม ‘สัญชาติอะไร’ ใช้คำใด?", ["minkämaalainen", "mistä", "kuka"], "minkämaalainen", "Minkämaalainen Pedro on? = Pedro สัญชาติอะไร"],
+  ["ถาม ‘อย่างไร/เท่าไร’ ใช้คำใด?", ["kuinka", "mikä", "missä"], "kuinka", "Kuinka vanha sinä olet? = คุณอายุเท่าไร"],
+  // ── Days & Time (Lesson 2, 3) ──
+  ["’ในวันพุธ’ ใช้รูปใด?", ["keskiviikkona", "keskiviikko", "keskiviikossa"], "keskiviikkona", "วันในความหมาย ‘ในวัน…’ ใช้ -na/-nä"],
+  ["torstai คือวันอะไร?", ["วันพุธ", "วันพฤหัสบดี", "วันเสาร์"], "วันพฤหัสบดี", "torstai = Thursday"],
+  ["ylihuomenna แปลว่าอะไร?", ["เมื่อวานซืน", "พรุ่งนี้", "มะรืน"], "มะรืน", "huomenna = พรุ่งนี้, ylihuomenna = มะรืน"],
+  ["toissapäivänä แปลว่าอะไร?", ["เมื่อวานซืน", "สัปดาห์ที่แล้ว", "มะรืน"], "เมื่อวานซืน", "toissapäivänä = วันก่อนเมื่อวาน"],
+  ["viime viikolla แปลว่าอะไร?", ["สัปดาห์ที่แล้ว", "สัปดาห์นี้", "สัปดาห์หน้า"], "สัปดาห์ที่แล้ว", "viime = ที่แล้ว, tällä = นี้, ensi = หน้า"],
+  ["Mikä päivä tänään on? เป็นคำถามชนิดใด?", ["ถามว่าวันนี้วันอะไร", "ถามว่าวันไหนมีคอร์ส", "ถามว่าเมื่อไร"], "ถามว่าวันนี้วันอะไร", "ตอบ: Tänään on maanantai. คำตอบใช้รูปพื้นฐานไม่เติม -na"],
+  // ── Numbers (Lesson 2) ──
+  ["20 ในภาษาฟินแลนด์คือ?", ["kaksitoista", "kaksikymmentä", "kaksisataa"], "kaksikymmentä", "สองสิบ = kaksi + kymmentä"],
+  ["23 เขียนอย่างไร?", ["kaksitoistakolme", "kaksikymmentäkolme", "kolmekymmentäkaksi"], "kaksikymmentäkolme", "20 + 3 ต่อกันเป็นคำเดียว"],
+  ["เลข 11–19 ใช้หลักอะไร?", ["เลข + toista", "เลข + kymmentä", "เลข + sataa"], "เลข + toista", "เช่น yksitoista = 11, kaksitoista = 12"],
+  ["200 คือ?", ["kaksisataa", "satakaksi", "kaksi sataa"], "kaksisataa", "ตั้งแต่ 2 ร้อยใช้ partitive: kaksisataa"],
+  ["2000 คือ?", ["kaksituhatta", "kaksi tuhatta", "tuhat kaksi"], "kaksituhatta", "partitive ของ tuhat คือ tuhatta"],
+  ["Kuinka vanha sinä olet? ถามเรื่องอะไร?", ["อายุ", "ส่วนสูง", "น้ำหนัก"], "อายุ", "ตอบ: Olen 23 vuotta vanha. (vuotta = ปี รูป partitive)"],
+  // ── Countries, Nationality, Language (Lesson 3 & Test 1) ──
+  ["olla kotoisin ใช้คู่กับ case ใด?", ["-sta/-stä (จาก)", "-ssa/-ssä (ใน)", "-lla/-llä (ที่)"], "-sta/-stä (จาก)", "Olen kotoisin Suomesta. = ฉันมาจากฟินแลนด์"],
+  ["Venäjä (รัสเซีย) เป็นข้อยกเว้น ใช้อะไรแทน -sta/-stä?", ["Venäjältä", "Venäjästä", "Venäjässä"], "Venäjältä", "Venäjä ใช้ Venäjältä แทนที่จะเป็น Venäjästä"],
+  ["คำต่อท้ายสัญชาติมักลงท้ายว่าอะไร?", ["-lainen/-läinen", "-nen/-nen", "-ssa/-ssä"], "-lainen/-läinen", "suomalainen, thaimaalainen, brasilialainen"],
+  ["ชื่อประเทศขึ้นต้นตัวใหญ่ แล้วสัญชาติล่ะ?", ["ตัวเล็ก", "ตัวใหญ่", "แล้วแต่"], "ตัวเล็ก", "Suomi (ประเทศ) vs suomalainen (สัญชาติ ตัวเล็ก)"],
+  ["’ฉันพูดภาษาไทย’ คือ?", ["Puhun thaita.", "Puhun thai.", "Puhun thaia."], "Puhun thaita.", "ภาษาหลัง puhua ใช้ partitive: thaita, suomea, venäjää"],
+  ["Minun äidinkieleni on englanti. แปลว่า?", ["ภาษาแม่ของฉันคืออังกฤษ", "ฉันพูดอังกฤษ", "ฉันเรียนอังกฤษ"], "ภาษาแม่ของฉันคืออังกฤษ", "äidinkieli = ภาษาแม่; äidinkieleni = ภาษาแม่ของฉัน"],
+  // ── Dialogues & Book Content (Test 1) ──
+  ["’ที่นี่มีคอร์สภาษาฟินแลนด์ไหม’ คือ?", ["Onko täällä suomen kurssi?", "Missä suomen kurssi on?", "Mikä suomen kurssi?"], "Onko täällä suomen kurssi?", "yes/no question: เติม -ko ที่กริยา on → onko"],
+  ["’ที่นั่งนี้ว่างไหม’ คือ?", ["Onko tämä paikka vapaa?", "Missä paikka on?", "Tämä paikka on vapaa."], "Onko tämä paikka vapaa?", "onko + tämä paikka + vapaa? คำถาม yes/no"],
+  ["’สะกดอย่างไร’ คือ?", ["Miten se kirjoitetaan?", "Mikä sinun nimi on?", "Missä se on?"], "Miten se kirjoitetaan?", "Alex ถามครูว่าสะกดชื่อยังไง"],
+  ["Olga ไม่ซื้อไอศกรีมเพราะอะไร?", ["เธอเก็บเงิน (säästää rahaa)", "เธอไม่ชอบ", "เธอไม่มีเงิน"], "เธอเก็บเงิน (säästää rahaa)", "Olga ei osta jäätelöä, koska hän säästää rahaa."],
+  ["Pedro มาจากประเทศอะไร?", ["Brasilia", "Venäjä", "Etelä-Afrikka"], "Brasilia", "Pedro on brasilialainen, kotoisin São Paulosta Brasiliasta"],
+  // ── Spoken Language / Kiosk (Test 1 p.33) ──
+  ["jätski เป็นภาษาพูดของคำใด?", ["jäätelö", "juusto", "joki"], "jäätelö", "jätski (พูด) = jäätelö (เขียน) = ไอศกรีม"],
+  ["mä เป็นภาษาพูดของสรรพนามใด?", ["minä", "sinä", "hän"], "minä", "minä → mä, sinä → sä"],
+  ["kiitti เป็นภาษาพูดของคำใด?", ["kiitos", "kiva", "kieli"], "kiitos", "kiitti = kiitos = ขอบคุณ"],
+  ["Tuleeks muuta? แปลว่าอะไร?", ["รับอย่างอื่นอีกไหม", "มารึยัง", "ใช่ไหม"], "รับอย่างอื่นอีกไหม", "tuleeks = tuleeko + ks; muuta = อย่างอื่น"],
+  // ── Grammar from Dialogues ──
+  ["Minulle kuuluu hyvää. แปลว่า?", ["ฉันสบายดี", "ฉันเรียนเก่ง", "ฉันชอบ"], "ฉันสบายดี", "ตอบคำถาม Mitä sinulle kuuluu? / Mitä kuuluu?"],
+  ["’ไม่ได้…แต่…’ ใช้โครงสร้างใด?", ["ei … vaan …", "ei … ja …", "ei … tai …"], "ei … vaan …", "En asu Helsingissä vaan Espoossa. = ไม่ได้อยู่ Helsinki แต่อยู่ Espoo"],
+  ["’โดยรถเมล์’ ใช้คำใด?", ["bussilla", "bussissa", "bussista"], "bussilla", "พาหนะ + -lla/-llä: bussilla, metrolla, autolla"],
+  // ── Intonation ──
+  ["คำถามภาษาฟินแลนด์ลงเสียงท้ายประโยคอย่างไร?", ["เสียงลงต่ำ (falling)", "เสียงขึ้นสูง (rising)", "เสียงคงที่"], "เสียงลงต่ำ (falling)", "ทั้งประโยคบอกเล่าและคำถามลงเสียงต่ำท้ายประโยค ไม่ตวัดสูงแบบอังกฤษ"],
+  // ── Culture ──
+  ["sisu หมายถึงอะไร?", ["ความมุ่งมั่น อดทน ไม่ยอมแพ้", "คำทักทาย", "อาหารฟินแลนด์"], "ความมุ่งมั่น อดทน ไม่ยอมแพ้", "sisu = willpower and determination โดยเฉพาะเมื่อเผชิญความยากลำบาก"],
+  // ── Written vs Spoken Summary (Lesson 1) ──
+  ["Haluatko sinä? ภาษาพูดคือ?", ["Haluuksä?", "Haluutko sä?", "Haluatko sä?"], "Haluuksä?", "Haluatko sinä? → Haluuksä? (ย่อรวมกริยา+สรรพนาม)"],
+  ["kaksikymmentäyksi ภาษาพูดอาจย่อเป็น?", ["kakskytyks", "kaksikymmentyks", "kakskymmentä"], "kakskytyks", "ภาษาพูดย่อตัวเลขให้สั้นลง"],
+  // ── Mixed Application ──
+  ["’Suomi’ ในภาษาอังกฤษคือประเทศอะไร?", ["Finland", "Sweden", "Germany"], "Finland", "Suomi = Finland, Ruotsi = Sweden, Saksa = Germany"],
+  ["ตอบรับ Oletko opiskelija? ว่าอย่างไร?", ["Olen.", "Kyllä olen.", "ทั้งสองข้อถูก"], "ทั้งสองข้อถูก", "ตอบสั้นด้วยกริยา Olen. หรือ Kyllä olen. ก็ได้"],
 ] as const;
 
 function Finnish({ text, children }: { text: string; children?: ReactNode }) { return <button type="button" className="finnish-speak" onClick={() => ttsService.speak(text)} aria-label={`Listen to ${text}`}>{children ?? text}<Volume2 size={13} /></button>; }
@@ -171,6 +267,6 @@ export function TestOnePage() {
       <h3>2. Yes / no question · ko/kö-kysymys</h3><div className="transform-list"><article><Finnish text="Sinä olet suomalainen." /><span>→</span><Finnish text="Oletko sinä suomalainen?" /></article><article><Finnish text="Hän asuu Suomessa." /><span>→</span><Finnish text="Asuuko hän Suomessa?" /></article><article><Finnish text="Sinä et puhu englantia." /><span>→</span><Finnish text="Etkö sinä puhu englantia?" /></article></div>
       <div className="lesson-tip"><b>วิธีตอบสั้น</b><p>ตอบด้วยกริยาที่ผันตามผู้ตอบ: Asutko sinä Helsingissä? → Asun. / En. · Puhutteko englantia? → Puhumme. / Emme. ห้ามตอบ pelkkä kyllä ถ้าข้อสอบต้องการรูปกริยา</p></div>
       <h3>ภาษาพูดและ intonation</h3><div className="lesson3-chip-grid"><Finnish text="Ooks sä suomalainen?" /><Finnish text="Asuuks se Suomessa?" /><Finnish text="Eks sä puhu englantia?" /></div><p><b>คำถามฟินแลนด์ลงเสียงต่ำท้ายประโยค</b> เช่นเดียวกับประโยคบอกเล่า ไม่ยกเสียงท้ายแบบภาษาอังกฤษ</p><button className="primary lesson-next" onClick={() => go("check")}>ทำแบบทดสอบ <ChevronRight /></button></div>}
-    {step === "check" && <div className="lesson-panel quiz-panel"><span className="kicker">TEST 1 · KNOWLEDGE CHECK</span><h2>ลองทำก่อนเข้าสอบ</h2>{finished ? <div className="lesson-result"><span>✓</span><div><p>จบบททบทวนแล้ว</p><b>{score} / {quiz.length}</b><p>{score >= 8 ? "Hienoa! พร้อมสำหรับ Test 1" : "ทบทวนแท็บที่ยังไม่มั่นใจแล้วลองใหม่"}</p></div></div> : <><p>คำถาม {index + 1} จาก {quiz.length}</p><h3>{q[0]}</h3><div className="lesson-answers">{q[1].map(choice => <button key={choice} disabled={!!answer} className={answer ? choice === q[2] ? "correct" : choice === answer ? "wrong" : "" : ""} onClick={() => { setAnswer(choice); if (choice === q[2]) setScore(s => s + 1); }}>{choice}</button>)}</div>{answer && <><div className="lesson-tip"><b>{answer === q[2] ? "Oikein! ถูกต้อง" : "ยังไม่ถูก"}</b><p>{q[3]}</p></div><button className="primary lesson-next" onClick={() => { if (index === quiz.length - 1) { setFinished(true); finish("check"); } else { setIndex(i => i + 1); setAnswer(""); window.scrollTo?.({ top: 0, left: 0, behavior: "auto" }); } }}>คำถามถัดไป <ChevronRight /></button></>}</>}</div>}
+    {step === "check" && <div className="lesson-panel quiz-panel"><span className="kicker">TEST 1 · KNOWLEDGE CHECK</span><h2>ลองทำก่อนเข้าสอบ</h2>{finished ? <div className="lesson-result"><span>✓</span><div><p>จบบททบทวนแล้ว</p><b>{score} / {quiz.length}</b><p>{score >= Math.round(quiz.length * 0.8) ? "Hienoa! พร้อมสำหรับ Test 1" : "ทบทวนแท็บที่ยังไม่มั่นใจแล้วลองใหม่"}</p></div></div> : <><p>คำถาม {index + 1} จาก {quiz.length}</p><h3>{q[0]}</h3><div className="lesson-answers">{q[1].map(choice => <button key={choice} disabled={!!answer} className={answer ? choice === q[2] ? "correct" : choice === answer ? "wrong" : "" : ""} onClick={() => { setAnswer(choice); if (choice === q[2]) setScore(s => s + 1); }}>{choice}</button>)}</div>{answer && <><div className="lesson-tip"><b>{answer === q[2] ? "Oikein! ถูกต้อง" : "ยังไม่ถูก"}</b><p>{q[3]}</p></div><button className="primary lesson-next" onClick={() => { if (index === quiz.length - 1) { setFinished(true); finish("check"); } else { setIndex(i => i + 1); setAnswer(""); window.scrollTo?.({ top: 0, left: 0, behavior: "auto" }); } }}>คำถามถัดไป <ChevronRight /></button></>}</>}</div>}
   </section>;
 }
