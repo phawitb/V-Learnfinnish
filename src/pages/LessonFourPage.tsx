@@ -279,10 +279,84 @@ export function LessonFourPage() {
 
     {step === "homework" && <div className="lesson-panel">{title("KOTITEHTÄVÄ", "การบ้าน Lesson 4", "ทำให้ครบทุกข้อก่อนสอบ Test 1")}
       <div className="lesson-tip"><b>Test 1 — วันอังคาร 29.09</b><p>เตรียมตัวสอบ ทบทวนเนื้อหาจาก Lesson 1-4 ทั้งหมด</p></div>
-      {homeworkItems.map(([num, title, thai, link]) => <div key={num} style={{ marginBottom: 12, padding: 12, background: "var(--color-surface)", borderRadius: 8 }}>
-        <p><b>{num}.</b> {title}</p><p style={{ color: "#888", fontSize: "0.9em" }}>{thai}</p>
-        {link && <a href={link} target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-primary)", fontSize: "0.9em" }}>{link}</a>}
-      </div>)}
+
+      {/* 1. Spoken numbers */}
+      <div style={{ marginBottom: 24, padding: 16, background: "var(--color-surface)", borderRadius: 12 }}>
+        <p><b>1.</b> Learn spoken numbers (page 34)</p>
+        <p style={{ color: "#888", fontSize: "0.9em" }}>เรียนรู้ตัวเลขภาษาพูด (หน้า 34)</p>
+        <Reveal label="ดูตัวเลขภาษาพูดทั้งหมด">
+          <Table headers={["ภาษาเขียน", "ภาษาพูด", "ตัวเลข"]} rows={spokenNumbers} audioColumns={[0, 1]} />
+        </Reveal>
+      </div>
+
+      {/* 2. Written vs spoken kiosk text */}
+      <div style={{ marginBottom: 24, padding: 16, background: "var(--color-surface)", borderRadius: 12 }}>
+        <p><b>2.</b> Compare written vs spoken kiosk text (page 33)</p>
+        <p style={{ color: "#888", fontSize: "0.9em" }}>เปรียบเทียบภาษาเขียนกับภาษาพูดจากข้อความร้านไอศกรีม</p>
+        <Reveal label="ดูบทสนทนาภาษาเขียน (Kirjakieli)">
+          <div>{writtenDialogue.map(([who, line], i) => <div key={`hw-w${i}`} style={{ marginBottom: 4 }}><b>{who}:</b> <Finnish text={line} /></div>)}</div>
+        </Reveal>
+        <Reveal label="ดูบทสนทนาภาษาพูด (Puhekieli)">
+          <div>{spokenDialogue.map(([who, line], i) => <div key={`hw-s${i}`} style={{ marginBottom: 4 }}><b>{who}:</b> <Finnish text={line} /></div>)}</div>
+        </Reveal>
+        <Reveal label="ดูความแตกต่างสำคัญ">
+          <div className="lesson3-table" style={{ "--columns": 2 } as CSSProperties}><div className="table-head"><b>ภาษาเขียน</b><b>ภาษาพูด</b></div>{spokenDiffs.map(([w, s], i) => <div key={i}><Finnish text={w} /><Finnish text={s} /></div>)}</div>
+        </Reveal>
+      </div>
+
+      {/* 3. Arrange dialogues */}
+      <div style={{ marginBottom: 24, padding: 16, background: "var(--color-surface)", borderRadius: 12 }}>
+        <p><b>3.</b> Arrange dialogues (from materials)</p>
+        <p style={{ color: "#888", fontSize: "0.9em" }}>จัดเรียงบทสนทนา</p>
+        <Reveal label="ดูคำตอบ: Pizza dialogue">
+          <div>{pizzaDialogue.map(([who, line], i) => <div key={`hw-p${i}`} style={{ marginBottom: 4 }}><b>{who}:</b> <Finnish text={line} /></div>)}</div>
+        </Reveal>
+        <Reveal label="ดูคำตอบ: Ice cream kiosk dialogue">
+          <div>{iceCreamDialogue.map(([who, line], i) => <div key={`hw-ic${i}`} style={{ marginBottom: 4 }}><b>{who}:</b> <Finnish text={line} /></div>)}</div>
+        </Reveal>
+      </div>
+
+      {/* 4. Grammar exercises */}
+      <div style={{ marginBottom: 24, padding: 16, background: "var(--color-surface)", borderRadius: 12 }}>
+        <p><b>4.</b> Grammar exercises (from materials)</p>
+        <p style={{ color: "#888", fontSize: "0.9em" }}>แบบฝึกหัดไวยากรณ์</p>
+        <Reveal label="ดูคำตอบ: Harjoitus 12 — เติมกริยา">
+          <div>{harjoitus12.map(([sentence, hint, ans], i) => <div key={`hw-h12-${i}`} style={{ marginBottom: 6 }}><b>{i + 1}.</b> {sentence} <span style={{ color: "#888" }}>({hint})</span> <b style={{ color: "var(--color-success)" }}>→ {ans}</b></div>)}</div>
+        </Reveal>
+        <Reveal label="ดูคำตอบ: Harjoitus 14 — ประโยคปฏิเสธ">
+          <div>{harjoitus14.map(([pos, neg], i) => <div key={`hw-h14-${i}`} style={{ marginBottom: 6 }}><b>{i + 1}.</b> <Finnish text={pos} /> <b style={{ color: "var(--color-success)" }}>→</b> <Finnish text={neg} /></div>)}</div>
+        </Reveal>
+      </div>
+
+      {/* 5. Watch video 17 */}
+      <div style={{ marginBottom: 24, padding: 16, background: "var(--color-surface)", borderRadius: 12 }}>
+        <p><b>5.</b> Watch video 17</p>
+        <p style={{ color: "#888", fontSize: "0.9em" }}>ดูวิดีโอ 17</p>
+        <a href="https://yle.fi/aihe/artikkeli/2016/06/14/finnish-phrases-suomen-kielen-fraaseja" target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-primary)", fontSize: "0.9em" }}>yle.fi — Finnish phrases</a>
+      </div>
+
+      {/* 6. Quizlet */}
+      <div style={{ marginBottom: 24, padding: 16, background: "var(--color-surface)", borderRadius: 12 }}>
+        <p><b>6.</b> Quizlet vocabulary</p>
+        <p style={{ color: "#888", fontSize: "0.9em" }}>ฝึกคำศัพท์ใน Quizlet</p>
+        <a href="https://quizlet.com/class/27345326/materials" target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-primary)", fontSize: "0.9em" }}>quizlet.com — Class materials</a>
+      </div>
+
+      {/* 7. Translation */}
+      <div style={{ marginBottom: 24, padding: 16, background: "var(--color-surface)", borderRadius: 12 }}>
+        <p><b>7.</b> Translate text to Finnish (from materials)</p>
+        <p style={{ color: "#888", fontSize: "0.9em" }}>แปลข้อความเป็นภาษาฟินแลนด์</p>
+        <Reveal label="ดูข้อความภาษาอังกฤษ">
+          <div style={{ whiteSpace: "pre-line", marginBottom: 8 }}>{translationEn}</div>
+        </Reveal>
+        <Reveal label="ดูคำตอบ: คำแปลภาษาฟินแลนด์">
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>{translationFi.map((line, i) => <Finnish key={i} text={line} />)}</div>
+        </Reveal>
+        <Reveal label="ดูคำศัพท์ใหม่จากบทแปล">
+          <Table headers={["คำศัพท์", "ความหมาย"]} rows={translationVocab} audioColumns={[0]} />
+        </Reveal>
+      </div>
+
       <button className="primary lesson-next" onClick={() => go("check")}>ทำแบบทดสอบ {quiz.length} ข้อ <ChevronRight /></button></div>}
 
     {step === "check" && <div className="lesson-panel quiz-panel"><span className="kicker">KNOWLEDGE CHECK</span><h2>ทบทวน Lesson 4</h2>{finished ? <div className="lesson-result"><span>✓</span><div><p>จบบทเรียนแล้ว</p><b>{score} / {quiz.length}</b><p>{score >= Math.round(quiz.length * 0.8) ? "Hienoa! พร้อมสอบ Test 1" : "Hyvä yritys! กลับไปทบทวนจุดที่ยังสับสนได้"}</p></div></div> : <><p>คำถาม {index + 1} จาก {quiz.length}</p><h3>{q[0]}</h3><div className="lesson-answers">{q[1].map(choice => <button key={choice} disabled={!!answer} className={answer ? choice === q[2] ? "correct" : choice === answer ? "wrong" : "" : ""} onClick={() => { setAnswer(choice); if (choice === q[2]) setScore(s => s + 1); }}>{choice}</button>)}</div>{answer && <><div className="lesson-tip"><b>{answer === q[2] ? "Oikein! ถูกต้อง" : "ยังไม่ถูก"}</b><p>{q[3]}</p></div><button className="primary lesson-next" onClick={() => { if (index === quiz.length - 1) { setFinished(true); finish("check"); } else { setIndex(i => i + 1); setAnswer(""); window.scrollTo?.({ top: 0, left: 0, behavior: "auto" }); } }}>คำถามถัดไป <ChevronRight /></button></>}</>}</div>}
