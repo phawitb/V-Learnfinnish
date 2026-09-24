@@ -180,7 +180,7 @@ const quiz = [
 function Finnish({ text, children }: { text: string; children?: ReactNode }) { return <button type="button" className="finnish-speak" onClick={() => ttsService.speak(text)} aria-label={`Listen to ${text}`}>{children ?? text}<Volume2 size={13} /></button>; }
 function Grid({ items }: { items: string[] }) { return <div className="lesson3-chip-grid">{items.map(item => <Finnish key={item} text={item} />)}</div>; }
 function Table({ headers, rows, audioColumns }: { headers: string[]; rows: string[][]; audioColumns: number[] }) { return <div className="lesson3-table" style={{ "--columns": headers.length } as CSSProperties}><div className="table-head">{headers.map(h => <b key={h}>{h}</b>)}</div>{rows.map((row, i) => <div key={`${row[0]}-${i}`}>{row.map((cell, j) => audioColumns.includes(j) ? <Finnish key={j} text={cell} /> : <span key={j}>{cell}</span>)}</div>)}</div>; }
-function Reveal({ label, children }: { label: string; children: ReactNode }) { const [open, setOpen] = useState(false); return <div className="lesson-tip" style={{ cursor: "pointer" }} onClick={() => setOpen(!open)}><b>{open ? "▼" : "▶"} {label}</b>{open && <div style={{ marginTop: 8 }}>{children}</div>}</div>; }
+function Reveal({ label, children }: { label: string; children: ReactNode }) { const [open, setOpen] = useState(false); return <div className="lesson-tip"><b style={{ cursor: "pointer" }} onClick={() => setOpen(!open)}>{open ? "▼" : "▶"} {label}</b>{open && <div style={{ marginTop: 8 }}>{children}</div>}</div>; }
 
 export function LessonFourPage() {
   const [step, setStep] = useState<Step>("start");
