@@ -1,5 +1,5 @@
 import { CSSProperties, ReactNode, useState } from "react";
-import { Check, ChevronRight, MessageCircle, Volume2 } from "lucide-react";
+import { Check, ChevronRight, Eye, EyeOff, MessageCircle, Volume2 } from "lucide-react";
 import { ttsService } from "../services/ttsService";
 
 type Step = "start" | "texts" | "phrases" | "days" | "numbers" | "pronouns" | "harmony" | "verbs" | "questions" | "check";
@@ -484,7 +484,7 @@ function Dialog({ title, page, rows, revealed, onToggle }: {
     const id = `${page}-${i}`;
     const visible = revealed.has(id);
     return <article key={id}><b>{speaker}</b><div>
-      <button type="button" className="test1-reveal" aria-expanded={visible} aria-controls={`test1-fi-${id}`} onClick={() => onToggle(id)}>{visible ? "ซ่อนภาษาฟินแลนด์" : "แสดงภาษาฟินแลนด์"}</button>
+      <button type="button" className="test1-reveal test1-reveal-icon" aria-label={visible ? "ซ่อนภาษาฟินแลนด์" : "แสดงภาษาฟินแลนด์"} title={visible ? "ซ่อนภาษาฟินแลนด์" : "แสดงภาษาฟินแลนด์"} aria-expanded={visible} aria-controls={`test1-fi-${id}`} onClick={() => onToggle(id)}>{visible ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}</button>
       <div id={`test1-fi-${id}`} hidden={!visible}>{visible && <Finnish text={fi} />}</div>
       <p lang="th">{th}</p>
     </div></article>;
