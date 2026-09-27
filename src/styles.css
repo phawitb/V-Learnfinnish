@@ -2886,3 +2886,11 @@ summary:focus-visible {
     padding-bottom: calc(60px + env(safe-area-inset-bottom));
   }
 }
+
+.test1-text-controls { padding: 16px; background: #f2f7f6; border-radius: 12px; }
+.test1-text-controls p { margin: 0 0 12px; }
+.test1-text-controls > div { display: flex; flex-wrap: wrap; gap: 8px; }
+.test1-reveal { padding: 9px 12px; min-height: 44px; border: 1px solid #b8d1c8; border-radius: 8px; background: #fff; color: #21654f; font: inherit; cursor: pointer; }
+.test1-reveal:hover { background: #e5f2ec; }
+.test1-reveal:focus-visible { outline: 2px solid #217a62; outline-offset: 3px; }
+.test1-dialog .test1-reveal { margin-bottom: 6px; }

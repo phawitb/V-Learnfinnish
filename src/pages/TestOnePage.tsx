@@ -472,10 +472,33 @@ const quiz = [
 
 function Finnish({ text, children }: { text: string; children?: ReactNode }) { return <button type="button" className="finnish-speak" onClick={() => ttsService.speak(text)} aria-label={`Listen to ${text}`}>{children ?? text}<Volume2 size={13} /></button>; }
 function Table({ headers, rows, audio = [] }: { headers: string[]; rows: string[][]; audio?: number[] }) { return <div className="lesson3-table" style={{ "--columns": headers.length } as CSSProperties}><div className="table-head">{headers.map(h => <b key={h}>{h}</b>)}</div>{rows.map((row, i) => <div key={`${row[0]}-${i}`}>{row.map((cell, j) => audio.includes(j) ? <Finnish key={j} text={cell} /> : <span key={j}>{cell}</span>)}</div>)}</div>; }
-function Dialog({ title, page, rows }: { title: string; page: string; rows: string[][] }) { return <section className="test1-dialog"><div><span className="page-badge">หน้าหนังสือ {page}</span><h3>{title}</h3></div>{rows.map(([speaker, fi, th], i) => <article key={`${speaker}-${i}`}><b>{speaker}</b><div><Finnish text={fi} /><p>{th}</p></div></article>)}</section>; }
+const dialogueRowIds = ([["11", text11], ["29", text29], ["31", introductions], ["33", text33]] as const).flatMap(
+  ([page, rows]) => rows.map((_, i) => `${page}-${i}`),
+);
+
+function Dialog({ title, page, rows, revealed, onToggle }: {
+  title: string; page: string; rows: string[][];
+  revealed: Set<string>; onToggle: (id: string) => void;
+}) {
+  return <section className="test1-dialog"><div><span className="page-badge">หน้าหนังสือ {page}</span><h3>{title}</h3></div>{rows.map(([speaker, fi, th], i) => {
+    const id = `${page}-${i}`;
+    const visible = revealed.has(id);
+    return <article key={id}><b>{speaker}</b><div>
+      <button type="button" className="test1-reveal" aria-expanded={visible} aria-controls={`test1-fi-${id}`} onClick={() => onToggle(id)}>{visible ? "ซ่อนภาษาฟินแลนด์" : "แสดงภาษาฟินแลนด์"}</button>
+      <div id={`test1-fi-${id}`} hidden={!visible}>{visible && <Finnish text={fi} />}</div>
+      <p lang="th">{th}</p>
+    </div></article>;
+  })}</section>;
+}
 
 export function TestOnePage() {
   const [step, setStep] = useState<Step>("start");
+  const [revealed, setRevealed] = useState<Set<string>>(() => new Set());
+  const toggleDialogueRow = (id: string) => setRevealed(previous => {
+    const next = new Set(previous);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    return next;
+  });
   const [completed, setCompleted] = useState<Step[]>(() => { try { return JSON.parse(localStorage.getItem("sisu:test1:v1") || "[]"); } catch { return []; } });
   const [index, setIndex] = useState(0), [answer, setAnswer] = useState(""), [score, setScore] = useState(0), [finished, setFinished] = useState(false);
   const finish = (id: Step) => { const next = [...new Set([...completed, id])]; setCompleted(next); localStorage.setItem("sisu:test1:v1", JSON.stringify(next)); };
@@ -485,13 +508,17 @@ export function TestOnePage() {
   return <section className="page lesson-page test-one">
     <div className="lesson-hero"><div><span className="kicker">TEST 1 · COMPLETE REVIEW</span><h1>Test 1 · Kertaus</h1><p>ทบทวนครบทุกข้อความ คำศัพท์ และไวยากรณ์ที่กำหนดสอบ</p></div><div className="lesson-progress"><b>{progress}%</b><span>complete</span><i><em style={{ width: `${progress}%` }} /></i></div></div>
     <div className="lesson-tabs" role="tablist">{steps.map((s, i) => <button role="tab" aria-selected={step === s.id} className={step === s.id ? "active" : completed.includes(s.id) ? "done" : ""} onClick={() => setStep(s.id)} key={s.id}><span>{completed.includes(s.id) ? <Check size={14} /> : i + 1}</span>{s.label}</button>)}</div>
-    {step === "start" && <div className="lesson-panel intro-panel"><div className="lesson-number">T1</div><span className="kicker">EXAM MAP</span><h2>เนื้อหาสอบ Test 1 ทั้งหมด</h2><p>อ้างอิงเลขหน้าที่พิมพ์ในหนังสือ: หน้าหนังสือ 11–17, 29, 31, 33 และ 37–39 (ตรงกับ PDF หน้า 10–16, 28, 30, 32 และ 36–38)</p><div className="objectives"><div><span>01</span><p><b>อ่านและเข้าใจ</b>บทสนทนา 4 หน้าและวลีทุกสถานการณ์</p></div><div><span>02</span><p><b>สร้างคำและประโยค</b>วัน ตัวเลข olla vowel harmony และการผันกริยา</p></div><div><span>03</span><p><b>ถามและตอบ</b>คำถาม yes/no, question words และคำตอบสั้น</p></div></div><div className="lesson-tip"><b>วิธีใช้บทนี้</b><p>กดข้อความฟินแลนด์เพื่อฟังเสียง อ่านคำแปล แล้วปิดคำแปลลองพูดเอง เมื่อจบแต่ละหมวดกดปุ่มถัดไปเพื่อบันทึกความคืบหน้า</p></div><button className="primary lesson-next" onClick={() => go("texts")}>เริ่มจากบทอ่าน <ChevronRight /></button></div>}
+    {step === "start" && <div className="lesson-panel intro-panel"><div className="lesson-number">T1</div><span className="kicker">EXAM MAP</span><h2>เนื้อหาสอบ Test 1 ทั้งหมด</h2><p>อ้างอิงเลขหน้าที่พิมพ์ในหนังสือ: หน้าหนังสือ 11–17, 29, 31, 33 และ 37–39 (ตรงกับ PDF หน้า 10–16, 28, 30, 32 และ 36–38)</p><div className="objectives"><div><span>01</span><p><b>อ่านและเข้าใจ</b>บทสนทนา 4 หน้าและวลีทุกสถานการณ์</p></div><div><span>02</span><p><b>สร้างคำและประโยค</b>วัน ตัวเลข olla vowel harmony และการผันกริยา</p></div><div><span>03</span><p><b>ถามและตอบ</b>คำถาม yes/no, question words และคำตอบสั้น</p></div></div><div className="lesson-tip"><b>วิธีใช้บทนี้</b><p>กดข้อความฟินแลนด์เพื่อฟังเสียง อ่านคำแปลไทย ลองพูดเอง แล้วกดเปิดภาษาฟินแลนด์เพื่อตรวจคำตอบ เมื่อจบแต่ละหมวดกดปุ่มถัดไปเพื่อบันทึกความคืบหน้า</p></div><button className="primary lesson-next" onClick={() => go("texts")}>เริ่มจากบทอ่าน <ChevronRight /></button></div>}
     {step === "texts" && <div className="lesson-panel">{title("BOOK PAGES 11 · 29 · 31 · 33", "บทอ่านที่ต้องรู้", "อ่านทุกบรรทัดและสังเกตรูปคำจริง โดยหน้า 33 เป็นภาษาพูด")}
-      <Dialog title="Hei ja tervetuloa!" page="11" rows={text11} /><Dialog title="Minkämaalainen sinä olet?" page="29" rows={text29} />
-      <Dialog title="แนะนำตัว: ประเทศ สัญชาติ ภาษา" page="31" rows={introductions} />
+      <div className="test1-text-controls"><p>อ่านภาษาไทยแล้วลองพูดเอง กดเปิดภาษาฟินแลนด์ทีละบรรทัดเพื่อตรวจคำตอบ</p><div>
+        <button type="button" className="test1-reveal" onClick={() => setRevealed(new Set(dialogueRowIds))}>แสดงภาษาฟินแลนด์ทั้งหมด</button>
+        <button type="button" className="test1-reveal" onClick={() => setRevealed(new Set())}>ซ่อนภาษาฟินแลนด์ทั้งหมด</button>
+      </div></div>
+      <Dialog title="Hei ja tervetuloa!" page="11" rows={text11} revealed={revealed} onToggle={toggleDialogueRow} /><Dialog title="Minkämaalainen sinä olet?" page="29" rows={text29} revealed={revealed} onToggle={toggleDialogueRow} />
+      <Dialog title="แนะนำตัว: ประเทศ สัญชาติ ภาษา" page="31" rows={introductions} revealed={revealed} onToggle={toggleDialogueRow} />
       <h3>หน้า 31 · Maa, kansalaisuus ja kieli</h3><Table headers={["ประเทศ", "สัญชาติ", "ภาษา", "มาจาก…", "พูดภาษา…"]} rows={countries} audio={[0, 1, 2, 3, 4]} />
       <div className="answer-pairs"><article><b>olla kotoisin + -sta/-stä</b><Finnish text="Olen kotoisin Suomesta." /><p>ใช้บอกว่ามาจากที่ใด; Venäjä เป็นข้อยกเว้นที่ใช้ Venäjältä</p></article><article><b>สัญชาติ + -lainen/-läinen</b><Finnish text="Olen thaimaalainen." /><p>ชื่อประเทศตัวใหญ่ แต่คำสัญชาติใช้ตัวเล็ก</p></article><article><b>puhua + a/ä (partitive)</b><Finnish text="Puhun urdua." /><p>ชื่อภาษาหลัง puhua ใช้ partitive: suomea, ranskaa, venäjää, thaita</p></article><article><b>äidinkieli</b><Finnish text="Minun äidinkieleni on thai." /><p>ภาษาแม่; รูปมาตรฐานคือ nimeni / äidinkieleni</p></article></div>
-      <Dialog title="Jätskikiskalla" page="33" rows={text33} />
+      <Dialog title="Jätskikiskalla" page="33" rows={text33} revealed={revealed} onToggle={toggleDialogueRow} />
       <h3>หน้า 33 · Sanasto</h3><Table headers={["คำในบท", "รูปที่เกี่ยวข้อง", "ความหมาย"]} rows={kioskVocabulary} audio={[0, 1]} />
       <div className="lesson-tip"><b>ภาษาพูดหน้า 33</b><p>jätski = jäätelö · kiska = kioski · yks = yksi · kaks = kaksi · mä = minä · sit = sitten · sulle = sinulle · mäkin = minäkin · tuleeks = tuleeko · nää = nämä · tarviitko = tarvitsetko · kiitti = kiitos</p></div>
       <h3>ไวยากรณ์ที่ซ่อนอยู่ในบทอ่าน</h3><div className="answer-pairs"><article><b>minulle kuuluu + adverb</b><p>Minulle kuuluu hyvää. = ฉันสบายดี; kysymys คือ Mitä kuuluu?</p></article><article><b>ei … vaan …</b><p>Minä en asu Helsingissä vaan Espoossa. = ฉันไม่ได้อยู่ Helsinki แต่อยู่ Espoo</p></article><article><b>พาหนะ + -lla/-llä</b><p>bussilla, metrolla, autolla = โดยรถเมล์ รถไฟใต้ดิน รถยนต์</p></article><article><b>ภาษาเป็น partitive</b><p>puhua espanjaa / portugalia และ en puhu espanjaa ยังคงใช้ partitive</p></article></div>
