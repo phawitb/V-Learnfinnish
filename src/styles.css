@@ -2896,3 +2896,39 @@ summary:focus-visible {
 .test1-dialog .test1-reveal { margin-bottom: 6px; }
 
 .test1-reveal-icon { display: inline-flex; align-items: center; justify-content: center; width: 44px; padding: 9px; }
+
+/* Lesson 5: source-backed self-study materials. */
+.lesson-five .lesson-panel { overflow-wrap: anywhere; }
+.lesson5-vocabulary { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr)); gap: 12px; margin: 20px 0; }
+.lesson5-vocabulary article, .lesson5-files article { border: 1px solid var(--line, #dce4dd); border-radius: 12px; padding: 16px; min-width: 0; }
+.lesson5-vocabulary p { margin: 8px 0 4px; }
+.lesson5-vocabulary small { color: #647369; }
+.lesson-five .finnish-speak { white-space: normal; text-align: left; line-height: 1.7; }
+.lesson5-reading { margin: 28px 0; }
+.lesson5-reading > div { padding: 12px 0; border-bottom: 1px solid #edf0eb; }
+.lesson5-reading p { margin: 6px 0 0; }
+.lesson5-source-image { display: block; width: 100%; max-width: 840px; height: auto; margin: 18px auto; border-radius: 10px; }
+.lesson-five audio { display: block; width: 100%; margin: 20px 0; }
+.lesson5-exercise { border: 1px solid #dce4dd; border-radius: 12px; padding: 18px; margin: 16px 0; min-width: 0; }
+.lesson5-exercise legend { padding: 0 6px; font-weight: 700; }
+.lesson-five summary { cursor: pointer; font-weight: 600; padding: 8px 0; }
+.lesson5-draft { display: grid; gap: 8px; margin: 16px 0; }
+.lesson5-draft textarea { width: 100%; box-sizing: border-box; font: inherit; line-height: 1.6; padding: 12px; border: 1px solid #cad7cf; border-radius: 8px; resize: vertical; }
+.lesson5-options, .lesson5-footer { display: flex; flex-wrap: wrap; gap: 10px; }
+.lesson5-options button { border: 1px solid #cbd8cf; background: #f7faf7; border-radius: 10px; padding: 12px 16px; font: inherit; color: #233e31; cursor: pointer; }
+.lesson5-options button.active { background: #deeddf; border-color: #4e705b; }
+.lesson5-options button:disabled { cursor: default; opacity: .85; }
+.lesson5-footer { margin-top: 32px; border-top: 1px solid #dce4dd; padding-top: 24px; }
+.lesson5-footer button { display: inline-flex; align-items: center; gap: 6px; }
+.lesson5-footer button:disabled { opacity: .55; cursor: default; }
+.lesson5-checklist { display: grid; gap: 12px; margin: 24px 0; }
+.lesson5-checklist label { display: flex; align-items: flex-start; gap: 12px; line-height: 1.65; cursor: pointer; }
+.lesson5-checklist input { width: 18px; height: 18px; flex-shrink: 0; margin-top: 5px; }
+.lesson5-files { display: grid; gap: 12px; }
+.lesson5-files article { display: grid; gap: 8px; }
+.lesson-five a { color: #356248; text-underline-offset: 3px; }
+.lesson-five p, .lesson-five li { line-height: 1.8; }
+.lesson5-book-section { margin-top: 32px; padding-top: 24px; border-top: 1px solid #dce4dd; }
+.lesson5-book-source { margin: 16px 0; padding: 12px; border: 1px solid #dce4dd; border-radius: 10px; }
+.lesson5-book-source > summary { color: #356248; }
+.lesson5-book-source .lesson5-source-image { background: white; }

@@ -1,0 +1,51 @@
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { beforeEach, expect, it } from 'vitest';
+import App from './App';
+
+beforeEach(() => localStorage.clear());
+it('opens lesson 5, exposes the original audio and downloads, and keeps explicit completion', async () => {
+  const user = userEvent.setup();
+  const view = render(<App />);
+  await user.click(screen.getAllByRole('button', { name: 'Lessons' })[0]);
+  await user.click(screen.getByRole('button', { name: /Lesson 5,/ }));
+  expect(screen.getByRole('heading', { name: 'Vuodenajat ja sää' })).toBeInTheDocument();
+  await user.click(screen.getByRole('tab', { name: /Reading/ }));
+  expect(screen.getByLabelText('Vuodenajat Suomessa — track 1-33')).toHaveAttribute('src', '/lesson5/1-33-vuodenajat-suomessa.mp3');
+  expect(screen.getByText(/Suomessa on neljä vuodenaikaa/)).toBeInTheDocument();
+  expect(screen.getByText('0%')).toBeInTheDocument();
+  await user.click(screen.getByRole('button', { name: 'ทำส่วนนี้เสร็จแล้ว' }));
+  await user.click(screen.getByRole('tab', { name: /Files/ }));
+  expect(screen.getByRole('link', { name: /Translation.*DOCX/ })).toHaveAttribute('href', '/lesson5/vuodenajat-suomessa-translation.docx');
+  view.unmount();
+  render(<App />);
+  await user.click(screen.getAllByRole('button', { name: 'Lessons' })[0]);
+  await user.click(screen.getByRole('button', { name: /Lesson 5,/ }));
+  expect(screen.queryByText('0%')).not.toBeInTheDocument();
+});
+
+it('offers the assigned textbook exercises using printed pages and the official answer key', async () => {
+  const user = userEvent.setup();
+  render(<App />);
+  await user.click(screen.getAllByRole('button', { name: 'Lessons' })[0]);
+  await user.click(screen.getByRole('button', { name: /Lesson 5,/ }));
+  await user.click(screen.getByRole('tab', { name: /Book/ }));
+  expect(screen.getByRole('heading', { name: 'Harjoitus 9 · sivu 73' })).toBeInTheDocument();
+  expect(screen.getByLabelText('คำตอบ 9B ข้อ 8')).toBeInTheDocument();
+  await user.type(screen.getByLabelText('คำตอบ 9B ข้อ 6'), 'kiva');
+  await user.click(screen.getByRole('button', { name: '12 · หน้า 75' }));
+  expect(screen.getByRole('heading', { name: 'Harjoitus 12 · sivu 75' })).toBeInTheDocument();
+  expect(screen.getByLabelText('คำตอบ 12 ภาพ 4')).toBeInTheDocument();
+  await user.click(screen.getByText('เฉลยท้ายเล่ม · ภาพ 4'));
+  expect(screen.getByText('Tuulee. On puolipilvistä. On viileä.')).toBeInTheDocument();
+  await user.click(screen.getByRole('button', { name: '23 · หน้า 81' }));
+  expect(screen.getByLabelText('คำตอบ 23 ข้อ 4')).toBeInTheDocument();
+  await user.click(screen.getByText('เฉลยท้ายเล่ม · ข้อ 4'));
+  expect(screen.getByText('Mökillä me emme kirjoita sähköpostia.')).toBeInTheDocument();
+  expect(screen.getByText('Mökillä me ongimme.')).toBeInTheDocument();
+  await user.click(screen.getByRole('button', { name: '9 · หน้า 73' }));
+  expect(screen.getByLabelText('คำตอบ 9B ข้อ 6')).toHaveValue('kiva');
+  await user.click(screen.getByRole('tab', { name: /Files/ }));
+  expect(screen.getByRole('link', { name: /หน้าหนังสือ 331/ })).toHaveAttribute('href', '/lesson5/book/page-331.jpg');
+  expect(screen.queryByText(/ยังไม่สามารถถอดโจทย์/)).not.toBeInTheDocument();
+});

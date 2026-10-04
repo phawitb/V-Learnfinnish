@@ -1,0 +1,97 @@
+{
+  "retrieved": "2026-10-04",
+  "section": "https://moodle.abo.fi/course/section.php?id=626524",
+  "files": [
+    {
+      "file": "weather-pictures.pdf",
+      "source": "https://moodle.abo.fi/mod/resource/view.php?id=1192669",
+      "bytes": 204211,
+      "sha256": "db3d30bacb19e6ecc878fc0f246938651513687ebd09679bc4be80d107d9d8b4"
+    },
+    {
+      "file": "vuodenajat-suomessa.pdf",
+      "source": "https://moodle.abo.fi/mod/resource/view.php?id=1204573",
+      "bytes": 222457,
+      "sha256": "01f1e11964389e5947b7cae80990855beb2228bc807c5b5b0d8ecb14de8ea6f9"
+    },
+    {
+      "file": "1-33-vuodenajat-suomessa.mp3",
+      "source": "https://moodle.abo.fi/mod/resource/view.php?id=1204574",
+      "bytes": 2974514,
+      "sha256": "a297fd14551fd89d369c43d275bde531b5796d4f82c87c248e92758295b6d5e5"
+    },
+    {
+      "file": "vuodenajat-suomessa-translation.docx",
+      "source": "https://moodle.abo.fi/mod/resource/view.php?id=1204575",
+      "bytes": 13703,
+      "sha256": "2ed3f8a02ee8681c11187d35fbc31969df62f77a10648d0ba103d7de40b3fd98"
+    }
+  ],
+  "quizlet_terms": {
+    "weather": 30,
+    "seasons": 27,
+    "adjectives": 22,
+    "colours": 16
+  },
+  "limitations": [
+    "Thai explanations, six photographic weather model answers and Check quiz are supplementary; textbook exercise answers are from printed page 331; Translation answers are from the teacher DOCX."
+  ],
+  "textbook": {
+    "file": "Suomen_mestari_1.pdf",
+    "verified": "2026-10-04",
+    "page_number_convention": "printed sivu number, not PDF file position",
+    "pages": [
+      {
+        "printed": 60,
+        "pdf_file_page": 59,
+        "image": "book/page-60.jpg",
+        "sha256": "773e9e8d121ef7a25d6e2a265534ab0fb6aad52880594cde54e6c65401791723"
+      },
+      {
+        "printed": 61,
+        "pdf_file_page": 60,
+        "image": "book/page-61.jpg",
+        "sha256": "da4ffe57ac999955e5e75a5a485b66390e77e86eae0004e6d6bc3cb6124cc765"
+      },
+      {
+        "printed": 62,
+        "pdf_file_page": 61,
+        "image": "book/page-62.jpg",
+        "sha256": "a298c5bec50fffb2212a6db325a651b542985e37e3a4c69506f2a46d8d03e03b"
+      },
+      {
+        "printed": 73,
+        "pdf_file_page": 72,
+        "image": "book/page-73.jpg",
+        "sha256": "65905c819c16979eba5ef89964191ce01b98becbb8f62f74938d81150c13a377"
+      },
+      {
+        "printed": 75,
+        "pdf_file_page": 74,
+        "image": "book/page-75.jpg",
+        "sha256": "ccb32911b4fe19091c909586c5d9eb013aba155160c01cd4048f2533c5cd2848"
+      },
+      {
+        "printed": 81,
+        "pdf_file_page": 80,
+        "image": "book/page-81.jpg",
+        "sha256": "6c596628d41e0324c6eb7d180371e1de7f127fdecea47803b9af3ed4abeb7505"
+      },
+      {
+        "printed": 331,
+        "pdf_file_page": 330,
+        "image": "book/page-331.jpg",
+        "sha256": "9efcf7af14384860071a0629cc236ce38e4e650ea22beca6bb629bd003545289"
+      }
+    ],
+    "coverage": {
+      "60": "All 10 adjective/quantity opposite pairs",
+      "61": "All weather expressions, temperature examples and both dialogues",
+      "62": "Four seasons, twelve months, seven times of day, seven weekdays and birthday dialogue",
+      "73": "Exercise 9A: nine opposite pairs including example; 9B: eight prompts including example",
+      "75": "Exercise 12: twelve sentences matched to four images; exercise 13 on same page not assigned",
+      "81": "Exercise 23: worked example, four questions with two sentences each, tehdä footnote",
+      "331": "Official answer key for exercises 9A, 9B, 12 and 23"
+    }
+  }
+}

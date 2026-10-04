@@ -1,0 +1,485 @@
+{
+  "weather": [
+    {
+      "fi": "sää, sään",
+      "en": "weather",
+      "th": "สภาพอากาศ"
+    },
+    {
+      "fi": "ilma, ilman",
+      "en": "air, weather",
+      "th": "อากาศ / สภาพอากาศ"
+    },
+    {
+      "fi": "Millainen sää/ilma tänään on?",
+      "en": "How is the weather today?",
+      "th": "วันนี้อากาศเป็นอย่างไร"
+    },
+    {
+      "fi": "Montako astetta ulkona on?",
+      "en": "How many degrees is it outside?",
+      "th": "ข้างนอกกี่องศา"
+    },
+    {
+      "fi": "aste, asteen, astetta",
+      "en": "degree (temperature)",
+      "th": "องศา (อุณหภูมิ)"
+    },
+    {
+      "fi": "helle, helteen",
+      "en": "hot weather",
+      "th": "อากาศร้อนจัด"
+    },
+    {
+      "fi": "On pakkasta",
+      "en": "It is below zero",
+      "th": "อุณหภูมิต่ำกว่าศูนย์"
+    },
+    {
+      "fi": "aurinko, auringon",
+      "en": "sun",
+      "th": "ดวงอาทิตย์"
+    },
+    {
+      "fi": "Aurinko paistaa",
+      "en": "The sun is shining",
+      "th": "พระอาทิตย์ส่องแสง"
+    },
+    {
+      "fi": "On aurinkoista",
+      "en": "It is sunny",
+      "th": "มีแดด"
+    },
+    {
+      "fi": "On pilvistä",
+      "en": "It is cloudy",
+      "th": "มีเมฆมาก"
+    },
+    {
+      "fi": "On puolipilvistä",
+      "en": "It is partly cloudy",
+      "th": "มีเมฆบางส่วน"
+    },
+    {
+      "fi": "On pouta, Ei sada",
+      "en": "It does not rain",
+      "th": "อากาศแห้ง ไม่มีฝน"
+    },
+    {
+      "fi": "Sataa",
+      "en": "It is raining",
+      "th": "ฝนตก"
+    },
+    {
+      "fi": "sade, sateen",
+      "en": "rain",
+      "th": "ฝน"
+    },
+    {
+      "fi": "sumu, sumun",
+      "en": "fog",
+      "th": "หมอก"
+    },
+    {
+      "fi": "On sumuista",
+      "en": "It is foggy",
+      "th": "มีหมอก"
+    },
+    {
+      "fi": "On sateista",
+      "en": "It is rainy",
+      "th": "มีฝน / ฝนชุก"
+    },
+    {
+      "fi": "räntä, rännän",
+      "en": "sleet",
+      "th": "ฝนปนหิมะ"
+    },
+    {
+      "fi": "Sataa räntää",
+      "en": "It is sleeting",
+      "th": "ฝนปนหิมะตก"
+    },
+    {
+      "fi": "lumi, lumen",
+      "en": "snow",
+      "th": "หิมะ"
+    },
+    {
+      "fi": "Sataa lunta",
+      "en": "It is snowing",
+      "th": "หิมะตก"
+    },
+    {
+      "fi": "tuuli, tuulen",
+      "en": "wind",
+      "th": "ลม"
+    },
+    {
+      "fi": "Tuulee, on tuulista",
+      "en": "It is windy",
+      "th": "ลมพัด / มีลม"
+    },
+    {
+      "fi": "myrsky, myrskyn",
+      "en": "storm",
+      "th": "พายุ"
+    },
+    {
+      "fi": "ukkonen, ukkosen",
+      "en": "thunder",
+      "th": "ฟ้าร้อง / พายุฝนฟ้าคะนอง"
+    },
+    {
+      "fi": "salama, salaman",
+      "en": "lightning",
+      "th": "ฟ้าแลบ"
+    },
+    {
+      "fi": "kuu, kuun",
+      "en": "moon",
+      "th": "ดวงจันทร์"
+    },
+    {
+      "fi": "tähti, tähden",
+      "en": "star",
+      "th": "ดาว"
+    },
+    {
+      "fi": "revontulet",
+      "en": "northern lights",
+      "th": "แสงเหนือ"
+    }
+  ],
+  "seasons": [
+    {
+      "fi": "vuodenaika, vuodenajan",
+      "en": "season",
+      "th": "ฤดูกาล"
+    },
+    {
+      "fi": "talvi, talvella",
+      "en": "winter, in the winter",
+      "th": "ฤดูหนาว / ในฤดูหนาว"
+    },
+    {
+      "fi": "kevät, keväällä",
+      "en": "spring, in the spring",
+      "th": "ฤดูใบไม้ผลิ / ในฤดูใบไม้ผลิ"
+    },
+    {
+      "fi": "kesä, kesällä",
+      "en": "summer, in the summer",
+      "th": "ฤดูร้อน / ในฤดูร้อน"
+    },
+    {
+      "fi": "syksy, syksyllä",
+      "en": "autumn, in the autumn",
+      "th": "ฤดูใบไม้ร่วง / ในฤดูใบไม้ร่วง"
+    },
+    {
+      "fi": "kuukausi, kuukauden",
+      "en": "month",
+      "th": "เดือน"
+    },
+    {
+      "fi": "tammikuu, tammikuussa",
+      "en": "January, in January",
+      "th": "มกราคม / ในเดือนมกราคม"
+    },
+    {
+      "fi": "helmikuu, helmikuussa",
+      "en": "February, in February",
+      "th": "กุมภาพันธ์ / ในเดือนกุมภาพันธ์"
+    },
+    {
+      "fi": "maaliskuu, maaliskuussa",
+      "en": "March, in March",
+      "th": "มีนาคม / ในเดือนมีนาคม"
+    },
+    {
+      "fi": "huhtikuu, huhtikuussa",
+      "en": "April, in April",
+      "th": "เมษายน / ในเดือนเมษายน"
+    },
+    {
+      "fi": "toukokuu, toukokuussa",
+      "en": "May, in May",
+      "th": "พฤษภาคม / ในเดือนพฤษภาคม"
+    },
+    {
+      "fi": "kesäkuu, kesäkuussa",
+      "en": "June, in June",
+      "th": "มิถุนายน / ในเดือนมิถุนายน"
+    },
+    {
+      "fi": "heinäkuu, heinäkuussa",
+      "en": "July, in July",
+      "th": "กรกฎาคม / ในเดือนกรกฎาคม"
+    },
+    {
+      "fi": "elokuu, elokuussa",
+      "en": "August, in August",
+      "th": "สิงหาคม / ในเดือนสิงหาคม"
+    },
+    {
+      "fi": "syyskuu, syyskuussa",
+      "en": "September, in September",
+      "th": "กันยายน / ในเดือนกันยายน"
+    },
+    {
+      "fi": "lokakuu, lokakuussa",
+      "en": "October, in October",
+      "th": "ตุลาคม / ในเดือนตุลาคม"
+    },
+    {
+      "fi": "marraskuu, marraskuussa",
+      "en": "November, in November",
+      "th": "พฤศจิกายน / ในเดือนพฤศจิกายน"
+    },
+    {
+      "fi": "joulukuu, joulukuussa",
+      "en": "December, in December",
+      "th": "ธันวาคม / ในเดือนธันวาคม"
+    },
+    {
+      "fi": "vuorokausi, vuorokauden",
+      "en": "24 hours",
+      "th": "หนึ่งวันเต็ม 24 ชั่วโมง"
+    },
+    {
+      "fi": "aamu, aamulla",
+      "en": "morning, in the morning",
+      "th": "เช้า / ตอนเช้า"
+    },
+    {
+      "fi": "aamupäivä, aamupäivällä",
+      "en": "between 9 and 12 am",
+      "th": "ช่วงสาย / ในช่วงสาย"
+    },
+    {
+      "fi": "päivä, päivällä",
+      "en": "day, in the daytime",
+      "th": "วันหรือกลางวัน / ตอนกลางวัน"
+    },
+    {
+      "fi": "iltapäivä, iltapäivällä",
+      "en": "afternoon, in the afternoon",
+      "th": "บ่าย / ตอนบ่าย"
+    },
+    {
+      "fi": "ilta, illalla",
+      "en": "evening, in the evening",
+      "th": "เย็น / ตอนเย็น"
+    },
+    {
+      "fi": "yö, yöllä",
+      "en": "night, at night",
+      "th": "กลางคืน / ตอนกลางคืน"
+    },
+    {
+      "fi": "aamuyö, aamuyöllä",
+      "en": "early hours, in the early hours",
+      "th": "ช่วงหลังเที่ยงคืนถึงเช้ามืด / ในช่วงเช้ามืด"
+    },
+    {
+      "fi": "Olemme avoinna vuorokauden ympäri",
+      "en": "We are open 24/7",
+      "th": "เราเปิดตลอด 24 ชั่วโมง"
+    }
+  ],
+  "adjectives": [
+    {
+      "fi": "hyvä, hyvän",
+      "en": "good",
+      "th": "ดี"
+    },
+    {
+      "fi": "huono, huonon",
+      "en": "bad",
+      "th": "ไม่ดี / แย่"
+    },
+    {
+      "fi": "kuuma, kuuman",
+      "en": "hot",
+      "th": "ร้อน"
+    },
+    {
+      "fi": "kylmä, kylmän",
+      "en": "cold",
+      "th": "หนาว / เย็น"
+    },
+    {
+      "fi": "vaikea, vaikean",
+      "en": "difficult",
+      "th": "ยาก"
+    },
+    {
+      "fi": "helppo, helpon",
+      "en": "easy",
+      "th": "ง่าย"
+    },
+    {
+      "fi": "pieni, pienen",
+      "en": "small",
+      "th": "เล็ก"
+    },
+    {
+      "fi": "suuri, suuren",
+      "en": "big",
+      "th": "ใหญ่"
+    },
+    {
+      "fi": "iso, ison",
+      "en": "big",
+      "th": "ใหญ่"
+    },
+    {
+      "fi": "uusi, uuden",
+      "en": "new",
+      "th": "ใหม่"
+    },
+    {
+      "fi": "vanha, vanhan",
+      "en": "old",
+      "th": "เก่า / แก่"
+    },
+    {
+      "fi": "kaunis, kauniin",
+      "en": "beautiful",
+      "th": "สวย"
+    },
+    {
+      "fi": "ruma, ruman",
+      "en": "ugly",
+      "th": "น่าเกลียด"
+    },
+    {
+      "fi": "lämmin, lämpimän",
+      "en": "warm",
+      "th": "อบอุ่น"
+    },
+    {
+      "fi": "kylmä, kylmän",
+      "en": "cold",
+      "th": "หนาว / เย็น (ซ้ำตามต้นฉบับ)"
+    },
+    {
+      "fi": "viileä, viileän",
+      "en": "cool, chilly",
+      "th": "เย็นสบาย / เย็นนิด ๆ"
+    },
+    {
+      "fi": "valoisa, valoisan",
+      "en": "light",
+      "th": "สว่าง"
+    },
+    {
+      "fi": "pimeä, pimeän",
+      "en": "dark",
+      "th": "มืด"
+    },
+    {
+      "fi": "lyhyt, lyhyen",
+      "en": "short",
+      "th": "สั้น"
+    },
+    {
+      "fi": "pitkä, pitkän",
+      "en": "long, tall",
+      "th": "ยาว / สูง"
+    },
+    {
+      "fi": "paljon",
+      "en": "much, a lot",
+      "th": "มาก"
+    },
+    {
+      "fi": "vähän",
+      "en": "a little",
+      "th": "น้อย"
+    }
+  ],
+  "colours": [
+    {
+      "fi": "väri, värin, väriä, värejä",
+      "en": "colour",
+      "th": "สี"
+    },
+    {
+      "fi": "Minkävärinen takki sinulla on?",
+      "en": "what colour is your jacket?",
+      "th": "คุณมีเสื้อแจ็กเก็ตสีอะไร"
+    },
+    {
+      "fi": "valkoinen, valkoisen, valkoista, valkoisia",
+      "en": "white",
+      "th": "สีขาว"
+    },
+    {
+      "fi": "punainen, punaisen, punaista, punaisia",
+      "en": "red",
+      "th": "สีแดง"
+    },
+    {
+      "fi": "oranssi, oranssin, oranssia, oransseja",
+      "en": "orange",
+      "th": "สีส้ม"
+    },
+    {
+      "fi": "keltainen, keltaisen, keltaista, keltaisia",
+      "en": "yellow",
+      "th": "สีเหลือง"
+    },
+    {
+      "fi": "vihreä, vihreän, vihreää, vihreitä",
+      "en": "green",
+      "th": "สีเขียว"
+    },
+    {
+      "fi": "sininen, sinisen, sinistä, sinisiä",
+      "en": "blue",
+      "th": "สีน้ำเงิน / ฟ้า"
+    },
+    {
+      "fi": "liila, liilan, liilaa, liiloja",
+      "en": "purple",
+      "th": "สีม่วงอ่อน"
+    },
+    {
+      "fi": "pinkki, pinkin, pinkkiä, pinkkejä",
+      "en": "pink",
+      "th": "สีชมพู"
+    },
+    {
+      "fi": "ruskea, ruskean, ruskeaa, ruskeita",
+      "en": "brown",
+      "th": "สีน้ำตาล"
+    },
+    {
+      "fi": "beige, beigen, beigeä, beigejä",
+      "en": "beige",
+      "th": "สีเบจ"
+    },
+    {
+      "fi": "musta, mustan, mustaa, mustia",
+      "en": "black",
+      "th": "สีดำ"
+    },
+    {
+      "fi": "harmaa, harmaan, harmaata, harmaita",
+      "en": "grey",
+      "th": "สีเทา"
+    },
+    {
+      "fi": "tummansininen",
+      "en": "dark blue",
+      "th": "สีน้ำเงินเข้ม"
+    },
+    {
+      "fi": "vaaleanpunainen",
+      "en": "light red, pink",
+      "th": "สีชมพูอ่อน"
+    }
+  ]
+}
