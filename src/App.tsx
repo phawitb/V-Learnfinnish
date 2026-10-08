@@ -32,6 +32,7 @@ import { LessonThreePage } from "./pages/LessonThreePage";
 import { TestOnePage } from "./pages/TestOnePage";
 import { LessonFourPage } from "./pages/LessonFourPage";
 import { LessonFivePage } from "./pages/LessonFivePage";
+import { LessonSixPage } from "./pages/LessonSixPage";
 import {
   lessonTwoDaysAndTime,
   lessonTwoEverydaySentences,
@@ -124,7 +125,7 @@ function Empty({
   );
 }
 
-function LessonsHub({ onOpen }: { onOpen: (lesson: 1 | 2 | 3 | 4 | 5 | "test1") => void }) {
+function LessonsHub({ onOpen }: { onOpen: (lesson: 1 | 2 | 3 | 4 | 5 | 6 | "test1") => void }) {
   return (
     <section className="page lessons-page">
       <div className="page-heading">
@@ -189,6 +190,11 @@ function LessonsHub({ onOpen }: { onOpen: (lesson: 1 | 2 | 3 | 4 | 5 | "test1") 
         <button type="button" className="lesson-card" onClick={() => onOpen(5)} aria-label="Lesson 5, seasons, weather, adjectives, colours, reading and self-study">
           <span className="lesson-card-number">05</span>
           <span className="lesson-card-copy"><b>Vuodenajat ja sää</b><span>Seasons · Weather · Adjectives · Colours · Self-study</span></span>
+          <span className="lesson-card-arrow" aria-hidden="true">→</span>
+        </button>
+        <button type="button" className="lesson-card" onClick={() => onOpen(6)} aria-label="Lesson 6, Tiistaina 6. lokakuuta, weather, time, verbs and plural">
+          <span className="lesson-card-number">06</span>
+          <span className="lesson-card-copy"><b>Tiistaina 6. lokakuuta</b><span>Weather · Listening · Time &amp; verbs · Plural · Homework</span></span>
           <span className="lesson-card-arrow" aria-hidden="true">→</span>
         </button>
         <button
@@ -327,7 +333,7 @@ function App() {
       storageService.practiceProgress,
     );
   const [filter, setFilter] = useState(""),
-    [activeLesson, setActiveLesson] = useState<1 | 2 | 3 | 4 | 5 | "test1" | null>(null);
+    [activeLesson, setActiveLesson] = useState<1 | 2 | 3 | 4 | 5 | 6 | "test1" | null>(null);
   const fullViewportHeight = useRef(0);
   const searchInput = useRef<HTMLInputElement>(null);
   const direction: Direction = "auto";
@@ -434,6 +440,8 @@ function App() {
         ? "Lesson 4"
       : page === "lessons" && activeLesson === 5
         ? "Lesson 5"
+      : page === "lessons" && activeLesson === 6
+        ? "Lesson 6"
       : page === "lessons" && activeLesson === "test1"
         ? "Test 1"
       : nav[page].label;
@@ -636,6 +644,8 @@ function App() {
               ? <LessonFourPage />
             : activeLesson === 5
               ? <LessonFivePage />
+            : activeLesson === 6
+              ? <LessonSixPage />
             : activeLesson === "test1"
               ? <TestOnePage />
             : <LessonsHub onOpen={setActiveLesson} />

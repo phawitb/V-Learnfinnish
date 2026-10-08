@@ -1,0 +1,40 @@
+{
+  "retrieved": "2026-10-08",
+  "section": "https://moodle.abo.fi/course/section.php?id=626525",
+  "files": [
+    {
+      "file": "verbs-and-time-markers.pdf",
+      "source": "https://moodle.abo.fi/mod/resource/view.php?id=1208128",
+      "bytes": 263785,
+      "sha256": "662ecca3514e9809e013022557984f3c0ed2841c26776b8b8cbf1e2ff3a97647"
+    },
+    {
+      "file": "translation-seasons-weather.docx",
+      "source": "https://moodle.abo.fi/mod/resource/view.php?id=1208129",
+      "bytes": 14385,
+      "sha256": "f7fbf08775d97fbcbdd68de73f33d9a0ed5593897b89732ba9cf7754b1192f7d"
+    },
+    {
+      "file": "harjoitus-13.mp3",
+      "source": "https://moodle.abo.fi/mod/resource/view.php?id=1204577",
+      "bytes": 1193460,
+      "sha256": "bab20ecd75ae8c6a9a754ec7c8400aebdbca29a2037de4b4d52aacffc96382cd"
+    }
+  ],
+  "printed_pages": [
+    61,
+    75,
+    76,
+    78,
+    79,
+    82,
+    83,
+    331
+  ],
+  "quizlet": "Reuses the same three Quizlet sets already transcribed for lesson 5 (30 weather, 27 seasons/time, 22 adjectives); links verified against lesson 6 Moodle section.",
+  "notes": [
+    "PDF attachment reused from existing download with the same filename as the Moodle resource; DOCX and MP3 downloaded from authenticated Moodle this session.",
+    "Textbook printed page n corresponds to PDF position n-1.",
+    "Official answer key: page 331 for exercises 13, 19, 20, 25. Exercise 14 examples and Thai explanations are supplementary."
+  ]
+}
