@@ -4,6 +4,22 @@ import { beforeEach, expect, it } from 'vitest';
 import App from './App';
 
 beforeEach(() => localStorage.clear());
+it('shows detailed answers for all three exercises directly in Homework', async () => {
+  const user = userEvent.setup();
+  render(<App />);
+  await user.click(screen.getAllByRole('button', { name: 'Lessons' })[0]);
+  await user.click(screen.getByRole('button', { name: /Lesson 6,/ }));
+  await user.click(screen.getByRole('tab', { name: /Homework/ }));
+  for (const number of [19, 20, 25]) {
+    await user.click(screen.getByText(`เปิดเฉลยละเอียด · แบบฝึก ${number}`));
+  }
+  expect(screen.getByRole('heading', { name: '19 · ข้อ 8 — valoisat illat' })).toBeVisible();
+  expect(screen.getByText('Syksyn värit ovat keltainen, oranssi ja ruskea.')).toBeVisible();
+  expect(screen.getByRole('heading', { name: '25 · ข้อ 19 — kertoo' })).toBeVisible();
+  expect(screen.getByText(/emme เป็นกริยาปฏิเสธสำหรับ me/)).toBeVisible();
+  expect(screen.getByText('Puhutteko te ranskaa?')).toBeVisible();
+  expect(screen.getByRole('link', { name: 'ตรวจเฉลยต้นฉบับหน้า 331' })).toHaveAttribute('href', '/lesson6/book/page-331.jpg');
+});
 it('opens lesson 6 and preserves work across sections and reloads', async () => {
   const user = userEvent.setup();
   const view = render(<App />);

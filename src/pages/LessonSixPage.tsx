@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { LessonSixHomework } from './LessonSixHomework';
 import { Check, ChevronRight, Volume2 } from 'lucide-react';
 import { ttsService } from '../services/ttsService';
 import vocabulary from '../data/lessonFiveVocabulary.json';
@@ -146,6 +147,7 @@ export function LessonSixPage() {
         <h2>Kotitehtävät — การบ้าน</h2><p>ครบทั้ง 3 งานตาม Moodle แยกเช็กลิสต์คำศัพท์เป็นรายชุดเพื่อช่วยติดตาม</p>
         <div className="lesson5-checklist">{homework.map(task => <label key={task}><input type="checkbox" checked={work.tasks.includes(task)} onChange={e => save({ ...work, tasks: e.target.checked ? [...work.tasks, task] : work.tasks.filter(t => t !== task) })} />{task}</label>)}</div>
         <div className="lesson5-options"><button type="button" onClick={() => go('Vocabulary')}>ทบทวนคำศัพท์</button><button type="button" onClick={() => go('Verbs')}>แบบฝึก 25</button><button type="button" onClick={() => go('Plural')}>แบบฝึก 19 และ 20</button></div>
+        <LessonSixHomework />
         <h3>Homework — คำสั่งต้นฉบับ</h3><ol>{originalInstructions.homework.map(s => <li key={s}>{s}</li>)}</ol>
         <ul>{quizletSources.slice(0, 3).map(([name, url]) => <li key={url}><a href={url} target="_blank" rel="noreferrer">{name}</a></li>)}</ul>
       </>}
