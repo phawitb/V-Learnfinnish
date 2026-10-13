@@ -1,0 +1,45 @@
+{
+  "retrieved": "2026-10-13",
+  "section": "https://moodle.abo.fi/course/section.php?id=626526",
+  "files": [
+    {
+      "file": "grammar-exercises.pdf",
+      "source": "https://moodle.abo.fi/mod/resource/view.php?id=1192671",
+      "bytes": 274344,
+      "sha256": "b3decbdaf2ef99b953af6e1fdc639ee198365384b0c07a6efa5fec11fed8b2af"
+    },
+    {
+      "file": "pedro-soittaa-mikolle.mp3",
+      "source": "https://moodle.abo.fi/mod/resource/view.php?id=1192672",
+      "bytes": 2149438,
+      "sha256": "69792562f9acd190b5db9890bd8b47604592a07afca338c85e8b19e28de2d3f8"
+    },
+    {
+      "file": "sentences-to-translate.docx",
+      "source": "https://moodle.abo.fi/mod/resource/view.php?id=1192675",
+      "bytes": 13650,
+      "sha256": "7c4d2fd0e2f4a222e346aa5d9c6ed87ae14539b50016cd68aa4ae3cfa0281052"
+    }
+  ],
+  "printed_pages": [
+    57,
+    66,
+    70,
+    72,
+    77,
+    78,
+    331
+  ],
+  "quizlet": {
+    "url": "https://quizlet.com/fi/844783815/finnish-1-kappale-3-a-pedro-soittaa-mikolle-flash-cards/",
+    "terms": 58
+  },
+  "notes": [
+    "All three attachments downloaded from authenticated Moodle.",
+    "Book exercises 4, 8, 16 and 17: official answers on page 331.",
+    "Worksheet exercises 16 and 20: teacher answers at bottom of attached PDF. These are different from textbook exercises with the same numbers.",
+    "Translation DOCX: two partner sets of five prompts with teacher answers.",
+    "Thai translations and grammar explanations are supplementary.",
+    "Printed page n is PDF file position n-1."
+  ]
+}
