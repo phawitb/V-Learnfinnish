@@ -33,6 +33,7 @@ import { TestOnePage } from "./pages/TestOnePage";
 import { LessonFourPage } from "./pages/LessonFourPage";
 import { LessonFivePage } from "./pages/LessonFivePage";
 import { LessonSixPage } from "./pages/LessonSixPage";
+import { LessonEightPage } from "./pages/LessonEightPage";
 import { LessonSevenPage } from "./pages/LessonSevenPage";
 import {
   lessonTwoDaysAndTime,
@@ -126,7 +127,7 @@ function Empty({
   );
 }
 
-function LessonsHub({ onOpen }: { onOpen: (lesson: 1 | 2 | 3 | 4 | 5 | 6 | 7 | "test1") => void }) {
+function LessonsHub({ onOpen }: { onOpen: (lesson: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | "test1") => void }) {
   return (
     <section className="page lessons-page">
       <div className="page-heading">
@@ -201,6 +202,11 @@ function LessonsHub({ onOpen }: { onOpen: (lesson: 1 | 2 | 3 | 4 | 5 | 6 | 7 | "
         <button type="button" className="lesson-card" onClick={() => onOpen(7)} aria-label="Lesson 7, Torstaina 8. lokakuuta, genitive, reading and homework">
           <span className="lesson-card-number">07</span>
           <span className="lesson-card-copy"><b>Torstaina 8. lokakuuta</b><span>Genitive · Pedro soittaa Mikolle · Grammar · Homework</span></span>
+          <span className="lesson-card-arrow" aria-hidden="true">→</span>
+        </button>
+        <button type="button" className="lesson-card" onClick={() => onOpen(8)} aria-label="Lesson 8, Tiistaina 13.lokakuuta, partitive and homework">
+          <span className="lesson-card-number">08</span>
+          <span className="lesson-card-copy"><b>Tiistaina 13.lokakuuta</b><span>Partitive · Pronouns · Discussion · Homework</span></span>
           <span className="lesson-card-arrow" aria-hidden="true">→</span>
         </button>
         <button
@@ -339,7 +345,7 @@ function App() {
       storageService.practiceProgress,
     );
   const [filter, setFilter] = useState(""),
-    [activeLesson, setActiveLesson] = useState<1 | 2 | 3 | 4 | 5 | 6 | 7 | "test1" | null>(null);
+    [activeLesson, setActiveLesson] = useState<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | "test1" | null>(null);
   const fullViewportHeight = useRef(0);
   const searchInput = useRef<HTMLInputElement>(null);
   const direction: Direction = "auto";
@@ -450,6 +456,8 @@ function App() {
         ? "Lesson 6"
       : page === "lessons" && activeLesson === 7
         ? "Lesson 7"
+      : page === "lessons" && activeLesson === 8
+        ? "Lesson 8"
       : page === "lessons" && activeLesson === "test1"
         ? "Test 1"
       : nav[page].label;
@@ -656,6 +664,8 @@ function App() {
               ? <LessonSixPage />
             : activeLesson === 7
               ? <LessonSevenPage />
+            : activeLesson === 8
+              ? <LessonEightPage />
             : activeLesson === "test1"
               ? <TestOnePage />
             : <LessonsHub onOpen={setActiveLesson} />

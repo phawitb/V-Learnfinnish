@@ -321,7 +321,7 @@ describe('App', () => {
     await userEvent.click(screen.getAllByRole('button', { name: 'Lessons' })[0])
 
     const cards = screen.getAllByRole('button').filter((button) => button.classList.contains('lesson-card'))
-    expect(cards.map((button) => button.querySelector('.lesson-card-number')?.textContent)).toEqual(['01', '02', '03', '04', '05', '06', '07', 'T1'])
+    expect(cards.map((button) => button.querySelector('.lesson-card-number')?.textContent)).toEqual(['01', '02', '03', '04', '05', '06', '07', '08', 'T1'])
   })
   it('covers every assigned Test 1 page with detailed Finnish examples', async () => {
     render(<App />)

@@ -1,0 +1,40 @@
+{
+  "section": "https://moodle.abo.fi/course/section.php?id=626692",
+  "retrieved": "2026-10-15",
+  "files": [
+    {
+      "file": "weather-true-false.docx",
+      "source": "https://moodle.abo.fi/mod/resource/view.php?id=1192674",
+      "bytes": 261982,
+      "sha256": "1f68aec791da5bb952c69696fb115718d684ed22584fbed6fd1cab6119d86f98"
+    },
+    {
+      "file": "discussion-questions.docx",
+      "source": "https://moodle.abo.fi/mod/resource/view.php?id=1209979",
+      "bytes": 14440,
+      "sha256": "135bc50fafdbafb3d47841cda4a47ab689a5d0915c61baf2a21479f24b5c5674"
+    },
+    {
+      "file": "partitive-homework.pdf",
+      "source": "https://moodle.abo.fi/mod/resource/view.php?id=1192676",
+      "bytes": 229210,
+      "sha256": "63bebcbd5a6c7bc33702656bded86f32748073fb2bd094ae4bb58b660728dc33"
+    }
+  ],
+  "printed_pages": [
+    57,
+    95,
+    96,
+    103,
+    104,
+    105,
+    332
+  ],
+  "notes": [
+    "Reading and audio reused from lesson7.",
+    "Book answer key: page332; worksheet answers: PDF page2.",
+    "Weather answers transcribed from original DOCX image. Discussion answers are supplementary examples.",
+    "Thai translations and explanations are supplementary.",
+    "Wordwall links retained as optional external practice."
+  ]
+}
