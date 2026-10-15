@@ -1,10 +1,11 @@
+import { EarlyBookPage, EarlyAnswers } from "./LessonTwoPage";
 import { CSSProperties, ReactNode, useState } from "react";
 import { Check, ChevronRight, MessageCircle, Volume2 } from "lucide-react";
 import { ttsService } from "../services/ttsService";
 
-type Step = "start" | "spoken" | "harjoitus" | "negative" | "conjugation" | "dialogues" | "translation" | "homework" | "check";
+type Step = "book" | "start" | "spoken" | "harjoitus" | "negative" | "conjugation" | "dialogues" | "translation" | "homework" | "check";
 const steps: { id: Step; label: string }[] = [
-  { id: "start", label: "Start" }, { id: "spoken", label: "Spoken" }, { id: "harjoitus", label: "Harjoitus" },
+  { id: "start", label: "Start" }, { id: "book", label: "Moodle & book" }, { id: "spoken", label: "Spoken" }, { id: "harjoitus", label: "Harjoitus" },
   { id: "negative", label: "Negative" }, { id: "conjugation", label: "Conjugation" }, { id: "dialogues", label: "Dialogues" },
   { id: "translation", label: "Translation" }, { id: "homework", label: "Homework" }, { id: "check", label: "Check" },
 ];
@@ -15,21 +16,14 @@ const spokenNumbers = [
   ["yhdeksän", "yheksän/ysi", "9"], ["kymmenen", "kymppi", "10"], ["yksitoista", "ykstoista", "11"], ["kaksitoista", "kakstoista", "12"],
   ["kaksikymmentä", "kakskyt/kakskymmentä", "20"], ["kaksikymmentäyksi", "kakskytyks", "21"], ["sata", "satku", "100"], ["tuhat", "tonni", "1000"],
 ];
-const writtenDialogue = [
-  ["Myyjä", "Hei."], ["Pedro", "Hei. Mitä jäätelö maksaa?"],
-  ["Myyjä", "Yksi pallo maksaa 3 euroa ja kaksi palloa 5 euroa."], ["Pedro", "Okei. Minä otan sitten kaksi palloa suklaata."],
-  ["Myyjä", "Okei. Entä sinulle?"], ["Alex", "Minäkin otan kaksi palloa: vaniljaa ja mansikkaa."],
-  ["Myyjä", "Selvä. Tuleeko muuta?"], ["Pedro", "Ei kiitos."],
-  ["Myyjä", "Tässä. 10 euroa yhteensä. Tuleeko nämä samasta?"], ["Alex", "Kyllä tulee. Minä maksan nämä. Kortilla, kiitos."],
-  ["Myyjä", "Kiitos. Tarvitsetko kuittia?"], ["Alex", "Ei kiitos."],
-];
+const writtenDialogue = [["Myyjä", "Hei."], ["Pedro", "Hei. Mitä jäätelö maksaa?"], ["Myyjä", "Yksi pallo maksaa 2 € ja kaksi palloa maksaa 3 €."], ["Pedro", "Ahaa. Minä haluaisin kaksi palloa suklaajäätelöä."], ["Myyjä", "Okei. Entä sinulle?"], ["Alex", "Minäkin haluaisin kaksi palloa: vaniljaa ja mansikkaa."], ["Myyjä", "Selvä. Tuleeko muuta?"], ["Pedro", "Ei kiitos."], ["Myyjä", "Tässä ovat jäätelöt. Kuusi euroa, kiitos."], ["Pedro ja Alex", "Ole hyvä."], ["Myyjä", "Kiitos."], ["Pedro ja Alex", "Kiitos, hei hei."]];
 const spokenDialogue = [
   ["Myyjä", "Hei."], ["Pedro", "Hei. Mitä jätski maksaa?"],
   ["Myyjä", "Yks pallo maksaa 3 euroo ja kaks palloo 5 euroo."], ["Pedro", "Okei. No mä otan sit kaks palloo suklaata."],
   ["Myyjä", "Okei. Entä sulle?"], ["Alex", "Mäkin otan kaks palloo: vaniljaa ja mansikkaa."],
   ["Myyjä", "Selvä. Tuleeks muuta?"], ["Pedro", "Ei kiitos."],
   ["Myyjä", "Tässä. 10 euroa yhteensä. Tuleeks nää samasta?"], ["Alex", "Joo tulee. Mä maksan nää. Kortilla, kiitos."],
-  ["Myyjä", "Kiitos. Tarviitko kuittia?"], ["Alex", "Ei kiitti."],
+  ["Myyjä", "Kiitos. Tarviitko kuittia?"], ["Alex", "Ei kiitti."], ["Myyjä", "Selvä."], ["Alex", "Kiitti, moi!"], ["Myyjä", "Kiitos, moi moi!"],
 ];
 const spokenDiffs = [
   ["jäätelö", "jätski"], ["Yksi", "Yks"], ["euroa", "euroo"], ["palloa", "palloo"], ["Minä", "Mä"], ["sitten", "sit"],
@@ -65,7 +59,7 @@ const newVerbs = [
   ["rakastaa", "to love / รัก", "rakastan, rakastat, rakastaa, rakastamme, rakastatte, rakastavat"],
   ["tanssia", "to dance / เต้นรำ", "tanssin, tanssit, tanssii, tanssimme, tanssitte, tanssivat"],
   ["matkustaa", "to travel / เดินทาง", "matkustan, matkustat, matkustaa, matkustamme, matkustatte, matkustavat"],
-  ["alkaa", "to begin / เริ่มต้น", "alkaa (impersonal)"],
+  ["alkaa", "to begin / เริ่มต้น", "alan, alat, alkaa, alamme, alatte, alkavat"],
   ["etsiä", "to seek / ค้นหา", "etsin, etsit, etsii, etsimme, etsitte, etsivät"],
   ["laulaa", "to sing / ร้องเพลง", "laulan, laulat, laulaa, laulamme, laulatte, laulavat"],
   ["seisoa", "to stand / ยืน", "seison, seisot, seisoo, seisomme, seisotte, seisovat"],
@@ -193,10 +187,24 @@ export function LessonFourPage() {
   const title = (kicker: string, heading: string, body: string) => <div className="lesson-title"><div><span className="kicker">{kicker}</span><h2>{heading}</h2><p>{body}</p></div><MessageCircle /></div>;
   const reveal = (i: number) => setRevealed(r => ({ ...r, [i]: !r[i] }));
   return <section className="page lesson-page lesson-three">
-    <div className="lesson-hero"><div><span className="kicker">LESSON 4 · KAPPALE 2 JATKUU</span><h1>Puhekieli ja harjoitukset</h1><p>ภาษาพูด ตัวเลข ประโยคปฏิเสธ การผันกริยา และบทสนทนา</p></div><div className="lesson-progress"><b>{progress}%</b><span>complete</span><i><em style={{ width: `${progress}%` }} /></i></div></div>
+    <div className="lesson-hero"><div><span className="kicker">22.09.2026 · KAPPALE 2</span><h1>Tiistai 22.09</h1><p>ภาษาพูด ตัวเลข ประโยคปฏิเสธ การผันกริยา และบทสนทนา</p></div><div className="lesson-progress"><b>{progress}%</b><span>complete</span><i><em style={{ width: `${progress}%` }} /></i></div></div>
     <div className="lesson-tabs" role="tablist">{steps.map((s, i) => <button role="tab" aria-selected={step === s.id} className={step === s.id ? "active" : completed.includes(s.id) ? "done" : ""} onClick={() => setStep(s.id)} key={s.id}><span>{completed.includes(s.id) ? <Check size={14} /> : i + 1}</span>{s.label}</button>)}</div>
 
-    {step === "start" && <div className="lesson-panel intro-panel"><div className="lesson-number">04</div><span className="kicker">SPOKEN FINNISH &amp; PRACTICE</span><h2>ภาษาพูด ไวยากรณ์ และแบบฝึกหัดครบชุด</h2><p>ตัวเลขภาษาพูด · เปรียบเทียบภาษาเขียนกับพูด · ประโยคปฏิเสธ · การผันกริยาใหม่ 14 ตัว · บทสนทนาซื้อของ · แปลไทย-ฟินแลนด์</p><div className="objectives"><div><span>01</span><p><b>ตัวเลขภาษาพูด</b>รู้จักตัวเลขแบบย่อที่คนฟินแลนด์ใช้จริง</p></div><div><span>02</span><p><b>ผันกริยา 30 ประโยค</b>ฝึกกริยาใหม่ทั้งบอกเล่าและปฏิเสธ</p></div><div><span>03</span><p><b>บทสนทนาและแปล</b>สั่งพิซซ่า ซื้อไอศกรีม และแปลเรื่อง Anna</p></div></div><div className="lesson-tip"><b>Test 1 — วันอังคาร 29.09</b><p>เตรียมสอบ Test 1 ทบทวนเนื้อหาจาก Lesson 1-4 ทั้งหมด</p></div><button className="primary lesson-next" onClick={() => go("spoken")}>เริ่มจากตัวเลขภาษาพูด <ChevronRight /></button></div>}
+    {step === "book" && <div className="lesson-panel"><h2>Tiistai 22.09 · เนื้อหาตามหนังสือ</h2>
+<h3>Harjoitus 12 · หน้า 45 · ฟังข้อมูลส่วนบุคคล</h3><EarlyBookPage page={45}/><p>กรอก nimi (ชื่อ), ikä (อายุ), maa (ประเทศ), kieli (ภาษา) ของ 4 คน ตารางให้คำใบ้ Suomi, Ling, lingala ja ranska และ 21 ต้องฟังเสียงของแบบฝึกนี้เพื่อเติมส่วนที่เหลือ ไฟล์เสียงหน้า 31 เป็นคนละรายการ ไม่ใช่เฉลยของตารางนี้</p><EarlyAnswers rows={[["คนที่ 1", "Anna; 54; Suomi; ruotsi", "Anna อายุ 54 ปี จากฟินแลนด์ พูดภาษาสวีเดน"],["คนที่ 2", "Ling; 27; Kiina; kiina", "Ling อายุ 27 ปี จากจีน พูดภาษาจีน"],["คนที่ 3", "Miriam; 38; Kongo; lingala ja ranska", "Miriam อายุ 38 ปี จากคองโก พูด lingala และภาษาฝรั่งเศส"],["คนที่ 4", "Carlos; 21; Meksiko; espanja", "Carlos อายุ 21 ปี จากเม็กซิโก พูดภาษาสเปน"]]}/><p>เฉลยตรวจเทียบหน้า 330 ของหนังสือ <a href="/audit-early/answer-329.png" target="_blank" rel="noreferrer">เปิดเฉลยต้นฉบับ</a> · ยังไม่มีเสียงของแบบฝึก 12 นี้ในโฟลเดอร์เสียง Moodle ที่ตรวจพบ</p>
+<h3>Harjoitus 14A–B · หน้า 46–47 · อ่านแล้วแนะนำบุคคล</h3><EarlyBookPage page={46}/><EarlyBookPage page={47}/><p>อ่านประวัติแล้วกรอกชื่อ นามสกุล ประเทศ สัญชาติ ภาษาแม่ และภาษาอื่น จากนั้นเปลี่ยน minä เป็น hän เพื่อแนะนำให้เพื่อนฟัง</p>
+<EarlyAnswers rows={[
+["Aliya Ibrahim", "Aliya; Ibrahim; Irak; irakilainen; kurdi; arabia", "มาจากอิรัก ภาษาแม่เคิร์ด พูดอาหรับด้วย แต่ไม่พูดอังกฤษ ไม่ได้ระบุอายุ"],
+["Thi Lam Pham", "Thi Lam; Pham; Vietnam; vietnamilainen; vietnam; kiina, englanti, vähän suomea", "Thi Lam เป็นชื่อ Pham เป็นนามสกุล มาจากฮานอย ภาษาแม่เวียดนาม พูดจีน อังกฤษ และฟินแลนด์เล็กน้อย"],
+["Fabian Masuaka", "Fabian; Masuaka; Kongo; kongolainen; lingala; ranska, vähän suomea", "ชายชาวคองโกจาก Brazzaville อายุ 24 ปี ภาษาแม่ lingala"],
+["Jutta Åbäck", "Jutta; Åbäck; Ruotsi; ruotsalainen; ruotsi; suomi, englanti, vähän saksaa", "หญิงชาวสวีเดนอายุ 26 พ่อเป็นชาวฟินแลนด์ ภาษาแม่สวีเดน พูดฟินแลนด์ อังกฤษ และเยอรมันเล็กน้อย"],
+["14B · ตัวอย่างการแนะนำ", "Tässä on Fabian Masuaka. Hän on kongolainen. Hän on 24 vuotta vanha. Hän on kotoisin Brazzavillestä. Hän puhuu lingalaa, ranskaa ja vähän suomea.", "ใช้ hän on / hän puhuu แทน minä olen / minä puhun และเปลี่ยนภาษาเป็น partitive หลัง puhua"]]}/>
+<h3>Jäätelökioskilla · ใบงานภาษาเขียน</h3><p>ใบงานครูใช้ราคา 1 ลูก 2 € / 2 ลูก 3 € รวมของทั้งสองคน 6 € และใช้ haluaisin (อยากได้) ส่วนบทภาษาพูดหน้า 33 ใช้ราคา 3 € / 5 € รวม 10 € และใช้ otan (ฉันเอา) จึงมีทั้งเนื้อหาและสำนวนต่างกัน</p><details className="lesson-tip"><summary>เปิดใบงาน Jäätelökioskilla</summary><img src="/audit-early/kiosk.png" alt="ใบงาน Jäätelökioskilla ภาษาเขียน" loading="lazy" style={{width:"100%"}}/></details><p>pallo = ลูก/สกู๊ป · ahaa = อ๋อ · haluaisin = ฉันอยากได้ · suklaa = ช็อกโกแลต · okei = ตกลง · sinulle = ให้คุณ · -kin = ด้วย/เช่นกัน · vanilja = วานิลลา · mansikka = สตรอว์เบอร์รี · selvä = เข้าใจแล้ว · Tuleeko muuta? = เอาอย่างอื่นอีกไหม · tässä = นี่/ตรงนี้</p><h3>หน้า 33–34 · ภาษาพูดและราคา</h3><EarlyBookPage page={33}/><EarlyBookPage page={34}/><audio controls preload="none" src="/audit-early/018_Kappale 2_Puhutaan_Jatskikiskalla.mp3"/><p>3,50 € อ่าน kolme viiskyt; raha = เงิน, käteinen = เงินสด, seteli = ธนบัตร, kolikko = เหรียญ, kortti = บัตร, halpa = ถูก, kallis = แพง</p>
+<p>ตัวเลขหน้า 34 ใช้ kymmenen และ sata; kymppi / satku ในแท็บ Spoken เป็นสำนวนเพิ่มเติม รูป 11–19 ในหน้านี้ลงท้าย -toist: yksitoista → ykstoist</p>
+<div className="useful-grid">{["ykstoist","kakstoist","kolmetoist","neljätoist","viistoist","kuustoist","seittemäntoist","kaheksantoist","yheksäntoist","kakskyt","kakskytkaks","kakskytkolme","kakskytneljä","kakskytviis","kakskytkuus","kakskytseittemän","kakskytkaheksan","kakskytyheksän","kolkyt","kolkytyks","nelkyt","viiskyt","kuuskyt","seiskyt","kaheksankyt","yheksänkyt"].map(x=><Finnish key={x} text={x}/>)}</div>
+<h3>ไฟล์ต้นฉบับและเฉลยของครู</h3><div className="course-files">{["Verb Conjugation (Additional task) (1).pdf","verbit_vastaukset (2).docx","Jäätelökioskilla.pdf","Dialogues (1).pdf","Dialogues Answers (1).docx","Grammar Exercises (1).docx","Translation Kap 2 (1).docx","Translation Answers (1).docx"].map(file=><a key={file} href={`/audit-early/${file}`} target="_blank" rel="noreferrer">{file}</a>)}</div><p>ชุด Grammar Exercises 1–2 อยู่แท็บ Harjoitus, กริยา 30 ประโยคอยู่ Conjugation, บทสนทนาอยู่ Dialogues และงานแปลอยู่ Translation</p>
+<p>หมายเหตุงานแปล: ไฟล์โจทย์ไม่ได้ระบุอายุ Anna แต่ไฟล์เฉลยเพิ่ม “Olen 18 vuotta vanha.” ประโยคนี้จึงเป็นข้อมูลเพิ่มในเฉลย ไม่จำเป็นต้องเพิ่มเมื่อแปลโจทย์เดิม</p></div>}
+    {step === "start" && <div className="lesson-panel intro-panel"><div className="lesson-number">04</div><span className="kicker">SPOKEN FINNISH &amp; PRACTICE</span><h2>ภาษาพูด ไวยากรณ์ และแบบฝึกหัดครบชุด</h2><p>ตัวเลขภาษาพูด · เปรียบเทียบภาษาเขียนกับพูด · ประโยคปฏิเสธ · การผันกริยาใหม่ 14 ตัว · บทสนทนาซื้อของ · แปลไทย-ฟินแลนด์</p><div className="objectives"><div><span>01</span><p><b>ตัวเลขภาษาพูด</b>รู้จักตัวเลขแบบย่อที่คนฟินแลนด์ใช้จริง</p></div><div><span>02</span><p><b>ผันกริยา 30 ประโยค</b>ฝึกกริยาใหม่ทั้งบอกเล่าและปฏิเสธ</p></div><div><span>03</span><p><b>บทสนทนาและแปล</b>สั่งพิซซ่า ซื้อไอศกรีม และแปลเรื่อง Anna</p></div></div><div className="lesson-tip"><b>Test 1 — วันอังคาร 29.09</b><p>เตรียมสอบ Test 1 ทบทวนเนื้อหาจาก วันที่ 08.09–22.09 ทั้งหมด</p></div><button className="primary lesson-next" onClick={() => go("spoken")}>เริ่มจากตัวเลขภาษาพูด <ChevronRight /></button></div>}
 
     {step === "spoken" && <div className="lesson-panel">{title("PUHEKIELEN NUMEROT", "ตัวเลขภาษาพูด (sivu 34)", "ตัวเลขในภาษาพูดมักย่อให้สั้นลง คนฟินแลนด์ใช้ในชีวิตประจำวัน")}
       <Table headers={["ภาษาเขียน", "ภาษาพูด", "ตัวเลข"]} rows={spokenNumbers} audioColumns={[0, 1]} />
@@ -210,16 +218,16 @@ export function LessonFourPage() {
 
       <h3>ความแตกต่างสำคัญ</h3>
       <div className="lesson3-table" style={{ "--columns": 2 } as CSSProperties}><div className="table-head"><b>ภาษาเขียน</b><b>ภาษาพูด</b></div>{spokenDiffs.map(([w, s], i) => <div key={i}><Finnish text={w} /><Finnish text={s} /></div>)}</div>
-      <button className="primary lesson-next" onClick={() => go("harjoitus")}>ต่อไป: แบบฝึกหัดจากหนังสือ <ChevronRight /></button></div>}
+      <button className="primary lesson-next" onClick={() => go("harjoitus")}>ต่อไป: แบบฝึกไวยากรณ์จากไฟล์ครู <ChevronRight /></button></div>}
 
-    {step === "harjoitus" && <div className="lesson-panel">{title("HARJOITUKSET", "แบบฝึกหัดจากหนังสือ", "Harjoitus 12 (sivu 45) เติมกริยา และ Harjoitus 14 (sivu 46) ประโยคปฏิเสธ")}
-      <h3>Harjoitus 12, sivu 45 — เติมกริยาที่ถูกต้อง</h3>
+    {step === "harjoitus" && <div className="lesson-panel">{title("HARJOITUKSET", "แบบฝึกไวยากรณ์จากไฟล์ครู", "Grammar Exercises: แบบฝึก 2 เติมกริยา และแบบฝึก 1 ปฏิเสธ จากไฟล์ครู")}
+      <h3>Grammar Exercises · Harjoitus 2 — เติมกริยา</h3>
       {harjoitus12.map(([sentence, hint, ans], i) => <div key={`h12-${i}`} style={{ marginBottom: 8 }}>
         <p><b>{i + 1}.</b> {sentence} <span style={{ color: "#888" }}>({hint})</span></p>
         <button type="button" className={`finnish-speak ${revealed[i] ? "" : ""}`} onClick={() => reveal(i)} style={{ cursor: "pointer" }}>{revealed[i] ? <><b style={{ color: "var(--color-success)" }}>{ans}</b></> : "แสดงคำตอบ"}</button>
       </div>)}
 
-      <h3 style={{ marginTop: 32 }}>Harjoitus 14, sivu 46 — เปลี่ยนเป็นประโยคปฏิเสธ</h3>
+      <h3 style={{ marginTop: 32 }}>Grammar Exercises · Harjoitus 1 — ประโยคปฏิเสธ</h3>
       {harjoitus14.map(([pos, neg], i) => <div key={`h14-${i}`} style={{ marginBottom: 8 }}>
         <p><b>{i + 1}.</b> <Finnish text={pos} /></p>
         <button type="button" className="finnish-speak" onClick={() => reveal(100 + i)} style={{ cursor: "pointer" }}>{revealed[100 + i] ? <><b style={{ color: "var(--color-success)" }}>→ </b><Finnish text={neg} /></> : "แสดงคำตอบ"}</button>
@@ -277,8 +285,8 @@ export function LessonFourPage() {
       <Table headers={["คำศัพท์", "ความหมาย"]} rows={translationVocab} audioColumns={[0]} />
       <button className="primary lesson-next" onClick={() => go("homework")}>ต่อไป: การบ้าน <ChevronRight /></button></div>}
 
-    {step === "homework" && <div className="lesson-panel">{title("KOTITEHTÄVÄ", "การบ้าน Lesson 4", "ทำให้ครบทุกข้อก่อนสอบ Test 1")}
-      <div className="lesson-tip"><b>Test 1 — วันอังคาร 29.09</b><p>เตรียมตัวสอบ ทบทวนเนื้อหาจาก Lesson 1-4 ทั้งหมด</p></div>
+    {step === "homework" && <div className="lesson-panel">{title("KOTITEHTÄVÄ", "การบ้าน Tiistai 22.09", "ทำให้ครบทุกข้อก่อนสอบ Test 1")}
+      <div className="lesson-tip"><b>Test 1 — วันอังคาร 29.09</b><p>เตรียมตัวสอบ ทบทวนเนื้อหาจาก วันที่ 08.09–22.09 ทั้งหมด</p></div>
 
       {/* 1. Spoken numbers */}
       <div style={{ marginBottom: 24, padding: 16, background: "var(--color-surface)", borderRadius: 12 }}>
@@ -320,10 +328,10 @@ export function LessonFourPage() {
       <div style={{ marginBottom: 24, padding: 16, background: "var(--color-surface)", borderRadius: 12 }}>
         <p><b>4.</b> Grammar exercises (from materials)</p>
         <p style={{ color: "#888", fontSize: "0.9em" }}>แบบฝึกหัดไวยากรณ์</p>
-        <Reveal label="ดูคำตอบ: Harjoitus 12 — เติมกริยา">
+        <Reveal label="ดูคำตอบ: Grammar Exercises 2 — เติมกริยา">
           <div>{harjoitus12.map(([sentence, hint, ans], i) => <div key={`hw-h12-${i}`} style={{ marginBottom: 6 }}><b>{i + 1}.</b> {sentence} <span style={{ color: "#888" }}>({hint})</span> <b style={{ color: "var(--color-success)" }}>→ {ans}</b></div>)}</div>
         </Reveal>
-        <Reveal label="ดูคำตอบ: Harjoitus 14 — ประโยคปฏิเสธ">
+        <Reveal label="ดูคำตอบ: Grammar Exercises 1 — ประโยคปฏิเสธ">
           <div>{harjoitus14.map(([pos, neg], i) => <div key={`hw-h14-${i}`} style={{ marginBottom: 6 }}><b>{i + 1}.</b> <Finnish text={pos} /> <b style={{ color: "var(--color-success)" }}>→</b> <Finnish text={neg} /></div>)}</div>
         </Reveal>
       </div>
@@ -359,6 +367,6 @@ export function LessonFourPage() {
 
       <button className="primary lesson-next" onClick={() => go("check")}>ทำแบบทดสอบ {quiz.length} ข้อ <ChevronRight /></button></div>}
 
-    {step === "check" && <div className="lesson-panel quiz-panel"><span className="kicker">KNOWLEDGE CHECK</span><h2>ทบทวน Lesson 4</h2>{finished ? <div className="lesson-result"><span>✓</span><div><p>จบบทเรียนแล้ว</p><b>{score} / {quiz.length}</b><p>{score >= Math.round(quiz.length * 0.8) ? "Hienoa! พร้อมสอบ Test 1" : "Hyvä yritys! กลับไปทบทวนจุดที่ยังสับสนได้"}</p></div></div> : <><p>คำถาม {index + 1} จาก {quiz.length}</p><h3>{q[0]}</h3><div className="lesson-answers">{q[1].map(choice => <button key={choice} disabled={!!answer} className={answer ? choice === q[2] ? "correct" : choice === answer ? "wrong" : "" : ""} onClick={() => { setAnswer(choice); if (choice === q[2]) setScore(s => s + 1); }}>{choice}</button>)}</div>{answer && <><div className="lesson-tip"><b>{answer === q[2] ? "Oikein! ถูกต้อง" : "ยังไม่ถูก"}</b><p>{q[3]}</p></div><button className="primary lesson-next" onClick={() => { if (index === quiz.length - 1) { setFinished(true); finish("check"); } else { setIndex(i => i + 1); setAnswer(""); window.scrollTo?.({ top: 0, left: 0, behavior: "auto" }); } }}>คำถามถัดไป <ChevronRight /></button></>}</>}</div>}
+    {step === "check" && <div className="lesson-panel quiz-panel"><span className="kicker">KNOWLEDGE CHECK</span><h2>ทบทวน Tiistai 22.09</h2>{finished ? <div className="lesson-result"><span>✓</span><div><p>จบบทเรียนแล้ว</p><b>{score} / {quiz.length}</b><p>{score >= Math.round(quiz.length * 0.8) ? "Hienoa! พร้อมสอบ Test 1" : "Hyvä yritys! กลับไปทบทวนจุดที่ยังสับสนได้"}</p></div></div> : <><p>คำถาม {index + 1} จาก {quiz.length}</p><h3>{q[0]}</h3><div className="lesson-answers">{q[1].map(choice => <button key={choice} disabled={!!answer} className={answer ? choice === q[2] ? "correct" : choice === answer ? "wrong" : "" : ""} onClick={() => { setAnswer(choice); if (choice === q[2]) setScore(s => s + 1); }}>{choice}</button>)}</div>{answer && <><div className="lesson-tip"><b>{answer === q[2] ? "Oikein! ถูกต้อง" : "ยังไม่ถูก"}</b><p>{q[3]}</p></div><button className="primary lesson-next" onClick={() => { if (index === quiz.length - 1) { setFinished(true); finish("check"); } else { setIndex(i => i + 1); setAnswer(""); window.scrollTo?.({ top: 0, left: 0, behavior: "auto" }); } }}>คำถามถัดไป <ChevronRight /></button></>}</>}</div>}
   </section>;
 }

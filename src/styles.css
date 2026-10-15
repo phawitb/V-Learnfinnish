@@ -2936,3 +2936,8 @@ summary:focus-visible {
 .lesson6-builder { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 16px; margin: 20px 0; }
 .lesson6-builder label { display: grid; gap: 8px; }
 .lesson6-builder select { width: 100%; min-width: 0; padding: 12px; font: inherit; border: 1px solid #cad7cf; border-radius: 8px; background: white; color: #233e31; }
+
+.course-outline { margin: 1.25rem 0; padding: 1.1rem 1.35rem; border: 1px solid #dce5e2; border-radius: 16px; background: #fff; line-height: 1.7; }
+.course-outline summary { cursor: pointer; color: #385e52; font-weight: 700; }
+.course-outline li { margin: .35rem 0; }
+.mobile-lesson-title { font-size: .85rem; font-weight: 700; line-height: 1.35; overflow-wrap: anywhere; }

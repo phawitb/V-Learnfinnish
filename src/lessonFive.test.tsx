@@ -8,8 +8,8 @@ it('opens lesson 5, exposes the original audio and downloads, and keeps explicit
   const user = userEvent.setup();
   const view = render(<App />);
   await user.click(screen.getAllByRole('button', { name: 'Lessons' })[0]);
-  await user.click(screen.getByRole('button', { name: /Lesson 5,/ }));
-  expect(screen.getByRole('heading', { name: 'Vuodenajat ja sää' })).toBeInTheDocument();
+  await user.click(screen.getByRole('button', { name: /Torstaina 1\. lokakuuta SELF-STUDY LESSON/ }));
+  expect(screen.getByRole('heading', { name: 'Torstaina 1. lokakuuta SELF-STUDY LESSON' })).toBeInTheDocument();
   await user.click(screen.getByRole('tab', { name: /Reading/ }));
   expect(screen.getByLabelText('Vuodenajat Suomessa — track 1-33')).toHaveAttribute('src', '/lesson5/1-33-vuodenajat-suomessa.mp3');
   expect(screen.getByText(/Suomessa on neljä vuodenaikaa/)).toBeInTheDocument();
@@ -20,7 +20,7 @@ it('opens lesson 5, exposes the original audio and downloads, and keeps explicit
   view.unmount();
   render(<App />);
   await user.click(screen.getAllByRole('button', { name: 'Lessons' })[0]);
-  await user.click(screen.getByRole('button', { name: /Lesson 5,/ }));
+  await user.click(screen.getByRole('button', { name: /Torstaina 1\. lokakuuta SELF-STUDY LESSON/ }));
   expect(screen.queryByText('0%')).not.toBeInTheDocument();
 });
 
@@ -28,7 +28,7 @@ it('offers the assigned textbook exercises using printed pages and the official 
   const user = userEvent.setup();
   render(<App />);
   await user.click(screen.getAllByRole('button', { name: 'Lessons' })[0]);
-  await user.click(screen.getByRole('button', { name: /Lesson 5,/ }));
+  await user.click(screen.getByRole('button', { name: /Torstaina 1\. lokakuuta SELF-STUDY LESSON/ }));
   await user.click(screen.getByRole('tab', { name: /Book/ }));
   expect(screen.getByRole('heading', { name: 'Harjoitus 9 · sivu 73' })).toBeInTheDocument();
   expect(screen.getByLabelText('คำตอบ 9B ข้อ 8')).toBeInTheDocument();

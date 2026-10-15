@@ -1,0 +1,311 @@
+{
+  "audited": "2026-10-15",
+  "course": "https://moodle.abo.fi/course/view.php?id=15586",
+  "availableSections": [
+    {
+      "number": "01",
+      "title": "Tuesday 08.09",
+      "section": 626517,
+      "resources": 3,
+      "during": [
+        "Course information",
+        "Introduction to Finnish",
+        "Alphabet, page 14"
+      ],
+      "homework": [
+        "Find Uudistettu suomen mestari 1 and bring it to every lesson. Chapter 1 is attached in Moodle.",
+        "Listen to the alphabet on page 14.",
+        "Translate phrases on pages 12–13 and practise in Quizlet.",
+        "Listen to the tongue twisters."
+      ]
+    },
+    {
+      "number": "02",
+      "title": "Thursday 10.09",
+      "section": 626518,
+      "resources": 5,
+      "during": [
+        "Long and short sounds",
+        "Personal pronouns and olla, page 16; exercises 18, 19 on page 26",
+        "Text on page 11",
+        "Numbers, page 15; exercise 13 on page 24"
+      ],
+      "homework": [
+        "Exercise 20 page 27 and attached Pronouns and OLLA exercise; check the answers.",
+        "Read Hei ja tervetuloa page 11 again and practise vocabulary.",
+        "Learn numbers and write numbers in words in the attachment.",
+        "Listen to exercise 12 page 23: temperatures in the cities; check attached answers.",
+        "Optional Yle videos 1 and 11.",
+        "Learn weekdays page 14; exercise 17 A, B, C pages 25–26 (C: say when lessons take place).",
+        "Listen to short/long sounds in Pronunciation folder.",
+        "Listen to the YouTube video, write the words and check spelling."
+      ]
+    },
+    {
+      "number": "03",
+      "title": "Tiistai 15.09",
+      "section": 626519,
+      "resources": 9,
+      "during": [
+        "Repetition of numbers; weekdays page 14",
+        "Vowel harmony page 17; exercise 4B page 41",
+        "Present tense verb conjugation page 37",
+        "General questions page 39; question words page 38",
+        "Languages and nationalities page 31"
+      ],
+      "homework": [
+        "Exercise 6 A, B page 20: vowel harmony.",
+        "Exercise 16 page 48; exercises 20, 21 page 51; exercises 23–27 pages 52–53. Check answers and do attached grammar exercises.",
+        "Practise weekdays and question words in Quizlet.",
+        "Read page 31; exercise 13 pages 45–46. Write information about people using attached profiles. Example: Minun etunimi on Philip. Minun sukunimi on Pommier. Olen sveitsiläinen. Olen kotoisin Sveitsistä. Puhun ranskaa.",
+        "Listen to exercise 8 page 43: age, address, phone number. New words: kännykkä = mobile phone; soittaa = call."
+      ]
+    },
+    {
+      "number": "04",
+      "title": "Thursday 17.09",
+      "section": 626520,
+      "resources": 1,
+      "during": [
+        "Repetition of verb conjugation (additional exercises)",
+        "Exercise 15 page 24",
+        "Exercise 17 page 49",
+        "Text page 29"
+      ],
+      "homework": [
+        "Read page 29 again and listen in Audio Files; practise Quizlet vocabulary.",
+        "Exercise 18 page 50 and exercises 28–29 page 54: write questions and find ten mistakes.",
+        "Attached grammar: conjugate verbs and complete sentences; write yes/no questions; choose appropriate verbs. Learn new verbs and check the included answers."
+      ]
+    },
+    {
+      "number": "05",
+      "title": "Tiistai 22.09",
+      "section": 626521,
+      "resources": 8,
+      "during": [
+        "Repetition of material",
+        "Harjoitus 12 sivu 45; harjoitus 14 sivu 46",
+        "Puhekielen numerot sivu 34; Jätskikiskalla sivu 33"
+      ],
+      "homework": [
+        "Learn spoken numbers page 34.",
+        "Compare page 33 spoken text with the attached written version.",
+        "Order sentences into two dialogues and check answers.",
+        "Do attached grammar exercises and check answers.",
+        "Watch Yle video 17.",
+        "Continue Quizlet chapter 1–2 vocabulary.",
+        "Translate the attached text to Finnish without dictionaries or Google Translate; then check.",
+        "Test 1 is on Tuesday 29.09."
+      ]
+    },
+    {
+      "number": "06",
+      "title": "Torstai 24.09",
+      "section": 628209,
+      "resources": 2,
+      "during": [
+        "Repetition of material",
+        "K–p–t rule page 36; exercise 5 page 42",
+        "Verb conjugation with k–p–t page 67; exercise 21 page 79"
+      ],
+      "homework": [
+        "Before Test 1: exercise 2 page 290, question words (A) and questions/answers (B); key page 339.",
+        "For October 1: exercise 6 page 42; exercise 2 page 69.",
+        "Exercise 22 page 80: translate and conjugate verbs; check attached answers.",
+        "Test 1 is on Tuesday 29.09."
+      ]
+    },
+    {
+      "number": "T1",
+      "title": "Tiistai 29.09 TEST 1",
+      "section": 626523,
+      "resources": 0,
+      "during": [
+        "Test coverage: texts pages 11, 29, 31, 33",
+        "Phrases pages 12–13; weekdays page 14; numbers page 15",
+        "Personal pronouns and olla page 16; vowel harmony page 17",
+        "Verb conjugation page 37; yes/no and special questions pages 38–39"
+      ],
+      "homework": []
+    },
+    {
+      "number": "07",
+      "title": "Torstaina 1. lokakuuta SELF-STUDY LESSON",
+      "section": 626524,
+      "resources": 4,
+      "during": [
+        "Translate seasons, times of day and months page 62",
+        "Weather page 61; exercise 12 page 75; describe attached pictures",
+        "Adjectives page 60; exercise 9 page 73; Quizlet",
+        "Read and listen to Vuodenajat Suomessa (track 1-33); translate attached sentences using its vocabulary"
+      ],
+      "homework": [
+        "Exercise 23 page 81: what people do and do not do; check answers.",
+        "Quizlet: weather, seasons and months, colours, adjectives."
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Tiistaina 6. lokakuuta",
+      "section": 626525,
+      "resources": 3,
+      "during": [
+        "Weather page 61; exercise 13 page 75; exercise 14 page 76",
+        "Additional material attached below"
+      ],
+      "homework": [
+        "Continue Quizlet weather, seasons/months and adjectives.",
+        "Exercise 25 pages 82–83; check answers.",
+        "Exercise 19 page 78: plural -t. Exercise 20 page 79: plural or singular; remember k–p–t."
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Torstaina 8. lokakuuta",
+      "section": 626526,
+      "resources": 3,
+      "during": [
+        "Additional exercises attached below",
+        "Genitive case page 66; exercises 16, 17 pages 77–78"
+      ],
+      "homework": [
+        "Exercise 17 pages 77–78.",
+        "Attached genitive + k–p–t in verbs exercise.",
+        "Read/translate page 57, listen to the attached audio, practise Quizlet; exercise 4 page 70 and exercise 8 page 72."
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Tiistaina 13.lokakuuta",
+      "section": 626692,
+      "resources": 3,
+      "during": [
+        "Additional exercises attached below",
+        "Pedro soittaa Mikolle page 57",
+        "Partitive pages 95–96; exercise 8 page 103"
+      ],
+      "homework": [
+        "Exercise 9 page 103: number + adjective + noun.",
+        "Learn partitive pronouns page 95; exercises 11 page 104 and 12 page 105; check answers.",
+        "Attached partitive exercise; optional Wordwall Find the match or Hangman. Moodle examples: ihminen → 2 ihmistä; vesi → vettä."
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Torstaina 15. lokakuuta 10.00-11.30 G-105",
+      "section": 626693,
+      "resources": 3,
+      "during": [
+        "Partitive: attached additional exercise",
+        "Exercise 10 page 104; attached sentence translation",
+        "Exercise 11 page 74; exercise 10 page 74",
+        "A text about Turku"
+      ],
+      "homework": [
+        "Translate words page 91; Quizlet Suku. Learn only the first word on each card.",
+        "Exercise 7 page 102: read and write family-tree names. -lla on means someone has something: Eetulla on kaksi siskoa. Check answers.",
+        "Read texts and do the exercise in Perheet."
+      ]
+    }
+  ],
+  "unavailableSections": [
+    {
+      "section": "626694",
+      "title": "Tiistaina 20. lokakuuta",
+      "status": "Not available in Moodle"
+    },
+    {
+      "section": "626695",
+      "title": "Torstaina 22.lokakuuta",
+      "status": "Not available in Moodle"
+    },
+    {
+      "section": "626696",
+      "title": "Tiistaina 27. lokakuuta",
+      "status": "Not available in Moodle"
+    },
+    {
+      "section": "626697",
+      "title": "Torstaina 29. lokakuuta",
+      "status": "Not available in Moodle"
+    },
+    {
+      "section": "626698",
+      "title": "Tiistaina 3. marraskuuta TEST 2",
+      "status": "Not available in Moodle"
+    },
+    {
+      "section": "626699",
+      "title": "Torstaina 5.marraskuuta",
+      "status": "Not available in Moodle"
+    },
+    {
+      "section": "626700",
+      "title": "Tiistaina 10. marraskuuta",
+      "status": "Not available in Moodle"
+    },
+    {
+      "section": "626701",
+      "title": "Torstaina 12. marraskuuta",
+      "status": "Not available in Moodle"
+    },
+    {
+      "section": "626702",
+      "title": "Tiistaina 17. marraskuuta",
+      "status": "Not available in Moodle"
+    },
+    {
+      "section": "626703",
+      "title": "Torstaina 19. marraskuuta",
+      "status": "Not available in Moodle"
+    },
+    {
+      "section": "626704",
+      "title": "Tiistaina 24. marraskuuta",
+      "status": "Not available in Moodle"
+    },
+    {
+      "section": "626705",
+      "title": "Torstaina 26. marraskuuta",
+      "status": "Not available in Moodle"
+    },
+    {
+      "section": "626706",
+      "title": "Tiistaina 1. joulukuuta",
+      "status": "Not available in Moodle"
+    },
+    {
+      "section": "626707",
+      "title": "Torstaina 03. joulukuuta",
+      "status": "Not available in Moodle"
+    },
+    {
+      "section": "626708",
+      "title": "Tiistaina 08. joulukuuta",
+      "status": "Not available in Moodle"
+    },
+    {
+      "section": "626709",
+      "title": "Torstaina 10. joulukuuta",
+      "status": "Not available in Moodle"
+    },
+    {
+      "section": "626710",
+      "title": "Tiistaina 15. joulukuuta Listening and reading comprehension",
+      "status": "Not available in Moodle"
+    },
+    {
+      "section": "626711",
+      "title": "Torstaina 17. joulukuuta Re-examination",
+      "status": "Not available in Moodle"
+    }
+  ],
+  "sourceLimitations": [
+    "A text about Turku is mentioned for October15 but no source file supplied.",
+    "Original listening recordings absent in inspected Moodle: exercise15 page24, exercise12 page45, exercise10 page74. Verified textbook answers are included.",
+    "Pronunciation sheets are available as complete source images and original audio; not every line has a Thai gloss."
+  ],
+  "preserved": "Existing lesson localStorage IDs and saved answers are unchanged; display numbers now follow course chronology.",
+  "earlyCoverage": "/audit-early/coverage-report.md"
+}

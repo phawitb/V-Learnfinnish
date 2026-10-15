@@ -1,0 +1,24 @@
+{
+  "date": "2026-09-17",
+  "section": 626520,
+  "book": "Suomen mestari 1",
+  "printedPages": [
+    24,
+    29,
+    49,
+    50,
+    54,
+    329,
+    330
+  ],
+  "pdfPageRule": "printed page minus one",
+  "resources": [
+    1192651,
+    1192621
+  ],
+  "retrieved": "2026-10-15",
+  "notes": [
+    "Thai translations and explanations added for learning.",
+    "Original chapter 2 reading audio included. Exercise 15 listening source not provided; answer key retained."
+  ]
+}

@@ -491,8 +491,8 @@ export function LessonOnePage() {
     <section className="page lesson-page">
       <div className="lesson-hero">
         <div>
-          <span className="kicker">LESSON 1 · KAPPALE 1</span>
-          <h1>Tervetuloa Suomeen!</h1>
+          <span className="kicker">08.09.2026 · KAPPALE 1</span>
+          <h1>Tuesday 08.09</h1>
         </div>
         <div className="lesson-progress">
           <b>{progress}%</b>
@@ -1105,7 +1105,7 @@ export function LessonOnePage() {
             <b>{quizScore}</b>
             <span>/ {questions.length}</span>
           </div>
-          <span className="kicker">LESSON 1 COMPLETE</span>
+          <span className="kicker">Tuesday 08.09 COMPLETE</span>
           <h2>
             {quizScore >= 16
               ? "Hienoa työtä!"

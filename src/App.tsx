@@ -1,3 +1,8 @@
+import {courseLessons,upcoming,type LessonId} from "./data/courseCatalog";
+import {CourseOutline} from "./pages/CourseOutline";
+import {SeptemberSeventeenPage} from "./pages/SeptemberSeventeenPage";
+import {SeptemberTwentyFourPage} from "./pages/SeptemberTwentyFourPage";
+import {OctoberFifteenPage} from "./pages/OctoberFifteenPage";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import {
   BookOpen,
@@ -127,104 +132,13 @@ function Empty({
   );
 }
 
-function LessonsHub({ onOpen }: { onOpen: (lesson: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | "test1") => void }) {
-  return (
-    <section className="page lessons-page">
-      <div className="page-heading">
-        <div>
-          <span className="kicker">YOUR FINNISH JOURNEY</span>
-          <h1>Lessons</h1>
-        </div>
-      </div>
-      <div className="lessons-grid">
-        <button
-          type="button"
-          className="lesson-card"
-          onClick={() => onOpen(1)}
-          aria-label="Lesson 1, Introduction to Finnish, Alphabet, sounds, greetings, and essential phrases"
-        >
-          <span className="lesson-card-number">01</span>
-          <span className="lesson-card-copy">
-            <b>Introduction to Finnish</b>
-            <span>Alphabet · Sounds · Greetings · Essential phrases</span>
-          </span>
-          <span className="lesson-card-arrow" aria-hidden="true">→</span>
-        </button>
-        <button
-          type="button"
-          className="lesson-card"
-          onClick={() => onOpen(2)}
-          aria-label="Lesson 2, Everyday Finnish, Olla, days, time, numbers, and useful sentences"
-        >
-          <span className="lesson-card-number">02</span>
-          <span className="lesson-card-copy">
-            <b>Everyday Finnish</b>
-            <span>Olla · Days &amp; time · Numbers · Useful sentences</span>
-          </span>
-          <span className="lesson-card-arrow" aria-hidden="true">→</span>
-        </button>
-        <button
-          type="button"
-          className="lesson-card"
-          onClick={() => onOpen(3)}
-          aria-label="Lesson 3, Finnish sentence toolkit, vowel harmony, verbs, questions, and introductions"
-        >
-          <span className="lesson-card-number">03</span>
-          <span className="lesson-card-copy">
-            <b>Finnish sentence toolkit</b>
-            <span>Vowel harmony · Verbs · Questions · Introductions</span>
-          </span>
-          <span className="lesson-card-arrow" aria-hidden="true">→</span>
-        </button>
-        <button
-          type="button"
-          className="lesson-card"
-          onClick={() => onOpen(4)}
-          aria-label="Lesson 4, spoken numbers, negative sentences, verb conjugation, dialogues"
-        >
-          <span className="lesson-card-number">04</span>
-          <span className="lesson-card-copy">
-            <b>Expanding your Finnish</b>
-            <span>Spoken numbers · Negation · Conjugation · Dialogues</span>
-          </span>
-          <span className="lesson-card-arrow" aria-hidden="true">→</span>
-        </button>
-        <button type="button" className="lesson-card" onClick={() => onOpen(5)} aria-label="Lesson 5, seasons, weather, adjectives, colours, reading and self-study">
-          <span className="lesson-card-number">05</span>
-          <span className="lesson-card-copy"><b>Vuodenajat ja sää</b><span>Seasons · Weather · Adjectives · Colours · Self-study</span></span>
-          <span className="lesson-card-arrow" aria-hidden="true">→</span>
-        </button>
-        <button type="button" className="lesson-card" onClick={() => onOpen(6)} aria-label="Lesson 6, Tiistaina 6. lokakuuta, weather, time, verbs and plural">
-          <span className="lesson-card-number">06</span>
-          <span className="lesson-card-copy"><b>Tiistaina 6. lokakuuta</b><span>Weather · Listening · Time &amp; verbs · Plural · Homework</span></span>
-          <span className="lesson-card-arrow" aria-hidden="true">→</span>
-        </button>
-        <button type="button" className="lesson-card" onClick={() => onOpen(7)} aria-label="Lesson 7, Torstaina 8. lokakuuta, genitive, reading and homework">
-          <span className="lesson-card-number">07</span>
-          <span className="lesson-card-copy"><b>Torstaina 8. lokakuuta</b><span>Genitive · Pedro soittaa Mikolle · Grammar · Homework</span></span>
-          <span className="lesson-card-arrow" aria-hidden="true">→</span>
-        </button>
-        <button type="button" className="lesson-card" onClick={() => onOpen(8)} aria-label="Lesson 8, Tiistaina 13.lokakuuta, partitive and homework">
-          <span className="lesson-card-number">08</span>
-          <span className="lesson-card-copy"><b>Tiistaina 13.lokakuuta</b><span>Partitive · Pronouns · Discussion · Homework</span></span>
-          <span className="lesson-card-arrow" aria-hidden="true">→</span>
-        </button>
-        <button
-          type="button"
-          className="lesson-card test-card"
-          onClick={() => onOpen("test1")}
-          aria-label="Test 1, complete exam review, texts, vocabulary, grammar, and questions"
-        >
-          <span className="lesson-card-number">T1</span>
-          <span className="lesson-card-copy">
-            <b>Test 1 · Complete exam review</b>
-            <span>Texts · Phrases · Numbers · Grammar · Questions</span>
-          </span>
-          <span className="lesson-card-arrow" aria-hidden="true">→</span>
-        </button>
-      </div>
-    </section>
-  );
+function LessonsHub({onOpen}:{onOpen:(lesson:LessonId)=>void}) {
+ return <section className="page lessons-page"><div className="page-heading"><div><span className="kicker">YOUR FINNISH JOURNEY</span><h1>Lessons</h1></div></div>
+ <p>เรียงตามวันที่และชื่อใน Moodle · 11 วันเรียนและ Test 1 · ตรวจเทียบ 15 ตุลาคม 2026</p><p><a href="/course-audit.json" download>ดาวน์โหลดรายการตรวจเนื้อหาและข้อจำกัดของต้นฉบับ</a></p>
+ <div className="lessons-grid">{courseLessons.map(lesson=><button type="button" className={`lesson-card ${lesson.id==='test1'?'test-card':''}`} key={lesson.section} onClick={()=>onOpen(lesson.id)} aria-label={`${lesson.title}, ${lesson.summary}`}><span className="lesson-card-number">{lesson.number}</span><span className="lesson-card-copy"><b>{lesson.title}</b><span>{lesson.summary}</span></span><span className="lesson-card-arrow" aria-hidden="true">→</span></button>)}</div>
+ <details className="course-outline"><summary>หัวข้อถัดไปที่ Moodle ยังไม่เปิด · 18 หัวข้อ</summary><p>Moodle ระบุ “Not available” ณ วันที่ตรวจ จึงยังไม่มีเนื้อหาต้นฉบับให้เพิ่ม</p><ul>{upcoming.map(([id,name])=><li key={id}><a href={`https://moodle.abo.fi/course/section.php?id=${id}`} target="_blank" rel="noreferrer">{name}</a> — ยังไม่เปิด</li>)}</ul></details>
+ <details className="course-outline"><summary>CS00BQ87-Finnish as a foreign language, level 1, 5 ECTS · ข้อมูลรายวิชา</summary><p>ข้อมูลรายวิชาแยกจากบทเรียนรายวัน ตรวจเวลาและห้องตามหัวข้อวันนั้นใน Moodle โดยเฉพาะ 15 ตุลาคม เวลา 10.00–11.30 ห้อง G-105</p><ul>{[['IMPORTANT INFORMATION ON THE COURSE','page','1192619'],['Final Examination','page','1192620'],['Audio Files','folder','1192621'],['Tests in Quizlet','url','1192622'],['USEFUL LINKS','page','1192623'],['Finnish music','resource','1192624'],['CEFR levels','resource','1192625']].map(([name,type,id])=><li key={id}><a href={`https://moodle.abo.fi/mod/${type}/view.php?id=${id}`} target="_blank" rel="noreferrer">{name}</a></li>)}</ul></details>
+ </section>;
 }
 
 function RecentSearches({
@@ -345,7 +259,7 @@ function App() {
       storageService.practiceProgress,
     );
   const [filter, setFilter] = useState(""),
-    [activeLesson, setActiveLesson] = useState<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | "test1" | null>(null);
+    [activeLesson, setActiveLesson] = useState<LessonId | null>(null);
   const fullViewportHeight = useRef(0);
   const searchInput = useRef<HTMLInputElement>(null);
   const direction: Direction = "auto";
@@ -440,27 +354,7 @@ function App() {
     if (nextPage === "lessons") setActiveLesson(null);
     if (nextPage === "dictionary") window.setTimeout(() => searchInput.current?.focus(), 0);
   };
-  const pageTitle = page === "dictionary"
-    ? "Search"
-    : page === "lessons" && activeLesson === 1
-      ? "Lesson 1"
-      : page === "lessons" && activeLesson === 2
-        ? "Lesson 2"
-      : page === "lessons" && activeLesson === 3
-        ? "Lesson 3"
-      : page === "lessons" && activeLesson === 4
-        ? "Lesson 4"
-      : page === "lessons" && activeLesson === 5
-        ? "Lesson 5"
-      : page === "lessons" && activeLesson === 6
-        ? "Lesson 6"
-      : page === "lessons" && activeLesson === 7
-        ? "Lesson 7"
-      : page === "lessons" && activeLesson === 8
-        ? "Lesson 8"
-      : page === "lessons" && activeLesson === "test1"
-        ? "Test 1"
-      : nav[page].label;
+  const pageTitle = page === "dictionary" ? "Search" : page === "lessons" && activeLesson !== null ? courseLessons.find(l=>l.id===activeLesson)!.title : nav[page].label;
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -504,7 +398,7 @@ function App() {
               <ChevronLeft />
             </button>
           )}
-          <h1 data-testid="mobile-page-title">{pageTitle}</h1>
+          {page === "lessons" && activeLesson !== null ? <span className="mobile-lesson-title" data-testid="mobile-page-title">{pageTitle}</span> : <h1 data-testid="mobile-page-title">{pageTitle}</h1>}
         </header>
         {page === "dictionary" && (
           <section className={`page dictionary ${searchFocused ? "search-focused" : ""} ${result ? "has-result" : ""}`}>
@@ -649,6 +543,7 @@ function App() {
             />}
           </section>
         )}
+        {page === "lessons" && activeLesson !== null && <CourseOutline id={activeLesson} />}
         {page === "lessons" && (
           activeLesson === 1
             ? <LessonOnePage />
@@ -666,6 +561,12 @@ function App() {
               ? <LessonSevenPage />
             : activeLesson === 8
               ? <LessonEightPage />
+            : activeLesson === "sep17"
+              ? <SeptemberSeventeenPage />
+            : activeLesson === "sep24"
+              ? <SeptemberTwentyFourPage />
+            : activeLesson === "oct15"
+              ? <OctoberFifteenPage />
             : activeLesson === "test1"
               ? <TestOnePage />
             : <LessonsHub onOpen={setActiveLesson} />
@@ -1030,13 +931,13 @@ function Practice({
         ...chunkGroups("Useful Phrases — Pages 12–13", "phrases", phraseItems),
         ...chunkGroups("Numbers", "numbers", numberItems),
         ...chunkGroups("Colors", "colors", colorItems),
-        ...chunkGroups("Lesson 2 — Olla", "lesson2-olla", lessonTwoOllaItems),
-        ...chunkGroups("Lesson 2 — Days & Time", "lesson2-time", lessonTwoTimeItems),
-        ...chunkGroups("Lesson 2 — Numbers", "lesson2-number", lessonTwoNumberItems),
-        ...chunkGroups("Lesson 2 — Everyday Sentences", "lesson2-sentence", lessonTwoSentenceItems),
-        ...chunkGroups("Lesson 3 — Vowel harmony", "lesson3-vowels", lessonThreeVowelItems),
-        ...chunkGroups("Lesson 3 — Questions", "lesson3-questions", lessonThreeQuestionItems),
-        ...chunkGroups("Lesson 3 — Introductions", "lesson3-introductions", lessonThreeIntroductionItems),
+        ...chunkGroups("Thursday 10.09 — Olla", "lesson2-olla", lessonTwoOllaItems),
+        ...chunkGroups("Thursday 10.09 — Days & Time", "lesson2-time", lessonTwoTimeItems),
+        ...chunkGroups("Thursday 10.09 — Numbers", "lesson2-number", lessonTwoNumberItems),
+        ...chunkGroups("Thursday 10.09 — Everyday Sentences", "lesson2-sentence", lessonTwoSentenceItems),
+        ...chunkGroups("Tiistai 15.09 — Vowel harmony", "lesson3-vowels", lessonThreeVowelItems),
+        ...chunkGroups("Tiistai 15.09 — Questions", "lesson3-questions", lessonThreeQuestionItems),
+        ...chunkGroups("Tiistai 15.09 — Introductions", "lesson3-introductions", lessonThreeIntroductionItems),
       ],
       [colorItems, items, lessonThreeIntroductionItems, lessonThreeQuestionItems, lessonThreeVowelItems, lessonTwoNumberItems, lessonTwoOllaItems, lessonTwoSentenceItems, lessonTwoTimeItems, numberItems, phraseItems, vocabItems],
     ),

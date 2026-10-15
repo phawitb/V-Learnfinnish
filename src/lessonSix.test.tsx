@@ -8,7 +8,7 @@ it('shows detailed answers for all three exercises directly in Homework', async 
   const user = userEvent.setup();
   render(<App />);
   await user.click(screen.getAllByRole('button', { name: 'Lessons' })[0]);
-  await user.click(screen.getByRole('button', { name: /Lesson 6,/ }));
+  await user.click(screen.getByRole('button', { name: /Tiistaina 6\. lokakuuta/ }));
   await user.click(screen.getByRole('tab', { name: /Homework/ }));
   for (const number of [19, 20, 25]) {
     await user.click(screen.getByText(`เปิดเฉลยละเอียด · แบบฝึก ${number}`));
@@ -25,7 +25,7 @@ it('opens lesson 6 and preserves work across sections and reloads', async () => 
   const view = render(<App />);
   const open = async () => {
     await user.click(screen.getAllByRole('button', { name: 'Lessons' })[0]);
-    await user.click(screen.getByRole('button', { name: /Lesson 6,/ }));
+    await user.click(screen.getByRole('button', { name: /Tiistaina 6\. lokakuuta/ }));
   };
   await open();
   expect(screen.getByRole('heading', { name: 'Tiistaina 6. lokakuuta' })).toBeInTheDocument();
@@ -47,7 +47,7 @@ it('includes all homework exercises, both translation sheets, and original files
   const user = userEvent.setup();
   render(<App />);
   await user.click(screen.getAllByRole('button', { name: 'Lessons' })[0]);
-  await user.click(screen.getByRole('button', { name: /Lesson 6,/ }));
+  await user.click(screen.getByRole('button', { name: /Tiistaina 6\. lokakuuta/ }));
   await user.click(screen.getByRole('tab', { name: /Plural/ }));
   expect(screen.getByLabelText('คำตอบ 19 ข้อ 8')).toBeInTheDocument();
   expect(screen.getByLabelText('คำตอบ 20 ข้อ 8')).toBeInTheDocument();

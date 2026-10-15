@@ -6,7 +6,7 @@ beforeEach(() => localStorage.clear());
 it('opens lesson 7, keeps reading audio and offers all homework answers in place', async () => {
  const user = userEvent.setup(); render(<App />);
  await user.click(screen.getAllByRole('button', {name:'Lessons'})[0]);
- await user.click(screen.getByRole('button', {name:/Lesson 7,/}));
+ await user.click(screen.getByRole('button', {name:/Torstaina 8\. lokakuuta/}));
  expect(screen.getByRole('heading',{name:'Torstaina 8. lokakuuta'})).toBeVisible();
  await user.click(screen.getByRole('tab',{name:/Reading/}));
  expect(screen.getByLabelText('Pedro soittaa Mikolle — audio')).toHaveAttribute('src','/lesson7/pedro-soittaa-mikolle.mp3');
@@ -20,7 +20,7 @@ it('opens lesson 7, keeps reading audio and offers all homework answers in place
 });
 it('preserves exercise drafts on remount', async () => {
  const user=userEvent.setup(); const view=render(<App />);
- const open=async()=>{ await user.click(screen.getAllByRole('button',{name:'Lessons'})[0]);await user.click(screen.getByRole('button',{name:/Lesson 7,/})); };
+ const open=async()=>{ await user.click(screen.getAllByRole('button',{name:'Lessons'})[0]);await user.click(screen.getByRole('button',{name:/Torstaina 8\. lokakuuta/})); };
  await open(); await user.click(screen.getByRole('tab',{name:/Book/}));
  await user.type(screen.getByLabelText('คำตอบ หนังสือ 17 ข้อ 9'),'Kolmen opiskelijan');
  view.unmount();render(<App />);await open();

@@ -1,0 +1,27 @@
+{
+  "date": "2026-09-24",
+  "section": 628209,
+  "book": "Suomen mestari 1",
+  "printedPages": [
+    36,
+    42,
+    67,
+    69,
+    79,
+    80,
+    290,
+    291,
+    331,
+    339
+  ],
+  "pdfPageRule": "printed page minus one",
+  "resources": [
+    1192664,
+    1192665
+  ],
+  "retrieved": "2026-10-15",
+  "notes": [
+    "Thai translations and explanations added for learning.",
+    "Original documents retained; chapter 3 exercise 22 teacher typo Pirtää corrected to piirtää."
+  ]
+}

@@ -14,22 +14,22 @@ beforeEach(() => {
 
 async function openLessonOne() {
   await userEvent.click(screen.getAllByRole('button', { name: 'Lessons' })[0])
-  await userEvent.click(screen.getByRole('button', { name: /Lesson 1.*Introduction to Finnish/i }))
+  await userEvent.click(screen.getByRole('button', { name: /Tuesday 08\.09/i }))
 }
 
 async function openLessonTwo() {
   await userEvent.click(screen.getAllByRole('button', { name: 'Lessons' })[0])
-  await userEvent.click(screen.getByRole('button', { name: /Lesson 2.*Everyday Finnish/i }))
+  await userEvent.click(screen.getByRole('button', { name: /Thursday 10\.09/i }))
 }
 
 async function openLessonThree() {
   await userEvent.click(screen.getAllByRole('button', { name: 'Lessons' })[0])
-  await userEvent.click(screen.getByRole('button', { name: /Lesson 3.*Finnish sentence toolkit/i }))
+  await userEvent.click(screen.getByRole('button', { name: /Tiistai 15\.09/i }))
 }
 
 async function openTestOne() {
   await userEvent.click(screen.getAllByRole('button', { name: 'Lessons' })[0])
-  await userEvent.click(screen.getByRole('button', { name: /Test 1.*exam review/i }))
+  await userEvent.click(screen.getByRole('button', { name: /Tiistai 29\.09 TEST 1/i }))
 }
 
 async function chooseLetters(answer: string) {
@@ -282,10 +282,10 @@ describe('App', () => {
     expect(screen.queryByRole('button', { name: 'History' })).not.toBeInTheDocument()
     await userEvent.click(screen.getAllByRole('button', { name: 'Lessons' })[0])
     expect(screen.getAllByRole('heading', { name: 'Lessons' })).toHaveLength(2)
-    await userEvent.click(screen.getByRole('button', { name: /Lesson 1.*Introduction to Finnish/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Tuesday 08\.09/i }))
     expect(screen.getByRole('button', { name: 'Back to Lessons' })).toBeVisible()
     expect(screen.getByRole('button', { name: 'Back to Lessons' }).closest('.mobile-head')).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: /Tervetuloa Suomeen/i })).toBeVisible()
+    expect(screen.getByRole('heading', { name: /Tuesday 08\.09/i })).toBeVisible()
     await userEvent.click(screen.getByRole('button', { name: 'Back to Lessons' }))
     expect(screen.getAllByRole('heading', { name: 'Lessons' })).toHaveLength(2)
   })
@@ -293,8 +293,8 @@ describe('App', () => {
     render(<App />)
     await openLessonTwo()
 
-    expect(screen.getByTestId('mobile-page-title')).toHaveTextContent('Lesson 2')
-    expect(screen.getByRole('heading', { name: /suomea joka päivä/i })).toBeVisible()
+    expect(screen.getByTestId('mobile-page-title')).toHaveTextContent('Thursday 10.09')
+    expect(screen.getByRole('heading', { name: /Thursday 10\.09/i })).toBeVisible()
     await userEvent.click(screen.getByRole('button', { name: 'Back to Lessons' }))
     expect(screen.getAllByRole('heading', { name: 'Lessons' })).toHaveLength(2)
   })
@@ -302,26 +302,26 @@ describe('App', () => {
     render(<App />)
     await openLessonThree()
 
-    expect(screen.getByTestId('mobile-page-title')).toHaveTextContent('Lesson 3')
-    expect(screen.getByRole('heading', { name: /rakenna suomea/i })).toBeVisible()
-    expect(screen.getAllByRole('tab')).toHaveLength(10)
+    expect(screen.getByTestId('mobile-page-title')).toHaveTextContent('Tiistai 15.09')
+    expect(screen.getByRole('heading', { name: /Tiistai 15\.09/i })).toBeVisible()
+    expect(screen.getAllByRole('tab')).toHaveLength(11)
     expect(screen.getByText(/กฎสระ.*การผันกริยา.*ประโยคคำถาม/i)).toBeVisible()
   })
   it('opens Test 1 as a dedicated exam review lesson', async () => {
     render(<App />)
     await openTestOne()
 
-    expect(screen.getByTestId('mobile-page-title')).toHaveTextContent('Test 1')
-    expect(screen.getByRole('heading', { name: /Test 1.*Kertaus/i })).toBeVisible()
+    expect(screen.getByTestId('mobile-page-title')).toHaveTextContent('Tiistai 29.09 TEST 1')
+    expect(screen.getByRole('heading', { name: /Tiistai 29\.09 TEST 1/i })).toBeVisible()
     expect(screen.getAllByRole('tab')).toHaveLength(10)
     expect(screen.getByText(/หน้าหนังสือ 11–17.*29.*31.*33.*37–39/i)).toBeVisible()
   })
-  it('orders lessons as 01 through 07, then Test 1', async () => {
+  it('orders all dated Moodle sections chronologically', async () => {
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: 'Lessons' })[0])
 
     const cards = screen.getAllByRole('button').filter((button) => button.classList.contains('lesson-card'))
-    expect(cards.map((button) => button.querySelector('.lesson-card-number')?.textContent)).toEqual(['01', '02', '03', '04', '05', '06', '07', '08', 'T1'])
+    expect(cards.map((button) => button.querySelector('.lesson-card-number')?.textContent)).toEqual(['01', '02', '03', '04', '05', '06', 'T1', '07', '08', '09', '10', '11'])
   })
   it('covers every assigned Test 1 page with detailed Finnish examples', async () => {
     render(<App />)
@@ -422,9 +422,9 @@ describe('App', () => {
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
 
-    expect(screen.getByRole('button', { name: /Lesson 3 — Vowel harmony.*items/i })).toBeVisible()
-    expect(screen.getAllByRole('button', { name: /Lesson 3 — Questions.*items/i })[0]).toBeVisible()
-    expect(screen.getByRole('button', { name: /Lesson 3 — Introductions.*items/i })).toBeVisible()
+    expect(screen.getByRole('button', { name: /Tiistai 15.09 — Vowel harmony.*items/i })).toBeVisible()
+    expect(screen.getAllByRole('button', { name: /Tiistai 15.09 — Questions.*items/i })[0]).toBeVisible()
+    expect(screen.getByRole('button', { name: /Tiistai 15.09 — Introductions.*items/i })).toBeVisible()
   })
   it('teaches Lesson 2 grammar, days, numbers, and useful sentences with Finnish audio', async () => {
     const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true)
@@ -462,7 +462,7 @@ describe('App', () => {
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: 'Lessons' })[0])
     expect(screen.queryByText('Build your Finnish step by step.')).not.toBeInTheDocument()
-    const lessonCard = screen.getByRole('button', { name: /Lesson 1.*Introduction to Finnish/i })
+    const lessonCard = screen.getByRole('button', { name: /Tuesday 08\.09/i })
     expect(lessonCard).not.toHaveTextContent('LESSON 1')
     expect(lessonCard).toHaveTextContent('Introduction to Finnish')
   })
@@ -475,8 +475,8 @@ describe('App', () => {
     expect(screen.getByTestId('mobile-page-title')).toHaveTextContent('Profile')
     expect(screen.getByText('Favorite words')).toBeVisible()
     await userEvent.click(screen.getAllByRole('button', { name: 'Lessons' })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Lesson 1.*Introduction to Finnish/i }))
-    expect(screen.getByTestId('mobile-page-title')).toHaveTextContent('Lesson 1')
+    await userEvent.click(screen.getByRole('button', { name: /Tuesday 08\.09/i }))
+    expect(screen.getByTestId('mobile-page-title')).toHaveTextContent('Tuesday 08.09')
     await userEvent.click(screen.getAllByRole('button', { name: 'Profile' })[0])
     expect(screen.getByTestId('mobile-page-title')).toHaveTextContent('Profile')
   })
@@ -565,7 +565,7 @@ describe('App', () => {
   it('opens Lesson 1 with the course alphabet audio and phrase practice', async () => {
     render(<App />)
     await openLessonOne()
-    expect(screen.getByRole('heading', { name: /tervetuloa suomeen/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /Tuesday 08\.09/i })).toBeInTheDocument()
     expect(screen.queryByText(/alphabet · greetings · pronunciation/i)).not.toBeInTheDocument()
     await userEvent.click(screen.getByRole('button', { name: /begin with the alphabet/i }))
     expect(screen.getByTestId('alphabet-audio')).toHaveAttribute('src', '/lesson1/004-kappale-1-aakkoset.mp3')
@@ -662,12 +662,12 @@ describe('App', () => {
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
 
-    expect(screen.getByRole('button', { name: /Lesson 2 — Olla \(1\).*10 items/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Lesson 2 — Days & Time \(1\).*10 items/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Lesson 2 — Numbers \(1\).*6 items/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Lesson 2 — Everyday Sentences \(1\).*10 items/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Thursday 10.09 — Olla \(1\).*10 items/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Thursday 10.09 — Days & Time \(1\).*10 items/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Thursday 10.09 — Numbers \(1\).*6 items/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Thursday 10.09 — Everyday Sentences \(1\).*10 items/i })).toBeInTheDocument()
 
-    await userEvent.click(screen.getByRole('button', { name: /Lesson 2 — Days & Time \(1\).*10 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Thursday 10.09 — Days & Time \(1\).*10 items/i }))
     expect(screen.getByText('maanantaina')).toBeVisible()
     expect(screen.getByText('on Monday')).toBeVisible()
     expect(screen.queryByText('วันจันทร์')).not.toBeInTheDocument()

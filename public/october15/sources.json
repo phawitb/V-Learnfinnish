@@ -1,0 +1,37 @@
+{
+  "retrieved": "2026-10-15",
+  "section": "https://moodle.abo.fi/course/section.php?id=626693",
+  "files": [
+    {
+      "file": "partitive-class.pdf",
+      "source": "https://moodle.abo.fi/mod/resource/view.php?id=1192678",
+      "bytes": 177058,
+      "sha256": "9d9bed48f9a7334c2847f6a187439a6d8c0b77bb1f77983b8691f3f400d63785"
+    },
+    {
+      "file": "translation-partitive.docx",
+      "source": "https://moodle.abo.fi/mod/resource/view.php?id=1192679",
+      "bytes": 13252,
+      "sha256": "837246e6126ff4e130c974b167cc67cca747f01a5bf60cf7b4f71fa74c0f12b3"
+    },
+    {
+      "file": "perheet.pdf",
+      "source": "https://moodle.abo.fi/mod/resource/view.php?id=1192680",
+      "bytes": 475804,
+      "sha256": "b2e9f53839a35cff7cd1da693d993b5bb5073984f9cffb663407bb1a291fd191"
+    }
+  ],
+  "book_pages": [
+    74,
+    91,
+    102,
+    104,
+    331,
+    332
+  ],
+  "quizlet_terms": 25,
+  "missing_sources": [
+    "A text about Turku: listed in lesson instructions, no source attachment supplied",
+    "Original recording for exercise10 page74: not in inspected Moodle resources; verified book answers included"
+  ]
+}

@@ -1,0 +1,334 @@
+{
+  "auditedDates": [
+    "Tuesday 08.09",
+    "Thursday 10.09",
+    "Tiistai 15.09",
+    "Tiistai 22.09"
+  ],
+  "bookSource": "Suomen_mestari_1.pdf supplied locally; printed page n is PDF page n-1",
+  "verification": [
+    "Printed exercise pages visually inspected",
+    "Back-of-book answers printed pages 329–330 visually inspected",
+    "Downloaded DOCX text and embedded images inspected",
+    "Pronunciation and kiosk PDF pages rendered and inspected"
+  ],
+  "limitations": [
+    "Original audio for chapter2 exercise12 page45 absent from inspected Moodle audio folder; complete answer key present from book page330.",
+    "Pronunciation word-pair sheets are fully available as inline source images with original audio and Thai instructions, not individually transcribed with Thai glosses.",
+    "Existing Lesson1 general teaching is chiefly English; this audit renamed it and verified alphabet/phrases resources, not a full Thai rewrite.",
+    "Some pre-existing verb/dialogue examples use group-level Thai guidance rather than line-by-line Thai translations.",
+    "Blank listening-note inputs are not persisted."
+  ],
+  "files": [
+    {
+      "file": "002_Kappale 1_Hei_ja_tervetuloa (5).mp3",
+      "bytes": 1646213,
+      "url": "/audit-early/002_Kappale 1_Hei_ja_tervetuloa (5).mp3"
+    },
+    {
+      "file": "012_Kappale 1_Harjoitus 12_Lampotilat (1).mp3",
+      "bytes": 1368637,
+      "url": "/audit-early/012_Kappale 1_Harjoitus 12_Lampotilat (1).mp3"
+    },
+    {
+      "file": "017_Kappale 2_Pedro_Olga_Alex_s_31.mp3",
+      "bytes": 769231,
+      "url": "/audit-early/017_Kappale 2_Pedro_Olga_Alex_s_31.mp3"
+    },
+    {
+      "file": "018_Kappale 2_Puhutaan_Jatskikiskalla.mp3",
+      "bytes": 835791,
+      "url": "/audit-early/018_Kappale 2_Puhutaan_Jatskikiskalla.mp3"
+    },
+    {
+      "file": "025_Kappale 2_Harjoitus 8_Numerot_1.mp3",
+      "bytes": 622214,
+      "url": "/audit-early/025_Kappale 2_Harjoitus 8_Numerot_1.mp3"
+    },
+    {
+      "file": "026_Kappale 2_Harjoitus 8_Numerot_2.mp3",
+      "bytes": 632454,
+      "url": "/audit-early/026_Kappale 2_Harjoitus 8_Numerot_2.mp3"
+    },
+    {
+      "file": "027_Kappale 2_Harjoitus 8_Numerot_3.mp3",
+      "bytes": 565162,
+      "url": "/audit-early/027_Kappale 2_Harjoitus 8_Numerot_3.mp3"
+    },
+    {
+      "file": "028_Kappale 2_Harjoitus 8_Numerot_4.mp3",
+      "bytes": 763380,
+      "url": "/audit-early/028_Kappale 2_Harjoitus 8_Numerot_4.mp3"
+    },
+    {
+      "file": "1-06 Track 06.mp3",
+      "bytes": 1155764,
+      "url": "/audit-early/1-06 Track 06.mp3"
+    },
+    {
+      "file": "1-14 Track 14.mp3",
+      "bytes": 3027804,
+      "url": "/audit-early/1-14 Track 14.mp3"
+    },
+    {
+      "file": "1-22 Track 22.mp3",
+      "bytes": 3531863,
+      "url": "/audit-early/1-22 Track 22.mp3"
+    },
+    {
+      "file": "Dialogues (1).pdf",
+      "bytes": 175214,
+      "url": "/audit-early/Dialogues (1).pdf"
+    },
+    {
+      "file": "Dialogues Answers (1).docx",
+      "bytes": 83828,
+      "url": "/audit-early/Dialogues Answers (1).docx"
+    },
+    {
+      "file": "Grammar Exercises (1).docx",
+      "bytes": 16483,
+      "url": "/audit-early/Grammar Exercises (1).docx"
+    },
+    {
+      "file": "Harjoitus 12, sivu 23_Answers (3).docx",
+      "bytes": 12495,
+      "url": "/audit-early/Harjoitus 12, sivu 23_Answers (3).docx"
+    },
+    {
+      "file": "Homework exercises L3.pdf",
+      "bytes": 173322,
+      "url": "/audit-early/Homework exercises L3.pdf"
+    },
+    {
+      "file": "Homework_Numbers (1).pdf",
+      "bytes": 196305,
+      "url": "/audit-early/Homework_Numbers (1).pdf"
+    },
+    {
+      "file": "Information about people KEYS.pdf",
+      "bytes": 242229,
+      "url": "/audit-early/Information about people KEYS.pdf"
+    },
+    {
+      "file": "Jäätelökioskilla.pdf",
+      "bytes": 242326,
+      "url": "/audit-early/Jäätelökioskilla.pdf"
+    },
+    {
+      "file": "Keys to homework L3.docx",
+      "bytes": 13561,
+      "url": "/audit-early/Keys to homework L3.docx"
+    },
+    {
+      "file": "Kirjoita kieli ja kansalaisuus.docx",
+      "bytes": 264488,
+      "url": "/audit-early/Kirjoita kieli ja kansalaisuus.docx"
+    },
+    {
+      "file": "Pronouns_Homework (3).docx",
+      "bytes": 13567,
+      "url": "/audit-early/Pronouns_Homework (3).docx"
+    },
+    {
+      "file": "Pronunciation.pdf",
+      "bytes": 297411,
+      "url": "/audit-early/Pronunciation.pdf"
+    },
+    {
+      "file": "Translation Answers (1).docx",
+      "bytes": 14182,
+      "url": "/audit-early/Translation Answers (1).docx"
+    },
+    {
+      "file": "Translation Kap 2 (1).docx",
+      "bytes": 12091,
+      "url": "/audit-early/Translation Kap 2 (1).docx"
+    },
+    {
+      "file": "Verb Conjugation (Additional task) (1).pdf",
+      "bytes": 186089,
+      "url": "/audit-early/Verb Conjugation (Additional task) (1).pdf"
+    },
+    {
+      "file": "answer-328.png",
+      "bytes": 1236412,
+      "url": "/audit-early/answer-328.png"
+    },
+    {
+      "file": "answer-329.png",
+      "bytes": 1382268,
+      "url": "/audit-early/answer-329.png"
+    },
+    {
+      "file": "book-022.png",
+      "bytes": 490099,
+      "url": "/audit-early/book-022.png"
+    },
+    {
+      "file": "book-023.png",
+      "bytes": 473972,
+      "url": "/audit-early/book-023.png"
+    },
+    {
+      "file": "book-024.png",
+      "bytes": 382106,
+      "url": "/audit-early/book-024.png"
+    },
+    {
+      "file": "book-025.png",
+      "bytes": 739039,
+      "url": "/audit-early/book-025.png"
+    },
+    {
+      "file": "book-026.png",
+      "bytes": 446546,
+      "url": "/audit-early/book-026.png"
+    },
+    {
+      "file": "dialogue-key0.png",
+      "bytes": 71856,
+      "url": "/audit-early/dialogue-key0.png"
+    },
+    {
+      "file": "homework-l3.png",
+      "bytes": 128965,
+      "url": "/audit-early/homework-l3.png"
+    },
+    {
+      "file": "kiosk.png",
+      "bytes": 205585,
+      "url": "/audit-early/kiosk.png"
+    },
+    {
+      "file": "language-nationality0.png",
+      "bytes": 252516,
+      "url": "/audit-early/language-nationality0.png"
+    },
+    {
+      "file": "page-11.png",
+      "bytes": 633915,
+      "url": "/audit-early/page-11.png"
+    },
+    {
+      "file": "page-14.png",
+      "bytes": 466348,
+      "url": "/audit-early/page-14.png"
+    },
+    {
+      "file": "page-15.png",
+      "bytes": 435557,
+      "url": "/audit-early/page-15.png"
+    },
+    {
+      "file": "page-16.png",
+      "bytes": 463750,
+      "url": "/audit-early/page-16.png"
+    },
+    {
+      "file": "page-17.png",
+      "bytes": 355107,
+      "url": "/audit-early/page-17.png"
+    },
+    {
+      "file": "page-20.png",
+      "bytes": 448280,
+      "url": "/audit-early/page-20.png"
+    },
+    {
+      "file": "page-31.png",
+      "bytes": 770092,
+      "url": "/audit-early/page-31.png"
+    },
+    {
+      "file": "page-33.png",
+      "bytes": 860190,
+      "url": "/audit-early/page-33.png"
+    },
+    {
+      "file": "page-34.png",
+      "bytes": 532912,
+      "url": "/audit-early/page-34.png"
+    },
+    {
+      "file": "page-37.png",
+      "bytes": 482798,
+      "url": "/audit-early/page-37.png"
+    },
+    {
+      "file": "page-38.png",
+      "bytes": 577857,
+      "url": "/audit-early/page-38.png"
+    },
+    {
+      "file": "page-39.png",
+      "bytes": 551999,
+      "url": "/audit-early/page-39.png"
+    },
+    {
+      "file": "page-41.png",
+      "bytes": 477739,
+      "url": "/audit-early/page-41.png"
+    },
+    {
+      "file": "page-43.png",
+      "bytes": 379917,
+      "url": "/audit-early/page-43.png"
+    },
+    {
+      "file": "page-45.png",
+      "bytes": 481945,
+      "url": "/audit-early/page-45.png"
+    },
+    {
+      "file": "page-46.png",
+      "bytes": 530287,
+      "url": "/audit-early/page-46.png"
+    },
+    {
+      "file": "page-47.png",
+      "bytes": 479783,
+      "url": "/audit-early/page-47.png"
+    },
+    {
+      "file": "page-48.png",
+      "bytes": 270005,
+      "url": "/audit-early/page-48.png"
+    },
+    {
+      "file": "page-51.png",
+      "bytes": 304508,
+      "url": "/audit-early/page-51.png"
+    },
+    {
+      "file": "page-52.png",
+      "bytes": 450478,
+      "url": "/audit-early/page-52.png"
+    },
+    {
+      "file": "page-53.png",
+      "bytes": 441603,
+      "url": "/audit-early/page-53.png"
+    },
+    {
+      "file": "people-key.png",
+      "bytes": 373236,
+      "url": "/audit-early/people-key.png"
+    },
+    {
+      "file": "pronunciation-1.png",
+      "bytes": 445734,
+      "url": "/audit-early/pronunciation-1.png"
+    },
+    {
+      "file": "pronunciation-2.png",
+      "bytes": 347370,
+      "url": "/audit-early/pronunciation-2.png"
+    },
+    {
+      "file": "verbit_vastaukset (2).docx",
+      "bytes": 15146,
+      "url": "/audit-early/verbit_vastaukset (2).docx"
+    }
+  ]
+}

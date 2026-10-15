@@ -61,9 +61,9 @@ export function LessonSixPage() {
     rows={2} placeholder="เขียนคำตอบภาษาฟินแลนด์…" /></label>;
   const progress = Math.round(work.completed.length / steps.length * 100);
   return <section className="page lesson-page lesson-three lesson-five lesson-six">
-    <div className="lesson-hero"><div><span className="kicker">LESSON 06 · 06.10.2026</span><h1>Tiistaina 6. lokakuuta</h1><p>อากาศ กริยากับเวลา และพหูพจน์ — บทเรียนวันอังคารที่ 6 ตุลาคม</p></div>
+    <div className="lesson-hero"><div><span className="kicker">LESSON 08 · 06.10.2026</span><h1>Tiistaina 6. lokakuuta</h1><p>อากาศ กริยากับเวลา และพหูพจน์ — บทเรียนวันอังคารที่ 6 ตุลาคม</p></div>
       <div className="lesson-progress"><b>{progress}%</b><span>complete</span><i><em style={{ width: `${progress}%` }} /></i></div></div>
-    <div className="lesson-tabs" role="tablist" aria-label="Lesson 6 sections">{steps.map((s, i) => <button
+    <div className="lesson-tabs" role="tablist" aria-label="Lesson 8 sections">{steps.map((s, i) => <button
       type="button" role="tab" id={`lesson6-tab-${i}`} aria-controls="lesson6-panel" aria-selected={s === step}
       key={s} className={s === step ? 'active' : work.completed.includes(s) ? 'done' : ''} onClick={() => go(s)}>
       <span>{work.completed.includes(s) ? <Check size={14} /> : i + 1}</span>{s}</button>)}</div>
@@ -138,7 +138,7 @@ export function LessonSixPage() {
         <BookPage page={82} /><BookPage page={83} /><BookPage page={331} />
       </>}
       {step === 'Vocabulary' && <>
-        <h2>Quizlet — ทบทวนคำศัพท์ 3 ชุด</h2><p>ใช้ชุดเดียวกับ Lesson 5 ตามลิงก์ที่ผู้สอนให้ในบทเรียนนี้: Weather 30 รายการ · Seasons and months 27 รายการ · Adjectives 22 รายการ (ต้นฉบับมี kylmä ซ้ำ)</p>
+        <h2>Quizlet — ทบทวนคำศัพท์ 3 ชุด</h2><p>ใช้ชุดเดียวกับ บทวันที่ 1 ตุลาคม ตามลิงก์ที่ผู้สอนให้ในบทเรียนนี้: Weather 30 รายการ · Seasons and months 27 รายการ · Adjectives 22 รายการ (ต้นฉบับมี kylmä ซ้ำ)</p>
         <div className="lesson5-options">{([['weather', 'Weather'], ['seasons', 'Seasons and months'], ['adjectives', 'Adjectives']] as const).map(([key, name]) => <button type="button" key={key} aria-pressed={vocab === key} className={vocab === key ? 'active' : ''} onClick={() => setVocab(key)}>{name}</button>)}</div>
         <div className="lesson5-vocabulary">{vocabulary[vocab].map((word, i) => <article key={`${word.fi}-${i}`}><Speak text={word.fi} /><p>{word.th}</p><small>{word.en}</small></article>)}</div>
         <h3>เปิดชุดต้นฉบับ</h3><ul>{quizletSources.slice(0, 3).map(([name, url]) => <li key={url}><a href={url} target="_blank" rel="noreferrer">{name}</a></li>)}</ul>
@@ -155,9 +155,9 @@ export function LessonSixPage() {
         <h2>ไฟล์ต้นฉบับและแหล่งอ้างอิง</h2><p>ไฟล์แนบ Moodle ทั้ง 3 รายการ พร้อมภาพหน้าหนังสือที่ใช้ในบทเรียน เลขหน้าคือเลข sivu ที่พิมพ์ในเล่ม</p>
         <div className="lesson5-files">{files.map(([name, file, id]) => <article key={file}><a href={`/lesson6/${file}`} download>{name}</a><a href={`https://moodle.abo.fi/mod/resource/view.php?id=${id}`} target="_blank" rel="noreferrer">เปิดแหล่งที่มาใน Moodle · {name.split(' · ')[0]}</a></article>)}</div>
         <h3>Suomen mestari 1</h3><div className="lesson5-files">{bookPages.map(page => <article key={page}><a href={`/lesson6/book/page-${page}.jpg`} target="_blank" rel="noreferrer">หน้าหนังสือ {page}{page === 331 ? ' · เฉลยแบบฝึก 13, 19, 20, 25' : ''}</a><small>ลำดับหน้าไฟล์ PDF: {page - 1}</small></article>)}</div>
-        <p>บางหน้ามีแบบฝึกอื่นติดมาด้วย ภาพเก็บเต็มหน้า ส่วนกิจกรรมใน Lesson 6 ยึดเฉพาะโจทย์ที่ผู้สอนมอบหมาย</p>
+        <p>บางหน้ามีแบบฝึกอื่นติดมาด้วย ภาพเก็บเต็มหน้า ส่วนกิจกรรมในบทวันที่ 6 ตุลาคม ยึดเฉพาะโจทย์ที่ผู้สอนมอบหมาย</p>
         <p><a href={moodleSource} target="_blank" rel="noreferrer">บทเรียนต้นฉบับใน Moodle</a> · <a href="/lesson6/sources.json" download>รายการแหล่งที่มาและไฟล์</a></p>
-        <p>ตรวจหน้า Moodle วันที่ 8 ตุลาคม 2026 คำศัพท์ใช้ข้อมูลสามชุดที่ถอดไว้ใน Lesson 5 ซึ่งมีรหัส Quizlet ตรงกับลิงก์บทเรียนนี้ เฉลยแบบฝึก 14 เป็นตัวอย่างเรียบเรียง ส่วนแบบฝึก 13, 19, 20 และ 25 ตรวจจากหน้า 331 และคำแปล 10 ข้อตรวจจากเอกสารผู้สอน</p>
+        <p>ตรวจหน้า Moodle วันที่ 8 ตุลาคม 2026 คำศัพท์ใช้ข้อมูลสามชุดที่ถอดไว้ใน บทวันที่ 1 ตุลาคม ซึ่งมีรหัส Quizlet ตรงกับลิงก์บทเรียนนี้ เฉลยแบบฝึก 14 เป็นตัวอย่างเรียบเรียง ส่วนแบบฝึก 13, 19, 20 และ 25 ตรวจจากหน้า 331 และคำแปล 10 ข้อตรวจจากเอกสารผู้สอน</p>
       </>}
       <div className="lesson5-footer"><button type="button" className="primary-button" disabled={work.completed.includes(step)} onClick={() => save({ ...work, completed: [...work.completed, step] })}><Check size={16} />{work.completed.includes(step) ? 'เรียนส่วนนี้แล้ว' : 'ทำส่วนนี้เสร็จแล้ว'}</button>{steps.indexOf(step) < steps.length - 1 && <button type="button" className="secondary-button" onClick={() => go(steps[steps.indexOf(step) + 1])}>ถัดไป<ChevronRight size={16} /></button>}</div>
     </div>
