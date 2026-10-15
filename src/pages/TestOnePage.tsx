@@ -1,11 +1,12 @@
+import { LessonVocab } from "./LessonVocab";
 import { CSSProperties, ReactNode, useState } from "react";
 import { Check, ChevronRight, Eye, EyeOff, MessageCircle, Volume2 } from "lucide-react";
 import { ttsService } from "../services/ttsService";
 
-type Step = "start" | "texts" | "phrases" | "days" | "numbers" | "pronouns" | "harmony" | "verbs" | "questions" | "check";
+type Step = "vocab" | "start" | "texts" | "phrases" | "days" | "numbers" | "pronouns" | "harmony" | "verbs" | "questions" | "check";
 
 const steps: { id: Step; label: string }[] = [
-  { id: "start", label: "Start" }, { id: "texts", label: "Texts" }, { id: "phrases", label: "Phrases" },
+  { id: "start", label: "Start" }, { id: "vocab", label: "Vocab" }, { id: "texts", label: "Texts" }, { id: "phrases", label: "Phrases" },
   { id: "days", label: "Days" }, { id: "numbers", label: "Numbers" }, { id: "pronouns", label: "Pronouns" },
   { id: "harmony", label: "Harmony" }, { id: "verbs", label: "Verbs" }, { id: "questions", label: "Questions" },
   { id: "check", label: "Check" },
@@ -508,7 +509,8 @@ export function TestOnePage() {
   return <section className="page lesson-page test-one">
     <div className="lesson-hero"><div><span className="kicker">TEST 1 · COMPLETE REVIEW</span><h1>Tiistai 29.09 TEST 1</h1><p>ทบทวนครบทุกข้อความ คำศัพท์ และไวยากรณ์ที่กำหนดสอบ</p></div><div className="lesson-progress"><b>{progress}%</b><span>complete</span><i><em style={{ width: `${progress}%` }} /></i></div></div>
     <div className="lesson-tabs" role="tablist">{steps.map((s, i) => <button role="tab" aria-selected={step === s.id} className={step === s.id ? "active" : completed.includes(s.id) ? "done" : ""} onClick={() => setStep(s.id)} key={s.id}><span>{completed.includes(s.id) ? <Check size={14} /> : i + 1}</span>{s.label}</button>)}</div>
-    {step === "start" && <div className="lesson-panel intro-panel"><div className="lesson-number">T1</div><span className="kicker">EXAM MAP</span><h2>เนื้อหาสอบ Test 1 ทั้งหมด</h2><p>อ้างอิงเลขหน้าที่พิมพ์ในหนังสือ: หน้าหนังสือ 11–17, 29, 31, 33 และ 37–39 (ตรงกับ PDF หน้า 10–16, 28, 30, 32 และ 36–38)</p><div className="objectives"><div><span>01</span><p><b>อ่านและเข้าใจ</b>บทสนทนา 4 หน้าและวลีทุกสถานการณ์</p></div><div><span>02</span><p><b>สร้างคำและประโยค</b>วัน ตัวเลข olla vowel harmony และการผันกริยา</p></div><div><span>03</span><p><b>ถามและตอบ</b>คำถาม yes/no, question words และคำตอบสั้น</p></div></div><div className="lesson-tip"><b>วิธีใช้บทนี้</b><p>กดข้อความฟินแลนด์เพื่อฟังเสียง อ่านคำแปลไทย ลองพูดเอง แล้วกดเปิดภาษาฟินแลนด์เพื่อตรวจคำตอบ เมื่อจบแต่ละหมวดกดปุ่มถัดไปเพื่อบันทึกความคืบหน้า</p></div><button className="primary lesson-next" onClick={() => go("texts")}>เริ่มจากบทอ่าน <ChevronRight /></button></div>}
+    {step === "vocab" && <div className="lesson-panel"><LessonVocab lessonId={'test1'} /><button type="button" className="primary lesson-next" disabled={completed.includes("vocab")} onClick={() => finish("vocab")}>{completed.includes("vocab") ? "เรียนส่วนนี้แล้ว" : "ทำส่วนนี้เสร็จแล้ว"}</button></div>}
+      {step === "start" && <div className="lesson-panel intro-panel"><div className="lesson-number">T1</div><span className="kicker">EXAM MAP</span><h2>เนื้อหาสอบ Test 1 ทั้งหมด</h2><p>อ้างอิงเลขหน้าที่พิมพ์ในหนังสือ: หน้าหนังสือ 11–17, 29, 31, 33 และ 37–39 (ตรงกับ PDF หน้า 10–16, 28, 30, 32 และ 36–38)</p><div className="objectives"><div><span>01</span><p><b>อ่านและเข้าใจ</b>บทสนทนา 4 หน้าและวลีทุกสถานการณ์</p></div><div><span>02</span><p><b>สร้างคำและประโยค</b>วัน ตัวเลข olla vowel harmony และการผันกริยา</p></div><div><span>03</span><p><b>ถามและตอบ</b>คำถาม yes/no, question words และคำตอบสั้น</p></div></div><div className="lesson-tip"><b>วิธีใช้บทนี้</b><p>กดข้อความฟินแลนด์เพื่อฟังเสียง อ่านคำแปลไทย ลองพูดเอง แล้วกดเปิดภาษาฟินแลนด์เพื่อตรวจคำตอบ เมื่อจบแต่ละหมวดกดปุ่มถัดไปเพื่อบันทึกความคืบหน้า</p></div><button className="primary lesson-next" onClick={() => go("texts")}>เริ่มจากบทอ่าน <ChevronRight /></button></div>}
     {step === "texts" && <div className="lesson-panel">{title("BOOK PAGES 11 · 29 · 31 · 33", "บทอ่านที่ต้องรู้", "อ่านทุกบรรทัดและสังเกตรูปคำจริง โดยหน้า 33 เป็นภาษาพูด")}
       <div className="test1-text-controls"><p>อ่านภาษาไทยแล้วลองพูดเอง กดเปิดภาษาฟินแลนด์ทีละบรรทัดเพื่อตรวจคำตอบ</p><div>
         <button type="button" className="test1-reveal" onClick={() => setRevealed(new Set(dialogueRowIds))}>แสดงภาษาฟินแลนด์ทั้งหมด</button>

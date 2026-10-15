@@ -1,11 +1,12 @@
+import { LessonVocab } from "./LessonVocab";
 import { EarlyBookPage, EarlyAnswers } from "./LessonTwoPage";
 import { CSSProperties, ReactNode, useState } from "react";
 import { Check, ChevronRight, MessageCircle, Volume2 } from "lucide-react";
 import { ttsService } from "../services/ttsService";
 
-type Step = "book" | "start" | "vowels" | "verbs" | "negative" | "yesno" | "words" | "introduce" | "exercises" | "time" | "check";
+type Step = "vocab" | "book" | "start" | "vowels" | "verbs" | "negative" | "yesno" | "words" | "introduce" | "exercises" | "time" | "check";
 const steps: { id: Step; label: string }[] = [
-  { id: "start", label: "Start" }, { id: "book", label: "Moodle & homework" }, { id: "vowels", label: "Vowels" }, { id: "verbs", label: "Verbs" },
+  { id: "start", label: "Start" }, { id: "vocab", label: "Vocab" }, { id: "book", label: "Moodle & homework" }, { id: "vowels", label: "Vowels" }, { id: "verbs", label: "Verbs" },
   { id: "negative", label: "Negative" }, { id: "yesno", label: "Yes / No" }, { id: "words", label: "Question words" },
   { id: "introduce", label: "Introduce" }, { id: "exercises", label: "Exercises" }, { id: "time", label: "Time" }, { id: "check", label: "Check" },
 ];
@@ -70,7 +71,8 @@ export function LessonThreePage() {
   return <section className="page lesson-page lesson-three">
     <div className="lesson-hero"><div><span className="kicker">15.09.2026 · KAPPALE 1–2</span><h1>Tiistai 15.09</h1><p>ประกอบภาษาฟินแลนด์ให้ถูกต้อง ตั้งแต่สระจนถึงบทสนทนา</p></div><div className="lesson-progress"><b>{progress}%</b><span>complete</span><i><em style={{ width: `${progress}%` }} /></i></div></div>
     <div className="lesson-tabs" role="tablist">{steps.map((s, i) => <button role="tab" aria-selected={step === s.id} className={step === s.id ? "active" : completed.includes(s.id) ? "done" : ""} onClick={() => setStep(s.id)} key={s.id}><span>{completed.includes(s.id) ? <Check size={14} /> : i + 1}</span>{s.label}</button>)}</div>
-    {step === "start" && <div className="lesson-panel intro-panel"><div className="lesson-number">03</div><span className="kicker">FINNISH SENTENCE TOOLKIT</span><h2>จากเสียงสระ สู่ประโยคที่ใช้ได้จริง</h2><p>กฎสระ · การผันกริยา · ประโยคคำถาม · การแนะนำตัว · วันและเวลา พร้อมแบบฝึกหัดตาม Moodle และเฉลยที่ตรวจเทียบหนังสือ</p><div className="objectives"><div><span>01</span><p><b>เลือกคำต่อท้าย</b>เข้าใจสระหลัง สระหน้า สระกลาง และคำประสม</p></div><div><span>02</span><p><b>สร้างประโยค</b>ผันกริยา บอกเล่า ปฏิเสธ และคำถาม</p></div><div><span>03</span><p><b>ใช้จริง</b>แนะนำตัว ถามข้อมูล และตอบอย่างเป็นธรรมชาติ</p></div></div><button className="primary lesson-next" onClick={() => go("vowels")}>เริ่มจากกฎสระ <ChevronRight /></button></div>}
+    {step === "vocab" && <div className="lesson-panel"><LessonVocab lessonId={3} /><button type="button" className="primary lesson-next" disabled={completed.includes("vocab")} onClick={() => finish("vocab")}>{completed.includes("vocab") ? "เรียนส่วนนี้แล้ว" : "ทำส่วนนี้เสร็จแล้ว"}</button></div>}
+      {step === "start" && <div className="lesson-panel intro-panel"><div className="lesson-number">03</div><span className="kicker">FINNISH SENTENCE TOOLKIT</span><h2>จากเสียงสระ สู่ประโยคที่ใช้ได้จริง</h2><p>กฎสระ · การผันกริยา · ประโยคคำถาม · การแนะนำตัว · วันและเวลา พร้อมแบบฝึกหัดตาม Moodle และเฉลยที่ตรวจเทียบหนังสือ</p><div className="objectives"><div><span>01</span><p><b>เลือกคำต่อท้าย</b>เข้าใจสระหลัง สระหน้า สระกลาง และคำประสม</p></div><div><span>02</span><p><b>สร้างประโยค</b>ผันกริยา บอกเล่า ปฏิเสธ และคำถาม</p></div><div><span>03</span><p><b>ใช้จริง</b>แนะนำตัว ถามข้อมูล และตอบอย่างเป็นธรรมชาติ</p></div></div><button className="primary lesson-next" onClick={() => go("vowels")}>เริ่มจากกฎสระ <ChevronRight /></button></div>}
     {step === "book" && <div className="lesson-panel"><h2>Tiistai 15.09 · แบบฝึกหัดตาม Moodle</h2><p>ในชั้นเรียน: ตัวเลข วัน หน้า 14 กฎสระ หน้า 17 / แบบฝึก 4B หน้า 41 กริยา หน้า 37 คำถาม หน้า 38–39 และประเทศ–ภาษา หน้า 31</p>{[14,17,31,37,38,39,41].map(page => <EarlyBookPage key={page} page={page} />)}
 <h3>Harjoitus 4B · หน้า 41</h3><Grid items={["kysyvät", "etsivät", "löytävät", "sanovat", "tutustuvat", "maksavat", "säästävät", "puhuvat", "tietävät", "istuvat"]}/><p>เลือก -vät เมื่อมี ä/ö/y หรือมีเพียง e/i; เลือก -vat เมื่อมี a/o/u</p>
 <h3>Harjoitus 6A–B · หน้า 20</h3><EarlyBookPage page={20}/><Grid items={cityExercise}/><Grid items={foodExercise}/><p>ชื่อเมืองเติม -ssa/-ssä ตามกลุ่มสระ ส่วนอาหารเติม -a/-ä: Mikkeli มีเพียง i/e จึงเป็น Mikkelissä แต่ Pori มี o จึงเป็น Porissa</p>

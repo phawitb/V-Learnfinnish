@@ -1,3 +1,4 @@
+import { LessonVocab } from "./LessonVocab";
 import { useMemo, useState, type ReactNode } from "react";
 import {
   BookOpen,
@@ -401,9 +402,9 @@ const questions = [
       "Sisu describes determination and perseverance, especially when things are difficult.",
   },
 ];
-type Step = "intro" | "alphabet" | "phrases" | "basics" | "tongue" | "check";
+type Step = "vocab" | "intro" | "alphabet" | "phrases" | "basics" | "tongue" | "check";
 const steps: { id: Step; label: string }[] = [
-  { id: "intro", label: "Start" },
+  { id: "intro", label: "Start" }, { id: "vocab", label: "Vocab" },
   { id: "alphabet", label: "Sounds" },
   { id: "phrases", label: "Phrases" },
   { id: "basics", label: "Basics" },
@@ -520,6 +521,7 @@ export function LessonOnePage() {
           </button>
         ))}
       </div>
+      {step === "vocab" && <div className="lesson-panel"><LessonVocab lessonId={1} /><button type="button" className="primary lesson-next" disabled={completed.includes("vocab")} onClick={() => finish("vocab")}>{completed.includes("vocab") ? "เรียนส่วนนี้แล้ว" : "ทำส่วนนี้เสร็จแล้ว"}</button></div>}
       {step === "intro" && (
         <div className="lesson-panel intro-panel">
           <div className="lesson-number">01</div>

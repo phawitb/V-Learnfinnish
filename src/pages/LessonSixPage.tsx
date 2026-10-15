@@ -1,3 +1,4 @@
+import { LessonVocab } from "./LessonVocab";
 import { useState } from 'react';
 import { LessonSixHomework } from './LessonSixHomework';
 import { Check, ChevronRight, Volume2 } from 'lucide-react';
@@ -66,7 +67,7 @@ export function LessonSixPage() {
     <div className="lesson-tabs" role="tablist" aria-label="Lesson 8 sections">{steps.map((s, i) => <button
       type="button" role="tab" id={`lesson6-tab-${i}`} aria-controls="lesson6-panel" aria-selected={s === step}
       key={s} className={s === step ? 'active' : work.completed.includes(s) ? 'done' : ''} onClick={() => go(s)}>
-      <span>{work.completed.includes(s) ? <Check size={14} /> : i + 1}</span>{s}</button>)}</div>
+      <span>{work.completed.includes(s) ? <Check size={14} /> : i + 1}</span>{s === 'Vocabulary' ? 'Vocab' : s}</button>)}</div>
     {saveError && <p role="alert">บันทึกในอุปกรณ์ไม่ได้ คำตอบยังอยู่ในหน้านี้ กรุณาคัดลอกก่อนปิดบทเรียน</p>}
     <div className="lesson-panel" role="tabpanel" id="lesson6-panel" aria-labelledby={`lesson6-tab-${steps.indexOf(step)}`}>
       {step === 'Start' && <>
@@ -137,12 +138,12 @@ export function LessonSixPage() {
         })}
         <BookPage page={82} /><BookPage page={83} /><BookPage page={331} />
       </>}
-      {step === 'Vocabulary' && <>
+      {step === 'Vocabulary' && <><LessonVocab lessonId={6} /><details className="vocab-original"><summary>ชุดคำศัพท์เดิมและแหล่งอ้างอิง</summary>
         <h2>Quizlet — ทบทวนคำศัพท์ 3 ชุด</h2><p>ใช้ชุดเดียวกับ บทวันที่ 1 ตุลาคม ตามลิงก์ที่ผู้สอนให้ในบทเรียนนี้: Weather 30 รายการ · Seasons and months 27 รายการ · Adjectives 22 รายการ (ต้นฉบับมี kylmä ซ้ำ)</p>
         <div className="lesson5-options">{([['weather', 'Weather'], ['seasons', 'Seasons and months'], ['adjectives', 'Adjectives']] as const).map(([key, name]) => <button type="button" key={key} aria-pressed={vocab === key} className={vocab === key ? 'active' : ''} onClick={() => setVocab(key)}>{name}</button>)}</div>
         <div className="lesson5-vocabulary">{vocabulary[vocab].map((word, i) => <article key={`${word.fi}-${i}`}><Speak text={word.fi} /><p>{word.th}</p><small>{word.en}</small></article>)}</div>
         <h3>เปิดชุดต้นฉบับ</h3><ul>{quizletSources.slice(0, 3).map(([name, url]) => <li key={url}><a href={url} target="_blank" rel="noreferrer">{name}</a></li>)}</ul>
-      </>}
+      </details></>}
       {step === 'Homework' && <>
         <h2>Kotitehtävät — การบ้าน</h2><p>ครบทั้ง 3 งานตาม Moodle แยกเช็กลิสต์คำศัพท์เป็นรายชุดเพื่อช่วยติดตาม</p>
         <div className="lesson5-checklist">{homework.map(task => <label key={task}><input type="checkbox" checked={work.tasks.includes(task)} onChange={e => save({ ...work, tasks: e.target.checked ? [...work.tasks, task] : work.tasks.filter(t => t !== task) })} />{task}</label>)}</div>

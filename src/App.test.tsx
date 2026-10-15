@@ -304,7 +304,7 @@ describe('App', () => {
 
     expect(screen.getByTestId('mobile-page-title')).toHaveTextContent('Tiistai 15.09')
     expect(screen.getByRole('heading', { name: /Tiistai 15\.09/i })).toBeVisible()
-    expect(screen.getAllByRole('tab')).toHaveLength(11)
+    expect(screen.getAllByRole('tab')).toHaveLength(12)
     expect(screen.getByText(/กฎสระ.*การผันกริยา.*ประโยคคำถาม/i)).toBeVisible()
   })
   it('opens Test 1 as a dedicated exam review lesson', async () => {
@@ -313,7 +313,7 @@ describe('App', () => {
 
     expect(screen.getByTestId('mobile-page-title')).toHaveTextContent('Tiistai 29.09 TEST 1')
     expect(screen.getByRole('heading', { name: /Tiistai 29\.09 TEST 1/i })).toBeVisible()
-    expect(screen.getAllByRole('tab')).toHaveLength(10)
+    expect(screen.getAllByRole('tab')).toHaveLength(11)
     expect(screen.getByText(/หน้าหนังสือ 11–17.*29.*31.*33.*37–39/i)).toBeVisible()
   })
   it('orders all dated Moodle sections chronologically', async () => {

@@ -1,10 +1,11 @@
+import { LessonVocab } from "./LessonVocab";
 import { useState, type ReactNode } from "react";
 import { CalendarDays, Check, ChevronRight, Hash, MessageCircle, Volume2 } from "lucide-react";
 import { ttsService } from "../services/ttsService";
 
-type Step = "book" | "start" | "olla" | "time" | "numbers" | "sentences" | "check";
+type Step = "vocab" | "book" | "start" | "olla" | "time" | "numbers" | "sentences" | "check";
 const steps: { id: Step; label: string }[] = [
-  { id: "start", label: "Start" }, { id: "book", label: "Moodle & homework" }, { id: "olla", label: "Olla" },
+  { id: "start", label: "Start" }, { id: "vocab", label: "Vocab" }, { id: "book", label: "Moodle & homework" }, { id: "olla", label: "Olla" },
   { id: "time", label: "Time" }, { id: "numbers", label: "Numbers" },
   { id: "sentences", label: "Sentences" }, { id: "check", label: "Check" },
 ];
@@ -54,7 +55,8 @@ export function LessonTwoPage() {
   return <section className="page lesson-page lesson-two">
     <div className="lesson-hero"><div><span className="kicker">10.09.2026 · KAPPALE 1</span><h1>Thursday 10.09</h1><p>ภาษาฟินแลนด์ที่ใช้ได้จริงในทุกวัน</p></div><div className="lesson-progress"><b>{progress}%</b><span>complete</span><i><em style={{ width: `${progress}%` }} /></i></div></div>
     <div className="lesson-tabs" role="tablist">{steps.map((s, i) => <button role="tab" aria-selected={step === s.id} className={step === s.id ? "active" : completed.includes(s.id) ? "done" : ""} onClick={() => setStep(s.id)} key={s.id}><span>{completed.includes(s.id) ? <Check size={14} /> : i + 1}</span>{s.label}</button>)}</div>
-    {step === "start" && <div className="lesson-panel intro-panel"><div className="lesson-number">02</div><span className="kicker">EVERYDAY FINNISH</span><h2>สร้างประโยคและพูดเรื่องชีวิตประจำวัน</h2><p>เรียนกริยา olla วัน เวลา ตัวเลข และประโยคสำเร็จรูปที่พบได้บ่อย พร้อมฟังเสียงภาษาฟินแลนด์ได้ทุกตัวอย่าง</p><div className="objectives"><div><span>01</span><p><b>ผันกริยา olla</b>ใช้ทั้งภาษาเขียนและภาษาพูด</p></div><div><span>02</span><p><b>บอกวันและเวลา</b>ใช้รูป -na/-nä อย่างถูกต้อง</p></div><div><span>03</span><p><b>สื่อสารในชีวิตจริง</b>ฝึกตัวเลขและ 20 ประโยคสำคัญ</p></div></div><button className="primary lesson-next" onClick={() => go("olla")}>เริ่มเรียนกริยา olla <ChevronRight /></button></div>}
+    {step === "vocab" && <div className="lesson-panel"><LessonVocab lessonId={2} /><button type="button" className="primary lesson-next" disabled={completed.includes("vocab")} onClick={() => finish("vocab")}>{completed.includes("vocab") ? "เรียนส่วนนี้แล้ว" : "ทำส่วนนี้เสร็จแล้ว"}</button></div>}
+      {step === "start" && <div className="lesson-panel intro-panel"><div className="lesson-number">02</div><span className="kicker">EVERYDAY FINNISH</span><h2>สร้างประโยคและพูดเรื่องชีวิตประจำวัน</h2><p>เรียนกริยา olla วัน เวลา ตัวเลข และประโยคสำเร็จรูปที่พบได้บ่อย พร้อมฟังเสียงภาษาฟินแลนด์ได้ทุกตัวอย่าง</p><div className="objectives"><div><span>01</span><p><b>ผันกริยา olla</b>ใช้ทั้งภาษาเขียนและภาษาพูด</p></div><div><span>02</span><p><b>บอกวันและเวลา</b>ใช้รูป -na/-nä อย่างถูกต้อง</p></div><div><span>03</span><p><b>สื่อสารในชีวิตจริง</b>ฝึกตัวเลขและ 20 ประโยคสำคัญ</p></div></div><button className="primary lesson-next" onClick={() => go("olla")}>เริ่มเรียนกริยา olla <ChevronRight /></button></div>}
 
     {step === "book" && <div className="lesson-panel">
       <h2>Thursday 10.09 · งานในชั้นเรียนและการบ้าน</h2>

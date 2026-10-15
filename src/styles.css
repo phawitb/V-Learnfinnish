@@ -2941,3 +2941,13 @@ summary:focus-visible {
 .course-outline summary { cursor: pointer; color: #385e52; font-weight: 700; }
 .course-outline li { margin: .35rem 0; }
 .mobile-lesson-title { font-size: .85rem; font-weight: 700; line-height: 1.35; overflow-wrap: anywhere; }
+
+.lesson-vocab .vocab-search { display: grid; gap: .5rem; font-weight: 600; max-width: 38rem; margin: 1.5rem 0 .5rem; }
+.lesson-vocab input { width: 100%; box-sizing: border-box; border: 1px solid var(--border, #d4dce0); border-radius: 12px; padding: .85rem 1rem; font: inherit; background: var(--surface, white); color: inherit; }
+.vocab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 1rem; }
+.vocab-grid article { border: 1px solid var(--border, #d4dce0); border-radius: 14px; padding: 1rem; min-width: 0; }
+.vocab-word { display: flex; align-items: start; justify-content: space-between; gap: .75rem; }
+.vocab-word h3 { margin: 0; overflow-wrap: anywhere; }
+.vocab-word button { flex-shrink: 0; min-width: 40px; min-height: 40px; justify-content: center; }
+.vocab-grid p { margin: .6rem 0; }
+.vocab-grid small, .vocab-note { color: var(--muted, #586b73); }

@@ -1,11 +1,12 @@
+import { LessonVocab } from "./LessonVocab";
 import { EarlyBookPage, EarlyAnswers } from "./LessonTwoPage";
 import { CSSProperties, ReactNode, useState } from "react";
 import { Check, ChevronRight, MessageCircle, Volume2 } from "lucide-react";
 import { ttsService } from "../services/ttsService";
 
-type Step = "book" | "start" | "spoken" | "harjoitus" | "negative" | "conjugation" | "dialogues" | "translation" | "homework" | "check";
+type Step = "vocab" | "book" | "start" | "spoken" | "harjoitus" | "negative" | "conjugation" | "dialogues" | "translation" | "homework" | "check";
 const steps: { id: Step; label: string }[] = [
-  { id: "start", label: "Start" }, { id: "book", label: "Moodle & book" }, { id: "spoken", label: "Spoken" }, { id: "harjoitus", label: "Harjoitus" },
+  { id: "start", label: "Start" }, { id: "vocab", label: "Vocab" }, { id: "book", label: "Moodle & book" }, { id: "spoken", label: "Spoken" }, { id: "harjoitus", label: "Harjoitus" },
   { id: "negative", label: "Negative" }, { id: "conjugation", label: "Conjugation" }, { id: "dialogues", label: "Dialogues" },
   { id: "translation", label: "Translation" }, { id: "homework", label: "Homework" }, { id: "check", label: "Check" },
 ];
@@ -204,7 +205,8 @@ export function LessonFourPage() {
 <div className="useful-grid">{["ykstoist","kakstoist","kolmetoist","neljätoist","viistoist","kuustoist","seittemäntoist","kaheksantoist","yheksäntoist","kakskyt","kakskytkaks","kakskytkolme","kakskytneljä","kakskytviis","kakskytkuus","kakskytseittemän","kakskytkaheksan","kakskytyheksän","kolkyt","kolkytyks","nelkyt","viiskyt","kuuskyt","seiskyt","kaheksankyt","yheksänkyt"].map(x=><Finnish key={x} text={x}/>)}</div>
 <h3>ไฟล์ต้นฉบับและเฉลยของครู</h3><div className="course-files">{["Verb Conjugation (Additional task) (1).pdf","verbit_vastaukset (2).docx","Jäätelökioskilla.pdf","Dialogues (1).pdf","Dialogues Answers (1).docx","Grammar Exercises (1).docx","Translation Kap 2 (1).docx","Translation Answers (1).docx"].map(file=><a key={file} href={`/audit-early/${file}`} target="_blank" rel="noreferrer">{file}</a>)}</div><p>ชุด Grammar Exercises 1–2 อยู่แท็บ Harjoitus, กริยา 30 ประโยคอยู่ Conjugation, บทสนทนาอยู่ Dialogues และงานแปลอยู่ Translation</p>
 <p>หมายเหตุงานแปล: ไฟล์โจทย์ไม่ได้ระบุอายุ Anna แต่ไฟล์เฉลยเพิ่ม “Olen 18 vuotta vanha.” ประโยคนี้จึงเป็นข้อมูลเพิ่มในเฉลย ไม่จำเป็นต้องเพิ่มเมื่อแปลโจทย์เดิม</p></div>}
-    {step === "start" && <div className="lesson-panel intro-panel"><div className="lesson-number">04</div><span className="kicker">SPOKEN FINNISH &amp; PRACTICE</span><h2>ภาษาพูด ไวยากรณ์ และแบบฝึกหัดครบชุด</h2><p>ตัวเลขภาษาพูด · เปรียบเทียบภาษาเขียนกับพูด · ประโยคปฏิเสธ · การผันกริยาใหม่ 14 ตัว · บทสนทนาซื้อของ · แปลไทย-ฟินแลนด์</p><div className="objectives"><div><span>01</span><p><b>ตัวเลขภาษาพูด</b>รู้จักตัวเลขแบบย่อที่คนฟินแลนด์ใช้จริง</p></div><div><span>02</span><p><b>ผันกริยา 30 ประโยค</b>ฝึกกริยาใหม่ทั้งบอกเล่าและปฏิเสธ</p></div><div><span>03</span><p><b>บทสนทนาและแปล</b>สั่งพิซซ่า ซื้อไอศกรีม และแปลเรื่อง Anna</p></div></div><div className="lesson-tip"><b>Test 1 — วันอังคาร 29.09</b><p>เตรียมสอบ Test 1 ทบทวนเนื้อหาจาก วันที่ 08.09–22.09 ทั้งหมด</p></div><button className="primary lesson-next" onClick={() => go("spoken")}>เริ่มจากตัวเลขภาษาพูด <ChevronRight /></button></div>}
+    {step === "vocab" && <div className="lesson-panel"><LessonVocab lessonId={4} /><button type="button" className="primary lesson-next" disabled={completed.includes("vocab")} onClick={() => finish("vocab")}>{completed.includes("vocab") ? "เรียนส่วนนี้แล้ว" : "ทำส่วนนี้เสร็จแล้ว"}</button></div>}
+      {step === "start" && <div className="lesson-panel intro-panel"><div className="lesson-number">04</div><span className="kicker">SPOKEN FINNISH &amp; PRACTICE</span><h2>ภาษาพูด ไวยากรณ์ และแบบฝึกหัดครบชุด</h2><p>ตัวเลขภาษาพูด · เปรียบเทียบภาษาเขียนกับพูด · ประโยคปฏิเสธ · การผันกริยาใหม่ 14 ตัว · บทสนทนาซื้อของ · แปลไทย-ฟินแลนด์</p><div className="objectives"><div><span>01</span><p><b>ตัวเลขภาษาพูด</b>รู้จักตัวเลขแบบย่อที่คนฟินแลนด์ใช้จริง</p></div><div><span>02</span><p><b>ผันกริยา 30 ประโยค</b>ฝึกกริยาใหม่ทั้งบอกเล่าและปฏิเสธ</p></div><div><span>03</span><p><b>บทสนทนาและแปล</b>สั่งพิซซ่า ซื้อไอศกรีม และแปลเรื่อง Anna</p></div></div><div className="lesson-tip"><b>Test 1 — วันอังคาร 29.09</b><p>เตรียมสอบ Test 1 ทบทวนเนื้อหาจาก วันที่ 08.09–22.09 ทั้งหมด</p></div><button className="primary lesson-next" onClick={() => go("spoken")}>เริ่มจากตัวเลขภาษาพูด <ChevronRight /></button></div>}
 
     {step === "spoken" && <div className="lesson-panel">{title("PUHEKIELEN NUMEROT", "ตัวเลขภาษาพูด (sivu 34)", "ตัวเลขในภาษาพูดมักย่อให้สั้นลง คนฟินแลนด์ใช้ในชีวิตประจำวัน")}
       <Table headers={["ภาษาเขียน", "ภาษาพูด", "ตัวเลข"]} rows={spokenNumbers} audioColumns={[0, 1]} />
