@@ -27,14 +27,14 @@ it('searches Finnish and Thai, shows empty results, and speaks the selected Finn
   const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true);
   const user = userEvent.setup(); render(<LessonVocab lessonId={6} />);
   const search = screen.getByRole('searchbox');
-  const word = getLessonVocabulary(6).find(e => e.fi === 'sää')!;
+  const word = getLessonVocabulary(6).find(e => e.fi === 'sää, sään')!;
   expect(word).toBeDefined();
   await user.type(search, ' SÄÄ ');
-  expect(screen.getByRole('heading', { name: 'sää' })).toBeVisible();
-  await user.click(screen.getByRole('button', { name: 'Listen to sää' }));
-  expect(speak).toHaveBeenCalledWith('sää', undefined, expect.any(Function));
+  expect(screen.getByRole('heading', { name: 'sää, sään' })).toBeVisible();
+  await user.click(screen.getByRole('button', { name: 'Listen to sää, sään' }));
+  expect(speak).toHaveBeenCalledWith('sää, sään', undefined, expect.any(Function));
   await user.clear(search); await user.type(search, 'อากาศ');
-  expect(screen.getByRole('heading', { name: 'sää' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'sää, sään' })).toBeVisible();
   await user.clear(search); await user.type(search, 'zzzz-no-match');
   expect(screen.queryAllByRole('article')).toHaveLength(0);
   expect(screen.getByText(/ไม่พบคำศัพท์/)).toBeVisible();
@@ -57,11 +57,25 @@ it('saves the new Vocab completion alongside existing early lesson progress', as
   expect(JSON.parse(localStorage.getItem('sisu:lesson1:v1')!)).toEqual(['alphabet', 'phrases', 'vocab']);
 });
 it('keeps country and language spellings distinct while searching without case sensitivity', async () => {
-  const entries = getLessonVocabulary('sep17');
+  const entries = getLessonVocabulary(3);
   expect(entries.find(e => e.fi === 'Suomi')?.th).toContain('ฟินแลนด์');
   expect(entries.find(e => e.fi === 'suomi')?.th).toContain('ฟินแลนด์');
-  render(<LessonVocab lessonId="sep17" />);
+  render(<LessonVocab lessonId={3} />);
   await userEvent.type(screen.getByRole('searchbox'), 'SUOMI');
   expect(screen.getByRole('heading', { name: 'Suomi' })).toBeVisible();
   expect(screen.getByRole('heading', { name: 'suomi' })).toBeVisible();
+});
+it('keeps each glossary focused on its own learning targets rather than cumulative word occurrences', () => {
+  const terms = (id: Parameters<typeof getLessonVocabulary>[0]) => getLessonVocabulary(id).map(entry => entry.fi);
+  expect(terms(7)).toContain('videopuhelu, videopuhelun');
+  expect(terms(7)).not.toContain('tammikuu');
+  expect(terms(7)).not.toContain('kirjoitetaan');
+  expect(terms(6)).toContain('sää, sään');
+  expect(terms(6)).not.toContain('Helsingissä');
+  expect(terms(8)).toContain('ihminen → ihmistä');
+  expect(terms(8)).not.toContain('James Bond -elokuvaa');
+  expect(terms('oct15')).toContain('isoäiti');
+  expect(terms('oct15')).not.toContain('heitä noppaa');
+  expect(terms(2)).not.toContain('yhdeksänkymmentäkahdeksan');
+  expect(terms(3)).not.toContain('ajamme');
 });

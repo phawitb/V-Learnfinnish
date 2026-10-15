@@ -73,7 +73,7 @@ it('searches English vocabulary meanings and retains stored exercise drafts and 
   await user.click(screen.getByRole('tab',{name:'Book'}));
   expect(screen.getAllByRole('textbox').some(input=>(input as HTMLTextAreaElement).value==='Kyllä, minä autan teitä.')).toBe(true);
   await user.click(screen.getByRole('tab',{name:'Vocab'}));
-  await user.type(screen.getByRole('searchbox'),'weather');
+  await user.type(screen.getByRole('searchbox'),'love');
   const vocab=screen.getByRole('region',{name:'Lesson vocabulary'});
   expect(within(vocab).getAllByRole('article').length).toBeGreaterThan(0);
   expectEnglish(vocab);

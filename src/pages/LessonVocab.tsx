@@ -15,7 +15,7 @@ export function LessonVocab({ lessonId }: { lessonId: LessonId }) {
   const filtered = entries.filter(entry => `${entry.fi} ${language === 'en' ? translateText(entry.th) : entry.th} ${language === 'en' ? translateText(entry.category ?? '') : entry.category ?? ''}`.normalize('NFC').toLocaleLowerCase('fi').includes(search));
   return <section className="lesson-vocab" aria-label="คำศัพท์ประจำบท">
     <h2>Vocab · คำศัพท์ประจำบท</h2>
-    <p>รวมคำศัพท์และสำนวนจากเนื้อหา บทอ่าน แบบฝึกหัด และการบ้าน เรียงตามตัวอักษรฟินแลนด์ คำที่มีหลายรูปอาจแสดงทั้งรูปพื้นฐานและรูปที่ใช้ในบท</p>
+    <p>คำศัพท์เป้าหมายที่สอนหรือให้ท่องในบทนี้ แสดงชุดคำศัพท์และแหล่งเรียนของแต่ละรายการ รูปผันแสดงเฉพาะที่เป็นหัวข้อเรียน</p>
     <label className="vocab-search">ค้นหาคำศัพท์ (ฟินแลนด์ / ไทย)
       <input type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="เช่น sää หรือ อากาศ" />
     </label>
