@@ -1,3 +1,4 @@
+import { LanguageProvider, useLanguage } from "./i18n/Language";
 import {courseLessons,upcoming,type LessonId} from "./data/courseCatalog";
 import {CourseOutline} from "./pages/CourseOutline";
 import {SeptemberSeventeenPage} from "./pages/SeptemberSeventeenPage";
@@ -200,6 +201,7 @@ function RecentSearches({
 }
 
 function ProfilePage({ favorites, reviewCount }: { favorites: number; reviewCount: number }) {
+  const { language, setLanguage } = useLanguage();
   const [soundStatus, setSoundStatus] = useState<"idle" | "playing" | "success" | "error">("idle");
   const testSound = () => {
     setSoundStatus("playing");
@@ -223,6 +225,14 @@ function ProfilePage({ favorites, reviewCount }: { favorites: number; reviewCoun
         <div><b>{favorites}</b><span>Favorite words</span></div>
         <div><b>{reviewCount}</b><span>Words to review</span></div>
       </div>
+      <section className="profile-language" aria-labelledby="profile-language-heading">
+        <h2 id="profile-language-heading">Language</h2>
+        <p>{language === 'th' ? 'เลือกภาษาสำหรับเมนู คำอธิบาย และคำแปลศัพท์' : 'Choose the language for menus, explanations, and vocabulary meanings.'}</p>
+        <div className="language-options" role="group" aria-label="Language">
+          <button type="button" data-no-localize aria-pressed={language === 'th'} onClick={() => setLanguage('th')}>{language === 'th' ? 'ไทย' : 'Thai'}</button>
+          <button type="button" aria-pressed={language === 'en'} onClick={() => setLanguage('en')}>English</button>
+        </div>
+      </section>
       <section className="profile-sound" aria-labelledby="profile-sound-heading">
         <div>
           <h2 id="profile-sound-heading">Finnish voice</h2>
@@ -244,7 +254,7 @@ function ProfilePage({ favorites, reviewCount }: { favorites: number; reviewCoun
   );
 }
 
-function App() {
+function AppContent() {
   const [page, setPage] = useState<Page>("dictionary"),
     [query, setQuery] = useState(""),
     [searchFocused, setSearchFocused] = useState(false);
@@ -1534,4 +1544,4 @@ function Practice({
     </section>
   );
 }
-export default App;
+export default function App() { return <LanguageProvider><AppContent /></LanguageProvider>; }

@@ -1,3 +1,5 @@
+import { useLanguage } from "../i18n/Language";
+import { translateText } from "../i18n/translate";
 import { useMemo, useState } from 'react';
 import { Volume2 } from 'lucide-react';
 import type { LessonId } from '../data/courseCatalog';
@@ -5,11 +7,12 @@ import { getLessonVocabulary } from '../data/lessonVocabulary';
 import { ttsService } from '../services/ttsService';
 
 export function LessonVocab({ lessonId }: { lessonId: LessonId }) {
+  const { language } = useLanguage();
   const entries = useMemo(() => getLessonVocabulary(lessonId), [lessonId]);
   const [query, setQuery] = useState('');
   const [error, setError] = useState(false);
   const search = query.trim().normalize('NFC').toLocaleLowerCase('fi');
-  const filtered = entries.filter(entry => `${entry.fi} ${entry.th} ${entry.category ?? ''}`.normalize('NFC').toLocaleLowerCase('fi').includes(search));
+  const filtered = entries.filter(entry => `${entry.fi} ${language === 'en' ? translateText(entry.th) : entry.th} ${language === 'en' ? translateText(entry.category ?? '') : entry.category ?? ''}`.normalize('NFC').toLocaleLowerCase('fi').includes(search));
   return <section className="lesson-vocab" aria-label="คำศัพท์ประจำบท">
     <h2>Vocab · คำศัพท์ประจำบท</h2>
     <p>รวมคำศัพท์และสำนวนจากเนื้อหา บทอ่าน แบบฝึกหัด และการบ้าน เรียงตามตัวอักษรฟินแลนด์ คำที่มีหลายรูปอาจแสดงทั้งรูปพื้นฐานและรูปที่ใช้ในบท</p>

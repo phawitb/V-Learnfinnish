@@ -2951,3 +2951,9 @@ summary:focus-visible {
 .vocab-word button { flex-shrink: 0; min-width: 40px; min-height: 40px; justify-content: center; }
 .vocab-grid p { margin: .6rem 0; }
 .vocab-grid small, .vocab-note { color: var(--muted, #586b73); }
+
+.profile-language { margin: 1.5rem 0; padding: 1.5rem; border: 1px solid var(--border, #d4dce0); border-radius: 18px; background: white; }
+.profile-language h2 { margin: 0 0 .6rem; }
+.language-options { display: flex; gap: .75rem; margin-top: 1rem; }
+.language-options button { min-width: 110px; min-height: 44px; border: 1px solid #c8d6df; border-radius: 12px; padding: .7rem 1.2rem; background: white; color: #315f80; font: inherit; cursor: pointer; }
+.language-options button[aria-pressed="true"] { background: #315f80; color: white; border-color: #315f80; }

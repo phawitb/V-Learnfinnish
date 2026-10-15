@@ -1,3 +1,4 @@
+import { ThaiOnly } from "../i18n/Language";
 import { LessonVocab } from "./LessonVocab";
 import { useState } from 'react';
 import { LessonSixHomework } from './LessonSixHomework';
@@ -105,7 +106,7 @@ export function LessonSixPage() {
       {step === 'Time & verbs' && <>
         <h2>Verbit ja aika — กริยากับเวลา</h2><p>รายการครบจากไฟล์ Verbs and time markers: 23 วลีกริยา และคำบอกเวลา 21 คำ รูป minä และคำแปลไทยเพิ่มไว้ช่วยฝึก</p>
         <a href="/lesson6/verbs-and-time-markers.pdf" target="_blank" rel="noreferrer">เปิดเอกสาร Verbit ja aika ต้นฉบับ</a>
-        <h3>วลีกริยา</h3><div className="lesson5-vocabulary">{verbPhrases.map(([fi, en, th, first]) => <article key={fi}><Speak text={fi} /><p>{th}</p><small>{en}</small><p><Speak text={`Minä ${first}.`} /></p></article>)}</div>
+        <h3>วลีกริยา</h3><div className="lesson5-vocabulary">{verbPhrases.map(([fi, en, th, first]) => <article key={fi}><Speak text={fi} /><ThaiOnly><p>{th}</p></ThaiOnly><small>{en}</small><p><Speak text={`Minä ${first}.`} /></p></article>)}</div>
         <h3>Milloin? — เมื่อไร?</h3><div className="lesson5-vocabulary">{timeMarkers.map(([fi, th]) => <article key={fi}><Speak text={fi} /><p>{th}</p></article>)}</div>
         <h3>ลองประกอบประโยค</h3><p>กิจกรรมเสริม: เลือกเวลาและกริยา แล้วอ่านประโยคในรูป “ฉัน”</p>
         <div className="lesson6-builder"><label>คำบอกเวลา<select value={time} onChange={e => setTime(Number(e.target.value))}>{timeMarkers.map(([fi], i) => <option key={fi} value={i}>{fi}</option>)}</select></label><label>วลีกริยา<select value={verb} onChange={e => setVerb(Number(e.target.value))}>{verbPhrases.map(([fi], i) => <option key={fi} value={i}>{fi}</option>)}</select></label></div>
@@ -116,7 +117,7 @@ export function LessonSixPage() {
       {step === 'Translation' && <>
         <h2>Translation — seasons &amp; weather</h2><p>คำสั่งต้นฉบับ: Translate the following sentences into Finnish. Your classmate will check your answers.</p><p>เอกสารมีใบงานสำหรับคู่ A และ B คนละ 5 ข้อ เฉลยของแต่ละชุดอยู่ในใบงานของอีกคน รวมด้านล่างครบ 10 ข้อแล้ว ลองตอบก่อนเปิดเฉลย</p>
         <a href="/lesson6/translation-seasons-weather.docx" download>ดาวน์โหลดใบงานแปลต้นฉบับ</a>
-        {(['A', 'B'] as const).map(group => <section key={group}><h3>ชุด {group} · 5 ประโยค</h3>{translations.filter(row => row[0] === group).map(([, en, th, fi, note], i) => <article className="lesson5-exercise" key={en}><h4>{group}{i + 1}. {en}</h4><p>{th}</p>{draft(`translation-${group}-${i}`, `คำตอบแปล ${group}${i + 1}`)}<details><summary>เฉลยผู้สอน · {group}{i + 1}</summary><Speak text={fi} /><p>{note}</p></details></article>)}</section>)}
+        {(['A', 'B'] as const).map(group => <section key={group}><h3>ชุด {group} · 5 ประโยค</h3>{translations.filter(row => row[0] === group).map(([, en, th, fi, note], i) => <article className="lesson5-exercise" key={en}><h4>{group}{i + 1}. {en}</h4><ThaiOnly><p>{th}</p></ThaiOnly>{draft(`translation-${group}-${i}`, `คำตอบแปล ${group}${i + 1}`)}<details><summary>เฉลยผู้สอน · {group}{i + 1}</summary><Speak text={fi} /><p>{note}</p></details></article>)}</section>)}
       </>}
       {step === 'Plural' && <>
         <h2>T-monikko — พหูพจน์ -t</h2><div className="lesson-tip"><b>เปลี่ยนทั้งคำคุณศัพท์และคำนาม</b><p>รูปพหูพจน์นี้ลงท้าย -t และอาจมี k–p–t เปลี่ยนด้วย: asunto → asunnot, koti → kodit, vapaa paikka → vapaat paikat, valoisa ilta → valoisat illat ไม่ใช่เติม t หลังรูปเดิมได้ทุกคำ</p><p>เทียบกริยา: ystävä on / ystävät ovat · ystävä ei puhu / ystävät eivät puhu</p></div>
@@ -141,7 +142,7 @@ export function LessonSixPage() {
       {step === 'Vocabulary' && <><LessonVocab lessonId={6} /><details className="vocab-original"><summary>ชุดคำศัพท์เดิมและแหล่งอ้างอิง</summary>
         <h2>Quizlet — ทบทวนคำศัพท์ 3 ชุด</h2><p>ใช้ชุดเดียวกับ บทวันที่ 1 ตุลาคม ตามลิงก์ที่ผู้สอนให้ในบทเรียนนี้: Weather 30 รายการ · Seasons and months 27 รายการ · Adjectives 22 รายการ (ต้นฉบับมี kylmä ซ้ำ)</p>
         <div className="lesson5-options">{([['weather', 'Weather'], ['seasons', 'Seasons and months'], ['adjectives', 'Adjectives']] as const).map(([key, name]) => <button type="button" key={key} aria-pressed={vocab === key} className={vocab === key ? 'active' : ''} onClick={() => setVocab(key)}>{name}</button>)}</div>
-        <div className="lesson5-vocabulary">{vocabulary[vocab].map((word, i) => <article key={`${word.fi}-${i}`}><Speak text={word.fi} /><p>{word.th}</p><small>{word.en}</small></article>)}</div>
+        <div className="lesson5-vocabulary">{vocabulary[vocab].map((word, i) => <article key={`${word.fi}-${i}`}><Speak text={word.fi} /><ThaiOnly><p>{word.th}</p></ThaiOnly><small>{word.en}</small></article>)}</div>
         <h3>เปิดชุดต้นฉบับ</h3><ul>{quizletSources.slice(0, 3).map(([name, url]) => <li key={url}><a href={url} target="_blank" rel="noreferrer">{name}</a></li>)}</ul>
       </details></>}
       {step === 'Homework' && <>

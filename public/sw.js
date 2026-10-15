@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sisu-v1'
+const CACHE_VERSION = 'sisu-v2'
 const APP_SHELL = ['/', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/icon-maskable-512.png', '/icons/apple-touch-icon.png']
 
 self.addEventListener('install', (event) => {
@@ -15,6 +15,9 @@ self.addEventListener('fetch', (event) => {
   const request = event.request
   const url = new URL(request.url)
   if (request.method !== 'GET' || url.origin !== self.location.origin || url.pathname.startsWith('/api/')) return
+
+  // Development modules must come from Vite, never from a previous app cache.
+  if (['/src/', '/node_modules/', '/@vite/', '/@fs/', '/@react-refresh'].some(prefix => url.pathname.startsWith(prefix))) return
 
   if (request.mode === 'navigate') {
     event.respondWith(fetch(request).then((response) => {
