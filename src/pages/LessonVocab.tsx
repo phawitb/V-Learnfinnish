@@ -12,7 +12,7 @@ export function LessonVocab({ lessonId }: { lessonId: LessonId }) {
   const [query, setQuery] = useState('');
   const [error, setError] = useState(false);
   const search = query.trim().normalize('NFC').toLocaleLowerCase('fi');
-  const filtered = entries.filter(entry => `${entry.fi} ${language === 'en' ? translateText(entry.th) : entry.th} ${language === 'en' ? translateText(entry.category ?? '') : entry.category ?? ''}`.normalize('NFC').toLocaleLowerCase('fi').includes(search));
+  const filtered = entries.filter(entry => `${entry.fi} ${language === 'en' ? (entry.en ?? translateText(entry.th)) : entry.th} ${language === 'en' ? translateText(entry.category ?? '') : entry.category ?? ''}`.normalize('NFC').toLocaleLowerCase('fi').includes(search));
   return <section className="lesson-vocab" aria-label="คำศัพท์ประจำบท">
     <h2>Vocab · คำศัพท์ประจำบท</h2>
     <p>คำศัพท์เป้าหมายที่สอนหรือให้ท่องในบทนี้ แสดงชุดคำศัพท์และแหล่งเรียนของแต่ละรายการ รูปผันแสดงเฉพาะที่เป็นหัวข้อเรียน</p>
@@ -27,7 +27,7 @@ export function LessonVocab({ lessonId }: { lessonId: LessonId }) {
         setError(false);
         if (!ttsService.speak(entry.fi, undefined, () => setError(true))) setError(true);
       }}><Volume2 size={18} aria-hidden="true" /></button></div>
-      <p lang="th">{entry.th}</p>{entry.category && <small>{entry.category}</small>}
+      <p lang={language}>{language === 'en' ? (entry.en ?? translateText(entry.th)) : entry.th}</p>{entry.category && <small>{entry.category}</small>}
     </article>)}</div>
     <p className="vocab-note">ปุ่มลำโพงใช้เสียงสังเคราะห์ภาษาฟินแลนด์ คำแปลไทยเป็นคำอธิบายประกอบการเรียน</p>
   </section>;

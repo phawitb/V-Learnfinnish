@@ -41,7 +41,7 @@ it('provides English for every inventoried authored string and generated vocabul
     expect(translateText(text), text).not.toMatch(thai);
   }
   for (const lesson of courseLessons) for (const entry of getLessonVocabulary(lesson.id)) {
-    expect(translateText(entry.th), `${lesson.id}: ${entry.fi}`).not.toMatch(thai);
+    expect(entry.en ?? translateText(entry.th), `${lesson.id}: ${entry.fi}`).not.toMatch(thai);
     expect(translateText(entry.category ?? '')).not.toMatch(thai);
   }
   expect(translateText('Suomi / suomi / minä olen')).toBe('Suomi / suomi / minä olen');

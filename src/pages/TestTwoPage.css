@@ -1,0 +1,34 @@
+.test2-page { --test2-accent: #147d73; }
+.test2-banner { padding: 24px; margin-bottom: 20px; border: 1px solid var(--border, #dce6e1); border-radius: 20px; background: var(--surface, #f1f8f4); }
+.test2-banner > span { color: var(--test2-accent); font-weight: 800; letter-spacing: .12em; font-size: .8rem; }
+.test2-banner h2 { margin: 10px 0; }
+.test2-page p, .test2-page li { line-height: 1.8; }
+.test2-page .lesson-tabs { flex-wrap: wrap; }
+.test2-scope { padding-left: 24px; }
+.test2-scope li { margin: 10px 0; }
+.test2-scope button { display: flex; width: 100%; text-align: left; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 13px 16px; border: 1px solid var(--border, #dce6e1); border-radius: 12px; background: var(--surface, white); color: inherit; cursor: pointer; }
+.test2-scope button span { font-size: .85rem; opacity: .8; }
+.test2-jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; }
+.test2-jump a, .test2-source-grid a { padding: 8px 12px; border: 1px solid var(--border, #dce6e1); border-radius: 10px; color: var(--test2-accent); text-decoration: none; }
+.test2-section { margin-bottom: 34px; padding-bottom: 24px; border-bottom: 1px solid var(--border, #dce6e1); scroll-margin-top: 30px; }
+.test2-source { font-size: .8rem; opacity: .7; letter-spacing: .02em; }
+.test2-notes { padding-left: 22px; }
+.test2-notes li { margin-bottom: 12px; }
+.test2-table-block { margin: 24px 0; }
+.test2-table-scroll { overflow-x: auto; border: 1px solid var(--border, #dce6e1); border-radius: 12px; }
+.test2-page table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.test2-page th, .test2-page td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border, #dce6e1); vertical-align: top; min-width: 115px; line-height: 1.65; }
+.test2-page th { background: var(--surface, #f1f8f4); font-weight: 700; }
+.test2-page tr:last-child td { border-bottom: 0; }
+.test2-complete { display: flex; align-items: center; gap: 10px; padding: 12px 0; cursor: pointer; }
+.test2-complete input { width: 18px; height: 18px; accent-color: var(--test2-accent); }
+.test2-filter { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 20px 0; }
+.test2-filter select { max-width: 100%; padding: 10px; color: inherit; background: var(--surface, white); border: 1px solid var(--border, #dce6e1); border-radius: 8px; }
+.test2-question { padding: 20px 0; border-bottom: 1px solid var(--border, #dce6e1); }
+.test2-question label { display: block; line-height: 1.7; }
+.test2-question textarea { display: block; width: 100%; resize: vertical; box-sizing: border-box; padding: 12px; margin: 12px 0; font: inherit; color: inherit; background: var(--surface, white); border: 1px solid var(--border, #dce6e1); border-radius: 10px; }
+.test2-page .lesson-panel > button, .test2-question button { padding: 8px 14px; border: 1px solid var(--border, #dce6e1); color: var(--test2-accent); background: var(--surface, white); border-radius: 9px; cursor: pointer; }
+.test2-solution { margin-top: 14px; padding: 16px; border-left: 3px solid var(--test2-accent); background: var(--surface, #f1f8f4); border-radius: 0 12px 12px 0; }
+.test2-solution strong { white-space: pre-line; line-height: 1.8; }
+.test2-source-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+@media(max-width:600px) { .test2-banner {padding:18px;} .test2-page th,.test2-page td {padding:10px; min-width:100px;} }

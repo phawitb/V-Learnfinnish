@@ -307,5 +307,12 @@
     "Pronunciation sheets are available as complete source images and original audio; not every line has a Thai gloss."
   ],
   "preserved": "Existing lesson localStorage IDs and saved answers are unchanged; display numbers now follow course chronology.",
-  "earlyCoverage": "/audit-early/coverage-report.md"
+  "earlyCoverage": "/audit-early/coverage-report.md",
+  "test2Update": {
+    "checked": "2026-10-26",
+    "section": 626698,
+    "title": "Tiistaina 3. marraskuuta TEST 2",
+    "scopeManifest": "/test2/syllabus.json",
+    "note": "Original audit below reflects 15 October; TEST 2 has since been added. The separate TEST 1 make-up notice is excluded."
+  }
 }
