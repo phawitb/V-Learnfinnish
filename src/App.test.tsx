@@ -3,6 +3,10 @@ import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 import './styles.css'
+
+// Interaction fixtures are deliberately small; testTwoPractice.test.tsx exercises the real catalog.
+vi.mock('./data/testTwoPractice', async () => await import('./test/practiceFixtures'))
+
 import { ttsService } from './services/ttsService'
 import { translationService } from './services/translationService'
 
@@ -418,14 +422,7 @@ describe('App', () => {
     await userEvent.click(screen.getByRole('tab', { name: /check/i }))
     expect(screen.getByText(/คำถาม 1 จาก 15/i)).toBeVisible()
   })
-  it('adds Lesson 3 study material to Practice', async () => {
-    render(<App />)
-    await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
 
-    expect(screen.getByRole('button', { name: /Tiistai 15.09 — Vowel harmony.*items/i })).toBeVisible()
-    expect(screen.getAllByRole('button', { name: /Tiistai 15.09 — Questions.*items/i })[0]).toBeVisible()
-    expect(screen.getByRole('button', { name: /Tiistai 15.09 — Introductions.*items/i })).toBeVisible()
-  })
   it('teaches Lesson 2 grammar, days, numbers, and useful sentences with Finnish audio', async () => {
     const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
@@ -506,7 +503,7 @@ describe('App', () => {
     expect(scrollTo).toHaveBeenLastCalledWith({ top: 0, left: 0, behavior: 'auto' })
 
     scrollTo.mockClear()
-    await userEvent.click(screen.getByRole('button', { name: /Colors \(2\).*2 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample colors.*2 items/i }))
     expect(scrollTo).toHaveBeenLastCalledWith({ top: 0, left: 0, behavior: 'auto' })
 
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
@@ -519,7 +516,7 @@ describe('App', () => {
     const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample words.*10 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
     await waitFor(() => expect(speak).toHaveBeenCalledWith('Hei!'))
     const card = screen.getByTestId('flashcard-face')
@@ -546,7 +543,7 @@ describe('App', () => {
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
     expect(screen.getByRole('button', { name: /0 words to review/i })).toBeDisabled()
-    await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample words.*10 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
     await userEvent.click(screen.getByRole('button', { name: "Don't know" }))
     await userEvent.click(screen.getByRole('button', { name: /close practice/i }))
@@ -625,62 +622,19 @@ describe('App', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Listen to Mitäs tässä' }))
     expect(speak).toHaveBeenCalledWith('Mitäs tässä')
   })
-  it('splits lesson vocabulary into selectable practice groups of at most ten items', async () => {
-    render(<App />)
-    await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    expect(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Vocab — Page 12 \(4\).*8 items/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Useful Phrases — Pages 12–13 \(4\).*4 items/i })).toBeInTheDocument()
-    await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
-    expect(screen.getByText('Vocab — Page 12 (1)')).toBeInTheDocument()
-    expect(screen.getAllByRole('button', { name: /listen to/i })).toHaveLength(10)
-  })
-  it('keeps word-group cards connected within their category and separates other categories', async () => {
-    render(<App />)
-    await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
 
-    const vocabOne = screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i })
-    const vocabTwo = screen.getByRole('button', { name: /Vocab — Page 12 \(2\).*10 items/i })
-    const phrasesOne = screen.getByRole('button', { name: /Useful Phrases — Pages 12–13 \(1\).*10 items/i })
 
-    expect(vocabOne.closest('.practice-group-section')).toBe(vocabTwo.closest('.practice-group-section'))
-    expect(vocabOne.closest('.practice-group-section')).not.toBe(phrasesOne.closest('.practice-group-section'))
-  })
-  it('offers number and color word groups in chunks of at most ten', async () => {
-    render(<App />)
-    await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    expect(screen.getByRole('button', { name: /Numbers \(1\).*10 items/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Numbers \(3\).*9 items/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Colors \(1\).*10 items/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Colors \(2\).*2 items/i })).toBeInTheDocument()
-    await userEvent.click(screen.getByRole('button', { name: /Numbers \(1\).*10 items/i }))
-    expect(screen.getByText('Numbers (1)')).toBeInTheDocument()
-    await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
-    expect(screen.getByTestId('flashcard-face')).toHaveTextContent('nolla')
-  })
-  it('adds missing Lesson 2 vocabulary to Practice with English translations', async () => {
-    render(<App />)
-    await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
 
-    expect(screen.getByRole('button', { name: /Thursday 10.09 — Olla \(1\).*10 items/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Thursday 10.09 — Days & Time \(1\).*10 items/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Thursday 10.09 — Numbers \(1\).*6 items/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Thursday 10.09 — Everyday Sentences \(1\).*10 items/i })).toBeInTheDocument()
 
-    await userEvent.click(screen.getByRole('button', { name: /Thursday 10.09 — Days & Time \(1\).*10 items/i }))
-    expect(screen.getByText('maanantaina')).toBeVisible()
-    expect(screen.getByText('on Monday')).toBeVisible()
-    expect(screen.queryByText('วันจันทร์')).not.toBeInTheDocument()
-  })
   it('shows a group word list before choosing a practice mode and starting', async () => {
     vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
     expect(screen.getByRole('heading', { name: 'Choose a word group' })).toBeVisible()
     expect(screen.queryByRole('group', { name: 'Choose your practice' })).not.toBeInTheDocument()
-    await userEvent.click(screen.getByRole('button', { name: /Colors \(2\).*2 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample colors.*2 items/i }))
 
-    expect(screen.getByRole('heading', { name: 'Colors (2)' })).toBeVisible()
+    expect(screen.getByRole('heading', { name: 'Test 2 — Sample colors' })).toBeVisible()
     expect(screen.queryByText('WORD GROUP')).not.toBeInTheDocument()
     expect(screen.getByText('ruskea')).toBeVisible()
     expect(screen.getByText('brown')).toBeVisible()
@@ -696,7 +650,7 @@ describe('App', () => {
   it('puts practice choices first and keeps an icon-only play control beside Practice', async () => {
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Colors \(2\).*2 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample colors.*2 items/i }))
 
     const choices = screen.getByRole('group', { name: 'Choose your practice' }).closest('.preview-practice-options')!
     const wordList = screen.getByText('ruskea').closest('.practice-word-list')!
@@ -716,7 +670,7 @@ describe('App', () => {
     })
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Colors \(2\).*2 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample colors.*2 items/i }))
 
     await userEvent.click(screen.getByRole('button', { name: /play all words/i }))
 
@@ -730,7 +684,7 @@ describe('App', () => {
     })
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Colors \(2\).*2 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample colors.*2 items/i }))
 
     await userEvent.click(screen.getByRole('button', { name: /play all words/i }))
     expect(screen.getByText('ruskea').closest('.practice-word-row')).toHaveAttribute('aria-current', 'true')
@@ -741,24 +695,19 @@ describe('App', () => {
     expect(screen.getByText('turkoosi').closest('.practice-word-row')).toHaveAttribute('aria-current', 'true')
   })
   it('marks long flashcard words for a smaller responsive type size', async () => {
-    localStorage.setItem('sisu:favorites:v1', JSON.stringify([{
-      id: 'long-word', finnish: 'epäjärjestelmällistyttämättömyydellänsäkäänköhän', english: 'a very long word',
-      favorite: true, createdAt: '2026-09-13T10:00:00.000Z', nextReviewAt: '2026-09-13T10:00:00.000Z',
-      difficulty: 'new', mastered: false,
-    }]))
     vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Favorites.*1 item/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Long sentence.*1 item/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
 
-    expect(screen.getByRole('heading', { name: /epäjärjestelmällistyttämättömyydellänsäkäänköhän/i })).toHaveClass('word-extra-long')
+    expect(screen.getByRole('heading', { name: /Hänellä on pitkä vaalea suora tukka/i })).toHaveClass('word-extra-long')
   })
   it('keeps multiple-choice content mounted and adds Continue after an answer', async () => {
     vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Colors \(2\).*2 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample colors.*2 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /multiple choice/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
     const choices = screen.getAllByTestId('multiple-choice-option').map((option) => option.textContent)
@@ -770,7 +719,7 @@ describe('App', () => {
   it('hides the matching title while preserving an accessible label', async () => {
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Colors \(2\).*2 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample colors.*2 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /^matching$/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
     expect(screen.queryByRole('heading', { name: 'Match the pairs' })).not.toBeInTheDocument()
@@ -781,7 +730,7 @@ describe('App', () => {
     vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Colors \(2\).*2 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample colors.*2 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /multiple choice/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
     await userEvent.click(screen.getByRole('button', { name: 'turquoise' }))
@@ -797,16 +746,16 @@ describe('App', () => {
   })
 
   it('does not change a group level when a session is closed early', async () => {
-    localStorage.setItem('sisu:practice-progress:v1', JSON.stringify({
+    localStorage.setItem('sisu:practice-progress:test2:v1', JSON.stringify({
       reviewWords: [],
       groups: {
-        'colors-2': { groupId: 'colors-2', level: 4, accuracy: 75, completedAt: '2026-09-11T10:00:00.000Z' },
+        'test2-sample-colors': { groupId: 'test2-sample-colors', level: 4, accuracy: 75, completedAt: '2026-09-11T10:00:00.000Z' },
       },
     }))
     vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Colors \(2\).*2 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample colors.*2 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
     await userEvent.click(screen.getByRole('button', { name: 'Know' }))
     await userEvent.click(screen.getByRole('button', { name: /close practice/i }))
@@ -818,7 +767,7 @@ describe('App', () => {
     vi.mocked(Math.random).mockReturnValue(0)
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample words.*10 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
     expect(screen.getByTestId('flashcard-face')).toHaveTextContent('ja')
     await userEvent.click(screen.getByRole('button', { name: /close practice/i }))
@@ -830,7 +779,7 @@ describe('App', () => {
     const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample words.*10 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /multiple choice/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
     await waitFor(() => expect(speak).toHaveBeenCalledWith('Hei!'))
@@ -844,7 +793,7 @@ describe('App', () => {
     vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Colors \(2\).*2 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample colors.*2 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /multiple choice/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
     const choices = screen.getAllByTestId('multiple-choice-option')
@@ -855,11 +804,11 @@ describe('App', () => {
     vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample words.*10 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /multiple choice/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
     await userEvent.click(screen.getByRole('button', { name: 'and' }))
-    expect(JSON.parse(localStorage.getItem('sisu:practice-progress:v1') || '{}').reviewWords).toHaveLength(1)
+    expect(JSON.parse(localStorage.getItem('sisu:practice-progress:test2:v1') || '{}').reviewWords).toHaveLength(1)
     await userEvent.click(screen.getByRole('button', { name: /continue/i }))
     for (const answer of ['and', 'Welcome!', 'Sorry! / Excuse me!', 'is …?', 'here', 'Finnish course', 'yes', 'to be', 'this']) {
       await userEvent.click(screen.getByRole('button', { name: answer }))
@@ -870,13 +819,13 @@ describe('App', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Hi!' }))
     await userEvent.click(screen.getByRole('button', { name: /continue/i }))
     expect(screen.getByRole('heading', { name: /hienoa/i })).toBeInTheDocument()
-    expect(JSON.parse(localStorage.getItem('sisu:practice-progress:v1') || '{}').reviewWords).toHaveLength(1)
+    expect(JSON.parse(localStorage.getItem('sisu:practice-progress:test2:v1') || '{}').reviewWords).toHaveLength(1)
   })
   it('matches one pair at a time, speaks Finnish, and fades completed pairs', async () => {
     const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample words.*10 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /^matching$/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
     const finnishCards = screen.getAllByTestId('match-fi')
@@ -894,24 +843,24 @@ describe('App', () => {
     vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Colors \(2\).*2 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample colors.*2 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /^matching$/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
     await userEvent.click(screen.getByRole('button', { name: 'ruskea' }))
     await userEvent.click(screen.getByRole('button', { name: 'turquoise' }))
-    expect(JSON.parse(localStorage.getItem('sisu:practice-progress:v1') || '{}').reviewWords).toHaveLength(2)
+    expect(JSON.parse(localStorage.getItem('sisu:practice-progress:test2:v1') || '{}').reviewWords).toHaveLength(2)
 
     await userEvent.click(screen.getByRole('button', { name: 'ruskea' }))
     await userEvent.click(screen.getByRole('button', { name: 'brown' }))
-    expect(JSON.parse(localStorage.getItem('sisu:practice-progress:v1') || '{}').reviewWords).toHaveLength(2)
+    expect(JSON.parse(localStorage.getItem('sisu:practice-progress:test2:v1') || '{}').reviewWords).toHaveLength(2)
     await userEvent.click(screen.getByRole('button', { name: 'turkoosi' }))
     await userEvent.click(screen.getByRole('button', { name: 'turquoise' }))
-    expect(JSON.parse(localStorage.getItem('sisu:practice-progress:v1') || '{}').reviewWords).toHaveLength(2)
+    expect(JSON.parse(localStorage.getItem('sisu:practice-progress:test2:v1') || '{}').reviewWords).toHaveLength(2)
   })
   it('shows selected letters inside the fill-in-the-blank prompt', async () => {
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample words.*10 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /fill in the blank/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
     expect(screen.getByRole('heading', { name: 'Hi!' })).toHaveClass('blank-question')
@@ -933,7 +882,7 @@ describe('App', () => {
   it('builds a fill-in answer from fading letter tiles and restores the last tile on delete', async () => {
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample words.*10 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /fill in the blank/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
 
@@ -950,7 +899,7 @@ describe('App', () => {
     const speak = vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample words.*10 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /fill in the blank/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
     await chooseLetters('Hei')
@@ -965,7 +914,7 @@ describe('App', () => {
   it('preserves a visibly wider gap between words in fill-in prompts', async () => {
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample words.*10 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /fill in the blank/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
     for (const answer of ['Hei', 'ja', 'Tervetuloa', 'Anteeksi', 'onko', 'täällä']) {
@@ -981,12 +930,12 @@ describe('App', () => {
     vi.spyOn(ttsService, 'speak').mockReturnValue(true)
     render(<App />)
     await userEvent.click(screen.getAllByRole('button', { name: /practice/i })[0])
-    await userEvent.click(screen.getByRole('button', { name: /Vocab — Page 12 \(1\).*10 items/i }))
+    await userEvent.click(screen.getByRole('button', { name: /Test 2 — Sample words.*10 items/i }))
     await userEvent.click(screen.getByRole('button', { name: /fill in the blank/i }))
     await userEvent.click(screen.getByRole('button', { name: /start practice/i }))
     await chooseLetters('eHi')
     await userEvent.click(screen.getByRole('button', { name: /check answer/i }))
-    expect(JSON.parse(localStorage.getItem('sisu:practice-progress:v1') || '{}').reviewWords).toHaveLength(1)
+    expect(JSON.parse(localStorage.getItem('sisu:practice-progress:test2:v1') || '{}').reviewWords).toHaveLength(1)
     await userEvent.click(screen.getByRole('button', { name: /continue/i }))
     for (const answer of ['ja', 'Tervetuloa', 'Anteeksi', 'onko', 'täällä', 'suomen kurssi', 'joo', 'olla', 'tämä']) {
       await chooseLetters(answer)
@@ -999,6 +948,6 @@ describe('App', () => {
     await userEvent.click(screen.getByRole('button', { name: /check answer/i }))
     await userEvent.click(screen.getByRole('button', { name: /continue/i }))
     expect(screen.getByRole('heading', { name: /hienoa/i })).toBeInTheDocument()
-    expect(JSON.parse(localStorage.getItem('sisu:practice-progress:v1') || '{}').reviewWords).toHaveLength(1)
+    expect(JSON.parse(localStorage.getItem('sisu:practice-progress:test2:v1') || '{}').reviewWords).toHaveLength(1)
   })
 })

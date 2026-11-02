@@ -19,7 +19,7 @@ import {
   Volume2,
   X,
 } from "lucide-react";
-import { scheduleReview, progressPercent } from "./services/learningService";
+import { progressPercent } from "./services/learningService";
 import { saveGroupProgress, setReviewStatus } from "./services/practiceProgressService";
 import { storageService } from "./services/storageService";
 import { translationService } from "./services/translationService";
@@ -32,7 +32,7 @@ import type {
   TranslationResult,
   VocabularyItem,
 } from "./types";
-import { bookVocabulary, LessonOnePage, phrases } from "./pages/LessonOnePage";
+import { LessonOnePage } from "./pages/LessonOnePage";
 import { LessonTwoPage } from "./pages/LessonTwoPage";
 import { LessonThreePage } from "./pages/LessonThreePage";
 import { TestTwoPage } from "./pages/TestTwoPage";
@@ -42,13 +42,7 @@ import { LessonFivePage } from "./pages/LessonFivePage";
 import { LessonSixPage } from "./pages/LessonSixPage";
 import { LessonEightPage } from "./pages/LessonEightPage";
 import { LessonSevenPage } from "./pages/LessonSevenPage";
-import {
-  lessonTwoDaysAndTime,
-  lessonTwoEverydaySentences,
-  lessonTwoNumbers,
-  lessonTwoOlla,
-} from "./data/lessonTwoPractice";
-import { lessonThreeIntroductions, lessonThreeQuestions, lessonThreeVowelHarmony } from "./data/lessonThreePractice";
+import { testTwoPracticeGroups } from "./data/testTwoPractice";
 
 type Page = "dictionary" | "lessons" | "favorites" | "practice" | "profile";
 type Mode = "flashcard" | "choice" | "matching" | "blank";
@@ -603,7 +597,6 @@ function AppContent() {
         )}
         {page === "practice" && (
           <Practice
-            items={favorites}
             progress={practiceProgress}
             onWordResult={(groupId, item, correct, reviewSession) => {
               if (correct && !reviewSession) return;
@@ -620,9 +613,6 @@ function AppContent() {
                 return next;
               });
             }}
-            onUpdate={(updated) =>
-              saveFav(favorites.map((x) => (x.id === updated.id ? updated : x)))
-            }
           />
         )}
         {page === "profile" && (
@@ -729,8 +719,6 @@ function ListPage({
   );
 }
 
-type PracticeGroup = { id: string; title: string; items: VocabularyItem[] };
-
 function GroupLevel({ progress }: { progress: PracticeProgress["groups"][string] | undefined }) {
   const label = progress
     ? `Level ${progress.level} of 5, latest score ${progress.accuracy} percent`
@@ -747,78 +735,6 @@ function GroupLevel({ progress }: { progress: PracticeProgress["groups"][string]
     </span>
   );
 }
-
-const practiceItem = ([finnish, english]: string[], prefix: string, index: number): VocabularyItem => ({
-  id: `${prefix}-${index}`,
-  query: finnish,
-  direction: "fi-en",
-  finnish,
-  english,
-  exampleFinnish: finnish,
-  exampleEnglish: english,
-  favorite: false,
-  createdAt: "",
-  reviewCount: 0,
-  correctCount: 0,
-  incorrectCount: 0,
-  difficulty: "new",
-  nextReviewAt: "",
-  mastered: false,
-});
-
-const chunkGroups = (title: string, id: string, items: VocabularyItem[]): PracticeGroup[] =>
-  Array.from({ length: Math.ceil(items.length / 10) }, (_, index) => ({
-    id: `${id}-${index + 1}`,
-    title: `${title} (${index + 1})`,
-    items: items.slice(index * 10, index * 10 + 10),
-  }));
-
-const numberVocabulary = [
-  ["nolla", "zero"],
-  ["yksi", "one"],
-  ["kaksi", "two"],
-  ["kolme", "three"],
-  ["neljä", "four"],
-  ["viisi", "five"],
-  ["kuusi", "six"],
-  ["seitsemän", "seven"],
-  ["kahdeksan", "eight"],
-  ["yhdeksän", "nine"],
-  ["kymmenen", "ten"],
-  ["yksitoista", "eleven"],
-  ["kaksitoista", "twelve"],
-  ["kolmetoista", "thirteen"],
-  ["neljätoista", "fourteen"],
-  ["viisitoista", "fifteen"],
-  ["kuusitoista", "sixteen"],
-  ["seitsemäntoista", "seventeen"],
-  ["kahdeksantoista", "eighteen"],
-  ["yhdeksäntoista", "nineteen"],
-  ["kaksikymmentä", "twenty"],
-  ["kolmekymmentä", "thirty"],
-  ["neljäkymmentä", "forty"],
-  ["viisikymmentä", "fifty"],
-  ["kuusikymmentä", "sixty"],
-  ["seitsemänkymmentä", "seventy"],
-  ["kahdeksankymmentä", "eighty"],
-  ["yhdeksänkymmentä", "ninety"],
-  ["sata", "one hundred"],
-];
-
-const colorVocabulary = [
-  ["punainen", "red"],
-  ["sininen", "blue"],
-  ["keltainen", "yellow"],
-  ["vihreä", "green"],
-  ["oranssi", "orange"],
-  ["violetti", "purple"],
-  ["vaaleanpunainen", "pink"],
-  ["musta", "black"],
-  ["valkoinen", "white"],
-  ["harmaa", "gray"],
-  ["ruskea", "brown"],
-  ["turkoosi", "turquoise"],
-];
 
 const lettersOnly = (value: string) =>
   (value.match(/\p{L}/gu) || []).join("").toLocaleLowerCase("fi");
@@ -846,13 +762,10 @@ const shuffled = <T,>(values: T[]) => {
 };
 
 function Practice({
-  items,
   progress,
   onWordResult,
   onGroupComplete,
-  onUpdate,
 }: {
-  items: VocabularyItem[];
   progress: PracticeProgress;
   onWordResult: (
     groupId: string,
@@ -861,7 +774,6 @@ function Practice({
     reviewSession: boolean,
   ) => void;
   onGroupComplete: (groupId: string, firstAttempts: boolean[]) => void;
-  onUpdate: (x: VocabularyItem) => void;
 }) {
   const [started, setStarted] = useState(false),
     [mode, setMode] = useState<Mode>("flashcard"),
@@ -893,75 +805,8 @@ function Practice({
         element.scrollTop = 0;
       });
   }, [selectedGroupId, reviewDeck, started, done, index]);
-  const vocabItems = useMemo(
-      () => bookVocabulary.map((row, index) => practiceItem(row, "vocab", index)),
-      [],
-    ),
-    phraseItems = useMemo(
-      () => phrases.map((row, index) => practiceItem(row, "phrase", index)),
-      [],
-    ),
-    numberItems = useMemo(
-      () => numberVocabulary.map((row, index) => practiceItem(row, "number", index)),
-      [],
-    ),
-    colorItems = useMemo(
-      () => colorVocabulary.map((row, index) => practiceItem(row, "color", index)),
-      [],
-    ),
-    lessonTwoOllaItems = useMemo(
-      () => lessonTwoOlla.map((row, index) => practiceItem(row, "lesson2-olla", index)),
-      [],
-    ),
-    lessonTwoTimeItems = useMemo(
-      () => lessonTwoDaysAndTime.map((row, index) => practiceItem(row, "lesson2-time", index)),
-      [],
-    ),
-    lessonTwoNumberItems = useMemo(
-      () => lessonTwoNumbers.map((row, index) => practiceItem(row, "lesson2-number", index)),
-      [],
-    ),
-    lessonTwoSentenceItems = useMemo(
-      () => lessonTwoEverydaySentences.map((row, index) => practiceItem(row, "lesson2-sentence", index)),
-      [],
-    ),
-    lessonThreeVowelItems = useMemo(
-      () => lessonThreeVowelHarmony.map((row, index) => practiceItem(row, "lesson3-vowels", index)),
-      [],
-    ),
-    lessonThreeQuestionItems = useMemo(
-      () => lessonThreeQuestions.map((row, index) => practiceItem(row, "lesson3-questions", index)),
-      [],
-    ),
-    lessonThreeIntroductionItems = useMemo(
-      () => lessonThreeIntroductions.map((row, index) => practiceItem(row, "lesson3-introductions", index)),
-      [],
-    ),
-    groups = useMemo(
-      () => [
-        ...chunkGroups("Favorites", "favorites", items),
-        ...chunkGroups("Vocab — Page 12", "vocab", vocabItems),
-        ...chunkGroups("Useful Phrases — Pages 12–13", "phrases", phraseItems),
-        ...chunkGroups("Numbers", "numbers", numberItems),
-        ...chunkGroups("Colors", "colors", colorItems),
-        ...chunkGroups("Thursday 10.09 — Olla", "lesson2-olla", lessonTwoOllaItems),
-        ...chunkGroups("Thursday 10.09 — Days & Time", "lesson2-time", lessonTwoTimeItems),
-        ...chunkGroups("Thursday 10.09 — Numbers", "lesson2-number", lessonTwoNumberItems),
-        ...chunkGroups("Thursday 10.09 — Everyday Sentences", "lesson2-sentence", lessonTwoSentenceItems),
-        ...chunkGroups("Tiistai 15.09 — Vowel harmony", "lesson3-vowels", lessonThreeVowelItems),
-        ...chunkGroups("Tiistai 15.09 — Questions", "lesson3-questions", lessonThreeQuestionItems),
-        ...chunkGroups("Tiistai 15.09 — Introductions", "lesson3-introductions", lessonThreeIntroductionItems),
-      ],
-      [colorItems, items, lessonThreeIntroductionItems, lessonThreeQuestionItems, lessonThreeVowelItems, lessonTwoNumberItems, lessonTwoOllaItems, lessonTwoSentenceItems, lessonTwoTimeItems, numberItems, phraseItems, vocabItems],
-    ),
-    groupSections = useMemo(
-      () => Array.from(new Set(groups.map((group) => group.id.replace(/-\d+$/, ""))))
-        .map((sectionId) => ({
-          id: sectionId,
-          groups: groups.filter((group) => group.id.replace(/-\d+$/, "") === sectionId),
-        })),
-      [groups],
-    ),
+  const groups = testTwoPracticeGroups,
+    groupSections = groups.map(group => ({ id: group.id, groups: [group] })),
     regularGroup = groups.find((group) => group.id === selectedGroupId) || groups[0],
     selectedGroup = reviewDeck
       ? { id: "review", title: "Words to review", items: reviewDeck }
@@ -1119,9 +964,6 @@ function Practice({
     setDone(false);
   };
   const next = (rating: PracticeRating = "good", attempts = firstAttempts) => {
-    if (item) {
-      onUpdate(scheduleReview(item, rating));
-    }
     if (retryUntilCorrect) {
       if (rating === "again") {
         const currentDeckIndex = practiceQueue[index] ?? index;
@@ -1137,7 +979,7 @@ function Practice({
         setBlank("");
         setUsedLetterIds([]);
       }
-    } else if (index >= Math.min(deck.length, 10) - 1) {
+    } else if (index >= deck.length - 1) {
       finishSession(attempts);
     } else {
       setIndex(index + 1);
@@ -1152,7 +994,7 @@ function Practice({
       <section className="page practice">
         <div className="page-heading">
           <div>
-            <span className="kicker">BUILD YOUR MEMORY</span>
+            <span className="kicker">TEST 2 VOCABULARY</span>
             <h1>Practice</h1>
           </div>
         </div>
@@ -1506,8 +1348,8 @@ function Practice({
                   key={x.key}
                   data-testid={`match-${x.side}`}
                   data-match-id={x.id}
-                  disabled={matched.includes(x.id)}
-                  className={`${matched.includes(x.id) ? "matched" : ""} ${
+                  disabled={matched.includes(x.key)}
+                  className={`${matched.includes(x.key) ? "matched" : ""} ${
                     matchSelection?.key === x.key ? "selected" : ""
                   }`}
                   onClick={() => {
@@ -1516,16 +1358,23 @@ function Practice({
                       setMatchSelection(
                         matchSelection?.key === x.key ? null : x,
                       );
-                    } else if (matchSelection.id === x.id) {
-                      const matchedItem = deck.find((entry) => entry.id === x.id);
-                      if (matchedItem) recordResult(matchedItem, true);
-                      setMatched([...matched, x.id]);
-                      setMatchSelection(null);
                     } else {
                       const firstItem = deck.find((entry) => entry.id === matchSelection.id);
                       const secondItem = deck.find((entry) => entry.id === x.id);
-                      if (firstItem) recordResult(firstItem, false);
-                      if (secondItem) recordResult(secondItem, false);
+                      // Synonyms can have identical translations. Either visible copy is a valid match.
+                      if (firstItem && secondItem && firstItem.english === secondItem.english) {
+                        recordResult(x.side === "fi" ? secondItem : firstItem, true);
+                        setMatched([...matched, matchSelection.key, x.key]);
+                      } else {
+                        for (const tile of [matchSelection, x]) {
+                          const original = deck.find(entry => entry.id === tile.id);
+                          // A swapped English synonym now belongs to an unresolved Finnish tile.
+                          const missed = tile.side === "en" && matched.includes(`${tile.id}-fi`)
+                            ? deck.find(entry => entry.english === original?.english && !matched.includes(`${entry.id}-fi`))
+                            : original;
+                          if (missed) recordResult(missed, false);
+                        }
+                      }
                       setMatchSelection(null);
                     }
                   }}
@@ -1537,7 +1386,7 @@ function Practice({
               ),
             )}
           </div>
-          {matched.length >= deck.length && (
+          {matched.length >= deck.length * 2 && (
             <button className="primary" onClick={() => finishSession()}>
               Great job! 🎉
             </button>

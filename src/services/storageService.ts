@@ -1,7 +1,7 @@
 import type { HistoryItem, PracticeProgress, VocabularyItem } from '../types'
 import { emptyPracticeProgress } from './practiceProgressService'
 
-const FAV = 'sisu:favorites:v1', HIST = 'sisu:history:v1', PROGRESS = 'sisu:practice-progress:v1'
+const FAV = 'sisu:favorites:v1', HIST = 'sisu:history:v1', PROGRESS = 'sisu:practice-progress:test2:v1'
 const parse = <T>(key: string): T[] => { try { return JSON.parse(localStorage.getItem(key) || '[]') } catch { return [] } }
 
 const practiceProgress = (): PracticeProgress => {

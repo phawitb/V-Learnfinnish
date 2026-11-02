@@ -24,13 +24,13 @@ describe('practice progress storage', () => {
   })
 
   it('returns empty progress for invalid saved JSON', () => {
-    localStorage.setItem('sisu:practice-progress:v1', '{bad')
+    localStorage.setItem('sisu:practice-progress:test2:v1', '{bad')
 
     expect(storageService.practiceProgress()).toEqual(emptyPracticeProgress())
   })
 
   it('returns empty progress when saved data has the wrong shape', () => {
-    localStorage.setItem('sisu:practice-progress:v1', JSON.stringify({ reviewWords: {}, groups: [] }))
+    localStorage.setItem('sisu:practice-progress:test2:v1', JSON.stringify({ reviewWords: {}, groups: [] }))
 
     expect(storageService.practiceProgress()).toEqual(emptyPracticeProgress())
   })
