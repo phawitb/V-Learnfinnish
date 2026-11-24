@@ -38,6 +38,7 @@ import { LessonThreePage } from "./pages/LessonThreePage";
 import { TestTwoPage } from "./pages/TestTwoPage";
 import { TestOnePage } from "./pages/TestOnePage";
 import { AfterTestTwoPage } from "./pages/AfterTestTwoPage";
+import { ListeningPage } from "./pages/ListeningPage";
 import { LessonFourPage } from "./pages/LessonFourPage";
 import { LessonFivePage } from "./pages/LessonFivePage";
 import { LessonSixPage } from "./pages/LessonSixPage";
@@ -132,6 +133,7 @@ function Empty({
 function LessonsHub({onOpen}:{onOpen:(lesson:LessonId)=>void}) {
  return <section className="page lessons-page"><div className="page-heading"><div><span className="kicker">YOUR FINNISH JOURNEY</span><h1>Lessons</h1></div></div>
  <p>เรียงตามวันที่และชื่อใน Moodle · 11 วันเรียนและ TEST 1–2 · เพิ่ม TEST 2 วันที่ 26 ตุลาคม 2026</p><p><a href="/course-audit.json" download>ดาวน์โหลดรายการตรวจเนื้อหาและข้อจำกัดของต้นฉบับ</a></p>
+ <button type="button" className="lesson-card" onClick={()=>onOpen('listening')} aria-label="Listening, รวมแบบฝึกฟังทุกบทตั้งแต่บทแรกถึง After Test 2"><span className="lesson-card-number">🎧</span><span className="lesson-card-copy"><b>Listening — รวมทุกบท</b><span>แบบฝึกฟังทุกบทเรียน ตั้งแต่บทแรกถึง After Test 2 ในหน้าเดียว</span></span><span className="lesson-card-arrow" aria-hidden="true">→</span></button>
  <div className="lessons-grid">{courseLessons.map(lesson=><button type="button" className={`lesson-card ${(lesson.id==='test1'||lesson.id==='test2')?'test-card':''}`} key={lesson.section} onClick={()=>onOpen(lesson.id)} aria-label={`${lesson.title}, ${lesson.summary}`}><span className="lesson-card-number">{lesson.number}</span><span className="lesson-card-copy"><b>{lesson.title}</b><span>{lesson.summary}</span></span><span className="lesson-card-arrow" aria-hidden="true">→</span></button>)}</div>
  <details className="course-outline"><summary>More Moodle sections · {upcoming.length}</summary><p>หัวข้อที่ยังไม่ได้เพิ่มเป็นบทเรียนในแอป</p><ul>{upcoming.map(([id,name])=><li key={id}><a href={`https://moodle.abo.fi/course/section.php?id=${id}`} target="_blank" rel="noreferrer">{name}</a></li>)}</ul></details>
  <details className="course-outline"><summary>CS00BQ87-Finnish as a foreign language, level 1, 5 ECTS · ข้อมูลรายวิชา</summary><p>ข้อมูลรายวิชาแยกจากบทเรียนรายวัน ตรวจเวลาและห้องตามหัวข้อวันนั้นใน Moodle โดยเฉพาะ 15 ตุลาคม เวลา 10.00–11.30 ห้อง G-105</p><ul>{[['IMPORTANT INFORMATION ON THE COURSE','page','1192619'],['Final Examination','page','1192620'],['Audio Files','folder','1192621'],['Tests in Quizlet','url','1192622'],['USEFUL LINKS','page','1192623'],['Finnish music','resource','1192624'],['CEFR levels','resource','1192625']].map(([name,type,id])=><li key={id}><a href={`https://moodle.abo.fi/mod/${type}/view.php?id=${id}`} target="_blank" rel="noreferrer">{name}</a></li>)}</ul></details>
@@ -360,7 +362,7 @@ function AppContent() {
     if (nextPage === "lessons") setActiveLesson(null);
     if (nextPage === "dictionary") window.setTimeout(() => searchInput.current?.focus(), 0);
   };
-  const pageTitle = page === "dictionary" ? "Search" : page === "lessons" && activeLesson !== null ? courseLessons.find(l=>l.id===activeLesson)!.title : nav[page].label;
+  const pageTitle = page === "dictionary" ? "Search" : page === "lessons" && activeLesson === "listening" ? "Listening" : page === "lessons" && activeLesson !== null ? courseLessons.find(l=>l.id===activeLesson)!.title : nav[page].label;
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -549,7 +551,7 @@ function AppContent() {
             />}
           </section>
         )}
-        {page === "lessons" && activeLesson !== null && <CourseOutline id={activeLesson} />}
+        {page === "lessons" && activeLesson !== null && activeLesson !== "listening" && <CourseOutline id={activeLesson} />}
         {page === "lessons" && (
           activeLesson === 1
             ? <LessonOnePage />
@@ -579,6 +581,8 @@ function AppContent() {
               ? <TestOnePage />
             : activeLesson === "afterTest2"
               ? <AfterTestTwoPage />
+            : activeLesson === "listening"
+              ? <ListeningPage />
             : <LessonsHub onOpen={setActiveLesson} />
         )}
         {page === "favorites" && (

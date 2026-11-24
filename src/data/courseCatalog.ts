@@ -1,4 +1,4 @@
-export type LessonId=1|2|3|4|5|6|7|8|'sep17'|'sep24'|'oct15'|'test1'|'test2'|'afterTest2';
+export type LessonId=1|2|3|4|5|6|7|8|'sep17'|'sep24'|'oct15'|'test1'|'test2'|'afterTest2'|'listening';
 type Resource=[string,string];
 export type CourseLesson={id:LessonId;number:string;section:number;title:string;summary:string;during:string[];homework:string[];resources:Resource[];links:Resource[]};
 export const courseLessons:CourseLesson[]=[
