@@ -37,6 +37,7 @@ import { LessonTwoPage } from "./pages/LessonTwoPage";
 import { LessonThreePage } from "./pages/LessonThreePage";
 import { TestTwoPage } from "./pages/TestTwoPage";
 import { TestOnePage } from "./pages/TestOnePage";
+import { AfterTestTwoPage } from "./pages/AfterTestTwoPage";
 import { LessonFourPage } from "./pages/LessonFourPage";
 import { LessonFivePage } from "./pages/LessonFivePage";
 import { LessonSixPage } from "./pages/LessonSixPage";
@@ -576,6 +577,8 @@ function AppContent() {
               ? <TestTwoPage />
             : activeLesson === "test1"
               ? <TestOnePage />
+            : activeLesson === "afterTest2"
+              ? <AfterTestTwoPage />
             : <LessonsHub onOpen={setActiveLesson} />
         )}
         {page === "favorites" && (
