@@ -35,4 +35,9 @@
 .test2-audio-item p { margin: 0 0 6px; font-weight: 600; }
 .test2-audio-item audio { width: 100%; }
 .test2-notes-inline { margin-top: 16px; font-style: italic; opacity: .8; }
+.test2-transcript { margin-top: 8px; padding: 10px 12px; border-left: 3px solid var(--test2-accent); background: var(--surface, #f1f8f4); border-radius: 0 10px 10px 0; font-size: .92rem; }
+.test2-transcript p { margin: 0; white-space: pre-line; line-height: 1.7; }
+.test2-transcript p[lang="fi"] { font-style: italic; }
+.test2-transcript-th { margin-top: 8px !important; padding-top: 8px; border-top: 1px dashed var(--border, #d4dce0); color: var(--muted, #586b73); font-style: normal !important; }
+.test2-transcript-missing { margin-top: 8px; font-size: .85rem; font-style: italic; opacity: .7; }
 @media(max-width:600px) { .test2-banner {padding:18px;} .test2-page th,.test2-page td {padding:10px; min-width:100px;} }

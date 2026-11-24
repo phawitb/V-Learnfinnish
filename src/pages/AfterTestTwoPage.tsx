@@ -71,6 +71,14 @@ export function AfterTestTwoPage() {
                   <audio controls preload="none" src={clip.src}>
                     เบราว์เซอร์นี้ไม่รองรับการเล่นเสียง
                   </audio>
+                  {clip.transcript ? (
+                    <div className="test2-transcript">
+                      <p lang="fi">{clip.transcript}</p>
+                      {clip.transcriptTh && <p className="test2-transcript-th" lang="th">{clip.transcriptTh}</p>}
+                    </div>
+                  ) : (
+                    <p className="test2-transcript-missing">ไม่มีบทถอดเสียงทางการจาก Moodle สำหรับคลิปนี้ (ฟังจากไฟล์เสียงล้วน ๆ)</p>
+                  )}
                 </div>
               ))}
             </div>
