@@ -63,6 +63,20 @@ export function AfterTestTwoPage() {
           <h2>{item.exercise}</h2>
           <p><strong>งาน:</strong> {item.task}</p>
           <p><strong>จุดที่ควรฝึก:</strong> {item.focus}</p>
+          {item.audio && item.audio.length > 0 ? (
+            <div className="test2-audio-list">
+              {item.audio.map(clip => (
+                <div className="test2-audio-item" key={clip.src}>
+                  <p>{clip.label}</p>
+                  <audio controls preload="none" src={clip.src}>
+                    เบราว์เซอร์นี้ไม่รองรับการเล่นเสียง
+                  </audio>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="test2-notes-inline">ไม่มีไฟล์เสียงแยกใน Moodle สำหรับแบบฝึกนี้ (ฟังจาก CD/แผ่นเสียงของหนังสือ)</p>
+          )}
         </article>)}
       </>}
       {tab === 'Vocab' && <LessonVocab lessonId="afterTest2" />}

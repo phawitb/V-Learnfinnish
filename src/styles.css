@@ -2951,6 +2951,9 @@ summary:focus-visible {
 .vocab-word button { flex-shrink: 0; min-width: 40px; min-height: 40px; justify-content: center; }
 .vocab-grid p { margin: .6rem 0; }
 .vocab-grid small, .vocab-note { color: var(--muted, #586b73); }
+.vocab-example { margin-top: .5rem; padding-top: .5rem; border-top: 1px dashed var(--border, #d4dce0); font-size: .92rem; display: grid; gap: .2rem; }
+.vocab-example span[lang="fi"] { font-style: italic; }
+.vocab-example-th { color: var(--muted, #586b73); }
 
 .profile-language { margin: 1.5rem 0; padding: 1.5rem; border: 1px solid var(--border, #d4dce0); border-radius: 18px; background: white; }
 .profile-language h2 { margin: 0 0 .6rem; }

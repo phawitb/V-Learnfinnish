@@ -6,7 +6,7 @@ import { vocabularyOctober } from './vocabularyOctober';
 import { vocabularyAfterTest2 } from './vocabularyAfterTest2';
 import type { LessonId } from './courseCatalog';
 
-export type LessonVocabularyEntry = { fi: string; th: string; en?: string; category?: string };
+export type LessonVocabularyEntry = { fi: string; th: string; en?: string; category?: string; example?: string; exampleTh?: string };
 const collections: Record<string, LessonVocabularyEntry[]> = { ...vocabularyEarly, ...vocabularyDates, ...vocabularyOctober, ...vocabularyAfterTest2, test2: [...readingWords,...topicWords].map(w=>({...w,category:`${w.category} · p. ${w.page}`})) };
 export function getLessonVocabulary(id: LessonId): LessonVocabularyEntry[] {
   const unique = new Map<string, LessonVocabularyEntry>();

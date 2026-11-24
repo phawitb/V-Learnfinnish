@@ -31,4 +31,8 @@
 .test2-solution { margin-top: 14px; padding: 16px; border-left: 3px solid var(--test2-accent); background: var(--surface, #f1f8f4); border-radius: 0 12px 12px 0; }
 .test2-solution strong { white-space: pre-line; line-height: 1.8; }
 .test2-source-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+.test2-audio-list { display: flex; flex-direction: column; gap: 14px; margin-top: 16px; }
+.test2-audio-item p { margin: 0 0 6px; font-weight: 600; }
+.test2-audio-item audio { width: 100%; }
+.test2-notes-inline { margin-top: 16px; font-style: italic; opacity: .8; }
 @media(max-width:600px) { .test2-banner {padding:18px;} .test2-page th,.test2-page td {padding:10px; min-width:100px;} }

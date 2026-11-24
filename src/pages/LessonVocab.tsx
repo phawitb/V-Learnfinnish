@@ -28,6 +28,7 @@ export function LessonVocab({ lessonId }: { lessonId: LessonId }) {
         if (!ttsService.speak(entry.fi, undefined, () => setError(true))) setError(true);
       }}><Volume2 size={18} aria-hidden="true" /></button></div>
       <p lang={language}>{language === 'en' ? (entry.en ?? translateText(entry.th)) : entry.th}</p>{entry.category && <small>{entry.category}</small>}
+      {entry.example && <p className="vocab-example"><span lang="fi">{entry.example}</span>{entry.exampleTh && <span className="vocab-example-th">{entry.exampleTh}</span>}</p>}
     </article>)}</div>
     <p className="vocab-note">ปุ่มลำโพงใช้เสียงสังเคราะห์ภาษาฟินแลนด์ คำแปลไทยเป็นคำอธิบายประกอบการเรียน</p>
   </section>;
